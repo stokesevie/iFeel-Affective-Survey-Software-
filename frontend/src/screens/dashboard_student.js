@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View} from 'react-native'
-import { NavBar } from '../components/NavBar'
 import { ContentJustified, PageTitle } from '../components/styles';
 
 const StudentDashboard = ({navigation}) => {
@@ -8,8 +7,7 @@ const StudentDashboard = ({navigation}) => {
         <View>
             <ContentJustified>
                 <PageTitle>Hello from dashboard student</PageTitle>  
-                <NavBar navigation = {navigation}/>
-            </ContentJustified>
+           </ContentJustified>
         </View>
     )
 };
