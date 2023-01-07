@@ -20,6 +20,10 @@ from db import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    re_path(r'^api/db/$', views.students),
-    re_path(r'^api/db/([0-9])$', views.students_edit),
+    path('users/<int:pk>/', views.UserDetail.as_view()),
+    path('token/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    re_path(r'^api/users', views.user_info),
+    re_path(r'^api/courses', views.courses),
+    re_path(r'^api/students', views.students),
+    re_path(r'^api/tutors', views.tutors),
 ]
