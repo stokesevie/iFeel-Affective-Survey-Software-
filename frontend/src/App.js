@@ -9,9 +9,10 @@ import { AuthProvider } from "./utils/auth_context";
 import { Ionicons } from '@expo/vector-icons'
 
 import StudentDashboard from './screens/dashboard_student'
-import Pending from './screens/pending'
+import Courses from './screens/courses'
 import Messages from './screens/messages'
 import Login from './screens/login'
+import Course from './screens/course';
 
 import  localStorage from 'localstorage-polyfill'; 
 
@@ -23,7 +24,7 @@ const colours = Theme;
 
 
 
-function CreateTabs(){
+export function CreateTabs(){
     return(
         <NavBar.Navigator screenOptions={{
             tabBarActiveTintColor: colours.secondary,
@@ -35,14 +36,12 @@ function CreateTabs(){
             <NavBar.Screen name= "Messages" component={Messages} options={{headerShown: false, tabBarIcon: ({ color }) => (
                   <Ionicons name="ios-mail-outline" color={color} size={25} />
               )}}/>
-            <NavBar.Screen name= "Labs" component={Pending} options={{headerShown: false, tabBarIcon: ({ color }) => (
+            <NavBar.Screen name= "Courses" component={Courses} options={{headerShown: false, tabBarIcon: ({ color }) => (
                   <Ionicons name="school" color={color} size={25} />
               ),}}/>
         </NavBar.Navigator>
     );
 }
-
-
 
 function App() {
     return (
@@ -51,6 +50,7 @@ function App() {
                     <Stack.Navigator>
                             <Stack.Screen name="Login"component={Login} options={{ headerShown: false }} />
                             <Stack.Screen name="StudentDashboard" component={CreateTabs} options={{ headerShown: false }}/>
+                            <Stack.Screen name="Course" component={Course} options={{ headerShown: false }}/>
                     </Stack.Navigator>
             </NavigationContainer>
         </AuthProvider>

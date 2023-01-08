@@ -5,6 +5,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 User = get_user_model()
 
 class dbSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = db
         fields = ('fname', 'sname', 'email', 'password', 'staff')
@@ -16,6 +17,12 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['username', 'email', 'first_name', 'last_name','is_staff', 'password']
+
+
+class MessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = message
+        fields = ['id','sender_id', 'receiver_id', 'sent_at','message']
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -33,7 +40,11 @@ class TutorSerializer(serializers.ModelSerializer):
     class Meta:
         model = tutor
         fields = ['username']
-    
+
+class student_enrollSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = student_enroll
+        fields = ['student_id', 'lab_id'] 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod

@@ -1,36 +1,38 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from rest_framework import status
+
 from rest_framework.views import APIView
+from rest_framework import status
 from .serializers import *
-from .models import course,student,tutor
+from .models import *
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.views import TokenObtainPairView
+from django.core import serializers
 # Create your views here.
 
 @api_view(['GET','POST'])
-def user_info(request):
+def students(request):
     if request.method == 'GET':
-        data = User.objects.all()
-        serializer = UserSerializer(data, context={'request': request}, many=True)
+        data = db.objects.all()
+        serializer = dbSerializer(data, context={'request': request}, many=True)
         return Response(serializer.data)
     elif request.method == 'POST':
-        serializer = UserSerializer(data = request.data)
+        serializer = dbSerializer(data = request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(status = status.HTTP_201_CREATED)
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT', 'DELETE'])
-def user_edit(request, pk):
+def students_edit(request, pk):
     try:
-        student = User.objects.get(pk=pk)
-    except User.DoesNotExist:
+        student = db.objects.get(pk=pk)
+    except db.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'PUT':
-        serializer = UserSerializer(student, data=request.data,context={'request': request})
+        serializer = dbSerializer(student, data=request.data,context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(status=status.HTTP_204_NO_CONTENT)
@@ -96,6 +98,7 @@ class UserList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class UserDetail(APIView):
     """
     Retrieve, update or delete a snippet instance.
@@ -123,3 +126,63 @@ class UserDetail(APIView):
         snippet = self.get_object(pk)
         snippet.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class FindUser(APIView):
+    """
+    Retrieve, update or delete a snippet instance.
+    """
+    def get_object(self, username):
+        try:
+            return User.objects.get(username=username)
+        except User.DoesNotExist:
+            raise status.HTTP_400_BAD_REQUEST
+
+    def get(self, request, username, format=None):
+        snippet = self.get_object(username=username)
+        serializer = UserSerializer(snippet)
+        return Response(serializer.data)
+
+
+class MessageDetail(APIView):
+        def serialize_message(self,messages):
+            msg =[]
+            for message in messages:
+                json={'id': message.id,
+                'sender_id': message.sender_id.username,
+                'receiver_id': message.receiver_id.username,
+                'sent_at': message.sent_at,
+                'message': message.message_content,
+                }
+                msg.append(json)
+            return msg
+
+        def get_object(self, receiver_id):
+            try:
+                return message.objects.filter(receiver_id=receiver_id)
+            except message.DoesNotExist:
+                raise status.HTTP_400_BAD_REQUEST
+
+        def get(self, request, receiver_id, format=None):
+            return Response(self.serialize_message(message.objects.filter(receiver_id=receiver_id)))
+
+
+
+class StudentEnrollFind(APIView):
+    def serialize_student_enroll(self,student_enroll):
+        enroll =[]
+        for courses in student_enroll:
+            json={'id': courses.id,
+            'student_id': courses.student_id.username.id,
+            'lab_id': courses.lab_id.id,
+            }
+            enroll.append(json)
+        return enroll
+
+    def get_object(self, student_id):
+        try:
+            return student_enroll.objects.filter(student_id=student_id)
+        except student_enroll.DoesNotExist:
+            raise status.HTTP_400_BAD_REQUEST
+
+    def get(self, request, student_id, format=None):
+        return Response(self.serialize_student_enroll(student_enroll.objects.filter(student_id=student_id)))

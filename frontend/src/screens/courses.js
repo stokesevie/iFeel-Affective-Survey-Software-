@@ -1,19 +1,20 @@
-import React, { useState, useEffect, useContext} from 'react'
-import { Button, FlatList, StyleSheet, Text, View} from 'react-native'
+import React, { useState, useEffect,useContext } from 'react'
+import { StyleSheet, Text, View} from 'react-native'
 import AuthContext from '../utils/auth_context';
+import { FlatList } from 'react-native';
+import StyledCourse from '../components/StyledCourse';
 
 import { ContentJustified, PageTitle } from '../components/styles';
-import   StyledMessage   from '../components/StyledMessage';
 
-const Messages = ({navigation}) => {
+const Courses = ({navigation}) => {
     const { user } = useContext(AuthContext);
 
     const [userInfo, setUserInfo] = useState([])
-    const [messages, setMessages] = useState([])
+    const [courses, setCourses] = useState([])
 
     useEffect( ()=>{
-        fetchMessages();
         fetchUserInfo(); 
+        fetchUserCourses();
     },[])
 
     const fetchUserInfo = ()=>{
@@ -30,9 +31,10 @@ const Messages = ({navigation}) => {
             setUserInfo(data)
         })
     }
-    const fetchMessages = async ()=> {
-        const messageUrl = `http://127.0.0.1:8000/message/`+ user.user_id   
-        const message_response = await fetch(messageUrl, {
+
+    const fetchUserCourses = async()=>{
+        const courseUrl = `http://127.0.0.1:8000/courses/`+ user.user_id
+        const response = await fetch(courseUrl, {
             method : 'GET',
             headers :{
                 'Content-Type' : 'application/json',
@@ -41,25 +43,29 @@ const Messages = ({navigation}) => {
         })
         .then(res => res.json())
         .then(data => {
-            setMessages(data)
+            setCourses(data)
         })
     }
-
+    
     return (
         <View>
             <ContentJustified>
-                <PageTitle>Messages</PageTitle> 
+                <PageTitle>{userInfo.first_name}, you are enrolled in the following courses:</PageTitle>  
                 <FlatList
-                data={messages}
+                data={courses}
                 renderItem ={({item})=>(
-                    <StyledMessage
-                     message = {item}
+                    <StyledCourse
+                     course = {item}
+                     onPress={()=>{
+                        navigation.navigate("Course")
+                    }}
                      />
                 )
-                }/>
+                }
+                />
 
             </ContentJustified>
         </View>
     )
 };
-export default Messages;
+export default Courses;

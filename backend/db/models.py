@@ -64,3 +64,10 @@ class student_lab_risk(models.Model):
     risk = models.BooleanField()
     warning = models.BooleanField()
     avg = models.BooleanField()
+
+
+class message(models.Model):
+    sender_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender_id')
+    receiver_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiver_id')
+    sent_at = models.DateTimeField()
+    message_content = models.TextField()

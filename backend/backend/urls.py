@@ -18,12 +18,12 @@ from django.urls import path, include, re_path
 from rest_framework import routers
 from db import views
 
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('users/<int:pk>/', views.UserDetail.as_view()),
+    path('message/<int:receiver_id>/', views.MessageDetail.as_view()),
+    path('sender/<str:username>/', views.FindUser.as_view()),
+    path('courses/<int:student_id>/', views.StudentEnrollFind.as_view()),
     path('token/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    re_path(r'^api/users', views.user_info),
-    re_path(r'^api/courses', views.courses),
-    re_path(r'^api/students', views.students),
-    re_path(r'^api/tutors', views.tutors),
 ]

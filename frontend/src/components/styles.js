@@ -21,6 +21,54 @@ export const PageTitle = styled.Text`
     padding: 10px;
 `;
 
+export const StyledMessage = styled.View`
+    padding: 15px;
+    background-color: ${Theme.secondary};
+    border-radius: 5px;
+    height: 120px;
+    margin-bottom: 20px;
+`;
+
+export const MessageSender = styled.Text`
+    font-size: 15px;
+    text-align: center;
+    font-weight: bold;
+    color: ${Theme.primary};
+    padding: 10px;
+`;
+export const MessageContent = styled.Text`
+    font-size: 10px;
+    text-align: center;
+    font-weight: bold;
+    color: ${Theme.primary};
+    padding: 10px;
+`;
+
+export const MessageTime = styled.Text`
+    font-size: 10px;
+    text-align: center;
+    font-weight: bold;
+    color: ${Theme.primary};
+    padding: 10px;
+`;
+
+export const CourseDetail = styled.Text`
+    font-size: 15px;
+    text-align: center;
+    font-weight: bold;
+    color: ${Theme.text_darker};
+    padding: 10px;
+`;
+
+export const StyledListButton = styled.TouchableOpacity`
+    padding: 1px;
+    background-color: ${Theme.text_light};
+    border-radius: 5px;
+    height: 120px;
+    margin-bottom: 20px;
+`;
+
+
 export const ContentJustified = styled.View`
     padding-left:10px;
     padding-right:10px;
