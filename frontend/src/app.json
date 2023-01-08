@@ -28,6 +28,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "fd0cae9d-0070-463a-9831-16a040eb7eba"
+      }
+    },
+    "owner": "stokesevie"
   }
 }

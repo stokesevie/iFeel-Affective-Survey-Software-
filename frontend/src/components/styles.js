@@ -33,14 +33,14 @@ export const MessageSender = styled.Text`
     font-size: 15px;
     text-align: center;
     font-weight: bold;
-    color: ${Theme.primary};
+    color: ${Theme.text_darker};
     padding: 10px;
 `;
 export const MessageContent = styled.Text`
     font-size: 10px;
     text-align: center;
     font-weight: bold;
-    color: ${Theme.primary};
+    color: ${Theme.text_darker};
     padding: 10px;
 `;
 
@@ -48,7 +48,7 @@ export const MessageTime = styled.Text`
     font-size: 10px;
     text-align: center;
     font-weight: bold;
-    color: ${Theme.primary};
+    color: ${Theme.text_darker};
     padding: 10px;
 `;
 
@@ -67,6 +67,7 @@ export const StyledListButton = styled.TouchableOpacity`
     height: 120px;
     margin-bottom: 20px;
 `;
+
 
 
 export const ContentJustified = styled.View`
