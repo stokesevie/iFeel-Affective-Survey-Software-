@@ -30,10 +30,10 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
+
       - name: Install dependencies
         working-directory: ./frontend/src
         run: npm install
 
       - name: Publish update
-        working-directory: ./frontend/src
         run: eas update --auto
