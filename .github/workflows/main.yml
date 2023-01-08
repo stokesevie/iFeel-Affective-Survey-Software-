@@ -35,4 +35,5 @@ jobs:
         run: npm install
 
       - name: Publish update
+        working-directory: ./frontend/src
         run: eas update --auto
