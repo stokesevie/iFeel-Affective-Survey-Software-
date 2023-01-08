@@ -7,7 +7,7 @@ const Login = ({navigation}) => {
     return (
         <View>
             <ContentJustified>
-                <PageTitle>Hello from login</PageTitle>  
+                <PageTitle>Login</PageTitle>  
             </ContentJustified>
         </View>
     )

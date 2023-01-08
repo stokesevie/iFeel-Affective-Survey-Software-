@@ -4,18 +4,18 @@ import {View, Text, Image, TextInput, TouchableOpacity} from 'react-native';
 import Constants from 'expo-constants';
 
 export const theme = {
-    text_light:'#FBD1A2', //neutral beige
-    text_dark:'#F79256', //darker beige
-    primary:'#00B2CA', //light blue
-    secondary:'#1D4E89', //dark blue
-    third: '#7DCFB6', // green blue
+    text_light:'#FCDFA6', //neutral beige
+    text_dark:'#F4B886', //darker beige
+    primary:'#6A898A', //light blue
+    secondary:'#3A606E', //dark blue
+    third: '#CCCCCC', // grey
 };
 
 export const PageTitle = styled.Text`
     font-size: 30px;
     text-align: center;
     font-weight: bold;
-    color: ${theme.text_dark};
+    color: ${theme.primary};
     padding: 10px;
 `;
 
