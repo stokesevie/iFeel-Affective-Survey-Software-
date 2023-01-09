@@ -9,7 +9,7 @@ export default function StyledCourse(props){
     const {course, onPress } = props
     const [courseDetail, setCourseDetail] = useState([])
     const fetchCourseDetail = async ()=>{
-        const userUrl = `http://127.0.0.1:8000/courseDetail/`+ course.lab_id
+        const userUrl = `http://backend-production-94f0.up.railway.app/courseDetail/`+ course.lab_id
         response = await fetch(userUrl, {
             method : 'GET',
             headers :{
