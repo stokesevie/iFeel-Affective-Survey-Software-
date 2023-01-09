@@ -9,10 +9,14 @@ import { NotificationsMessage } from '../components/NotificationsMessage'
 
 const StudentDashboard = ({navigation}) => {
     const { user } = useContext(AuthContext);
+    
     const [userInfo, setUserInfo] = useState([])
-        const url = `http://127.0.0.1:8000/users/`+ user.user_id
+        const url = `http://backend-production-94f0.up.railway.app/users/`+ user.user_id
         useEffect(()=>{
-        fetch(url, {
+            getUserInfo()
+        },[])
+        const getUserInfo = async ()=>{
+            const response = await fetch(url, {
             method : 'GET',
             headers :{
                 'Content-Type' : 'application/json',
@@ -23,7 +27,7 @@ const StudentDashboard = ({navigation}) => {
         .then(data => {
             setUserInfo(data)
         });
-        },[])
+        }
     return (
         <View>
             <ContentJustified>

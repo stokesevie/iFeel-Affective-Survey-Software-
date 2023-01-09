@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   const loginUser = async (username, password,navigation) => {
-    const response = await fetch("http://127.0.0.1:8000/token/", {
+    const response = await fetch("http://backend-production-94f0.up.railway.app/token/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -34,6 +34,7 @@ export const AuthProvider = ({ children }) => {
     if (response.status === 200) {
       setAuthTokens(data);
       setUser(jwt_decode(data.access));
+
       localStorage.setItem("authTokens", JSON.stringify(data));
       navigation.push("StudentDashboard")
     } else {
@@ -56,7 +57,7 @@ export const AuthProvider = ({ children }) => {
     authTokens,
     setAuthTokens,
     loginUser,
-    logoutUser
+    logoutUser,
   };
 
   useEffect(() => {

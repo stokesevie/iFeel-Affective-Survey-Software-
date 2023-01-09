@@ -30,23 +30,26 @@ export const StyledMessage = styled.View`
 `;
 
 export const MessageSender = styled.Text`
+    justify-content: space-between;
     font-size: 15px;
-    text-align: center;
+    text-align: left;
     font-weight: bold;
     color: ${Theme.text_darker};
     padding: 10px;
 `;
 export const MessageContent = styled.Text`
+    justify-content: space-between;
     font-size: 10px;
-    text-align: center;
+    text-align: left;
     font-weight: bold;
     color: ${Theme.text_darker};
     padding: 10px;
 `;
 
 export const MessageTime = styled.Text`
+    justify-content: space-between;
     font-size: 10px;
-    text-align: center;
+    text-align: right;
     font-weight: bold;
     color: ${Theme.text_darker};
     padding: 10px;
@@ -68,6 +71,21 @@ export const StyledListButton = styled.TouchableOpacity`
     margin-bottom: 20px;
 `;
 
+export const SenderTime = styled.View`
+    display: flex;
+`;
+
+export const MessageObject = styled.View`
+    justify-content: space-between;
+`;
+
+export const CourseTitle = styled.Text`
+    font-size: 20px;
+    text-align: center;
+    font-weight: bold;
+    color: ${Theme.text_darker};
+    padding: 10px;
+`;
 
 
 export const ContentJustified = styled.View`

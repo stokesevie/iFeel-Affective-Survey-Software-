@@ -18,7 +18,7 @@ const Courses = ({navigation}) => {
     },[])
 
     const fetchUserInfo = ()=>{
-        const userUrl = `http://127.0.0.1:8000/users/`+ user.user_id
+        const userUrl = `http://backend-production-94f0.up.railway.app/users/`+ user.user_id
         fetch(userUrl, {
             method : 'GET',
             headers :{
