@@ -33,7 +33,7 @@ const Courses = ({navigation}) => {
     }
 
     const fetchUserCourses = async()=>{
-        const courseUrl = `http://127.0.0.1:8000/courses/`+ user.user_id
+        const courseUrl = `http://backend-production-94f0.up.railway.app/courses/`+ user.user_id
         const response = await fetch(courseUrl, {
             method : 'GET',
             headers :{
@@ -46,7 +46,7 @@ const Courses = ({navigation}) => {
             setCourses(data)
         })
     }
-    
+     
     return (
         <View>
             <ContentJustified>
@@ -56,9 +56,7 @@ const Courses = ({navigation}) => {
                 renderItem ={({item})=>(
                     <StyledCourse
                      course = {item}
-                     onPress={()=>{
-                        navigation.navigate("Course")
-                    }}
+                     navigation = {navigation}
                      />
                 )
                 }

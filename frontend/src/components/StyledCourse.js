@@ -6,10 +6,10 @@ import { useState, setState, useEffect } from 'react';
 import Course from '../screens/course';
 
 export default function StyledCourse(props){
-    const {course, onPress } = props
+    const {course, navigation } = props
     const [courseDetail, setCourseDetail] = useState([])
     const fetchCourseDetail = async ()=>{
-        const userUrl = `http://127.0.0.1:8000/courseDetail/`+ course.lab_id
+        const userUrl = `http://backend-production-94f0.up.railway.app/courseDetail/`+ course.lab_id
         response = await fetch(userUrl, {
             method : 'GET',
             headers :{
@@ -26,7 +26,11 @@ export default function StyledCourse(props){
         fetchCourseDetail()
     },[])
     return(
-        <StyledListButton onPress= {onPress}>
+        <StyledListButton onPress= {
+            ()=>{
+                navigation.navigate("Course",{ course:  {courseDetail}})
+            }
+        }>
             <CourseDetail>{course.lab_id}</CourseDetail>
             <CourseTitle>{courseDetail.title}</CourseTitle>
         </StyledListButton>
