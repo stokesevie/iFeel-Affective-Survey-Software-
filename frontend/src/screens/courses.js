@@ -46,7 +46,7 @@ const Courses = ({navigation}) => {
             setCourses(data)
         })
     }
-    
+     
     return (
         <View>
             <ContentJustified>
@@ -56,9 +56,7 @@ const Courses = ({navigation}) => {
                 renderItem ={({item})=>(
                     <StyledCourse
                      course = {item}
-                     onPress={()=>{
-                        navigation.navigate("Course")
-                    }}
+                     navigation = {navigation}
                      />
                 )
                 }
