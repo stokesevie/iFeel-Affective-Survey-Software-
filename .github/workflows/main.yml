@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: 16.x
           cache: npm
-          cache-dependency-path: "./src/package-lock.json"
+          cache-dependency-path: "./frontend/src/package-lock.json"
 
       - name: Setup Expo
         uses: expo/expo-github-action@v7
@@ -26,9 +26,9 @@ jobs:
           token: ${{ secrets.EXPO_SECRET }}
 
       - name: Install dependencies
-        working-directory: ./src
+        working-directory: ./frontend/src
         run: npm install
 
       - name: Publish app
-        working-directory: ./src
+        working-directory: ./frontend/src
         run: expo publish --non-interactive
