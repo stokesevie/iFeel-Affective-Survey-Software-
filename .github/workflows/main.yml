@@ -1,19 +1,15 @@
-name: update
-on: push
+name: update push
+run-name: ${{ github.actor }} 
 
+on:
+  push:
+    branches:
+      - main
 jobs:
-  update:
-    name: EAS Update
+  publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Check for EXPO_TOKEN
-        run: |
-          if [ -z "${{ secrets.EXPO_TOKEN }}" ]; then
-            echo "You must provide an EXPO_TOKEN secret linked to this project's Expo account in this repo's secrets. Learn more: https://docs.expo.dev/eas-update/github-actions"
-            exit 1
-          fi
-
-      - name: Checkout repository
+      - name: Setup repo
         uses: actions/checkout@v2
 
       - name: Setup Node
@@ -21,19 +17,18 @@ jobs:
         with:
           node-version: 16.x
           cache: npm
-          cache-dependency-path: "./frontend/src/package-lock.json"
+          cache-dependency-path: "./src/package-lock.json"
 
       - name: Setup Expo
         uses: expo/expo-github-action@v7
         with:
           expo-version: latest
-          eas-version: latest
-          token: ${{ secrets.EXPO_TOKEN }}
-
+          token: ${{ secrets.EXPO_SECRET }}
 
       - name: Install dependencies
-        working-directory: ./frontend/src
+        working-directory: ./src
         run: npm install
 
-      - name: Publish update
-        run: npm start
+      - name: Publish app
+        working-directory: ./src
+        run: expo publish --non-interactive
