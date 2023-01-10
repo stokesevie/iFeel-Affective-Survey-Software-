@@ -13,6 +13,7 @@ import Courses from './screens/courses'
 import Messages from './screens/messages'
 import Login from './screens/login'
 import Course from './screens/course';
+import Survey from './screens/survey'
 
 import  localStorage from 'localstorage-polyfill'; 
 
@@ -51,6 +52,8 @@ function App() {
                             <Stack.Screen name="Login"component={Login} options={{ headerShown: false }} />
                             <Stack.Screen name="StudentDashboard" component={CreateTabs} options={{ headerShown: false }}/>
                             <Stack.Screen name="Course" component={Course} options={{ headerShown: false }}/>
+                            <Stack.Screen name="Survey" component={Survey} options={{ headerShown: false }}/>
+
                     </Stack.Navigator>
             </NavigationContainer>
         </AuthProvider>
