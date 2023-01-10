@@ -135,6 +135,7 @@ export const StyledButton = styled.TouchableOpacity`
     align-items: center;
     margin-vertical: 5px;
     height: 60px;
+    padding-top: 10px;
 `;
 
 export const StyledButtonText = styled.Text`
@@ -171,7 +172,7 @@ export const SubTitle= styled.Text`
     margin-bottom: 20px;
     letter-spacing: 1px;
     font-weight: bold;
-    color: black;
+    color: ${Theme.text_darker};
     text-align:center;
 `;
 export const ContentsNotification = styled.View`
@@ -180,5 +181,55 @@ export const ContentsNotification = styled.View`
     justify-content: space-between;
 `;
 
+export const XYGrid = styled.View`
+    width:100%%;
+    height:50%;
+    padding: 10px;
+    
+`;
 
+export const XYGridText = styled.Text`
+    font-size:19px;
+    color: ${Theme.text_darker};
+    text-align:center;
+`;
 
+export const YText = styled.Text` 
+    font-size:19px;
+    color: ${Theme.text_darker};
+    text-align:center;
+    transform: rotate(-90deg);
+    left:25px;
+`;
+
+export const XMin= styled.View`
+    flex-direction:column;  
+`;
+export const YMin= styled.View`
+    flex-direction:row;
+    height:87%;
+ 
+`;
+
+export const Grid = styled.TouchableOpacity`
+    border-width:2px;
+    flex-grow:1;
+    left:-72px;
+    width:85%;
+    border-color: ${Theme.primary};
+`;
+
+export const YTextMin = styled.Text` 
+    font-size:19px;
+    color: ${Theme.text_darker};
+    text-align:center;
+    transform: rotate(90deg);
+    left:-68%
+`;
+
+export const SurveyQuestion = styled.Text` 
+    font-size:19px;
+    color: ${Theme.secondary};
+    text-align: center
+    padding: 10px
+`;
