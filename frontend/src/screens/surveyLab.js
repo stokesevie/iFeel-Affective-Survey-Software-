@@ -7,11 +7,18 @@ import { ContentJustified, PageTitle, StyledButton } from '../components/styles'
 const SurveyLab = ({route, navigation}) => {
     const { labDetail, question } = route.params
     const lab = labDetail.lab
-     
-    if (question>3){
-        return navigation.navigate("Done");
-        
-    } else{
+
+    const onPress = ()=>{
+        if (question>=3){
+            navigation.navigate("Done")
+        }else{
+            navigation.navigate("SurveyLab", {
+                labDetail: {lab}, 
+                question :question+1
+            })
+        }
+    }
+    
         return (
             <View>
                 <ContentJustified>
@@ -31,17 +38,11 @@ const SurveyLab = ({route, navigation}) => {
     
                     </XYGrid>
                     <View style = {styles.container}/>
-                    <StyledButton title = "next" onPress={()=>(
-                        navigation.navigate("SurveyLab", {
-                            labDetail: {lab}, 
-                            question :question+1
-                        })
-                    )}><StyledButtonText> Next </StyledButtonText></StyledButton>
+                    <StyledButton title = "next" onPress={onPress}><StyledButtonText> Next </StyledButtonText></StyledButton>
               
                 </ContentJustified>
             </View>
         )
-    }
     
 };
 
