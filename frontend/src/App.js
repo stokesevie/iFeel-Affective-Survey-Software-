@@ -16,6 +16,9 @@ import Course from './screens/course';
 import Survey from './screens/survey'
 import SurveyLab from './screens/surveyLab'
 import Done from './screens/done';
+import TutorDashboard from './screens/dashboard_tutor';
+import Pending from './screens/pending';
+
 import  localStorage from 'localstorage-polyfill'; 
 
 import { Theme } from './components/styles'
@@ -26,7 +29,7 @@ const colours = Theme;
 
 
 
-export function CreateTabs(){
+export function CreateTabsStudent(){
     return(
         <NavBar.Navigator screenOptions={{
             tabBarActiveTintColor: colours.secondary,
@@ -45,18 +48,37 @@ export function CreateTabs(){
     );
 }
 
+export function CreateTabsTutor(){
+    return(
+        <NavBar.Navigator screenOptions={{
+            tabBarActiveTintColor: colours.secondary,
+            tabBarInactiveTintColor: colours.fourth
+        }}>
+            <NavBar.Screen name= "Home" component={TutorDashboard} options={{headerShown: false, tabBarIcon: ({ color }) => (
+                  <Ionicons name="home" color={color} size={25} />
+              )}}/>
+            <NavBar.Screen name= "Messages" component={Messages} options={{headerShown: false, tabBarIcon: ({ color }) => (
+                  <Ionicons name="ios-mail-outline" color={color} size={25} />
+              )}}/>
+            <NavBar.Screen name= "Courses" component={Courses} options={{headerShown: false, tabBarIcon: ({ color }) => (
+                  <Ionicons name="school" color={color} size={25} />
+              ),}}/>
+        </NavBar.Navigator>
+    );
+}
 function App() {
     return (
         <AuthProvider>
             <NavigationContainer>
                     <Stack.Navigator>
                             <Stack.Screen name="Login"component={Login} options={{ headerShown: false }} />
-                            <Stack.Screen name="StudentDashboard" component={CreateTabs} options={{ headerShown: false }}/>
+                            <Stack.Screen name="StudentDashboard" component={CreateTabsStudent} options={{ headerShown: false }}/>
+                            <Stack.Screen name="TutorDashboard" component={CreateTabsTutor} options={{ headerShown: false }}/>
                             <Stack.Screen name="Course" component={Course} options={{ headerShown: false }}/>
                             <Stack.Screen name="Survey" component={Survey} options={{ headerShown: false }}/>
                             <Stack.Screen name="SurveyLab" component={SurveyLab} options={{ headerShown: false }}/>
                             <Stack.Screen name="Done" component={Done} options={{ headerShown: false }}/>
-
+                            <Stack.Screen name="Pending" component={Pending} options={{ headerShown: false }}/>
                     </Stack.Navigator>
             </NavigationContainer>
         </AuthProvider>

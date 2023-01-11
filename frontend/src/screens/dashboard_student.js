@@ -7,27 +7,10 @@ import { NotificationsAlert } from '../components/NotificationsAlert'
 import { NotificationsMessage } from '../components/NotificationsMessage'
 
 
-const StudentDashboard = ({navigation}) => {
-    const { user } = useContext(AuthContext);
-    
-    const [userInfo, setUserInfo] = useState([])
-        const url = `http://backend-production-94f0.up.railway.app/users/`+ user.user_id
-        useEffect(()=>{
-            getUserInfo()
-        },[])
-        const getUserInfo = async ()=>{
-            const response = await fetch(url, {
-            method : 'GET',
-            headers :{
-                'Content-Type' : 'application/json',
-                Authorization: `Token ${localStorage.getItem('token')}`
-            },
-        })
-        .then(res => res.json())
-        .then(data => {
-            setUserInfo(data)
-        });
-        }
+const StudentDashboard = ({route, navigation}) => {
+    const { user,userInfo } = useContext(AuthContext);
+
+
     return (
         <View>
             <ContentJustified>
