@@ -5,20 +5,23 @@ import { XYGrid, XMin, YMin, XYGridText, YTextMin, Grid, YText, SurveyQuestion, 
 import { ContentJustified, PageTitle, StyledButton } from '../components/styles';
 
 const SurveyLab = ({route, navigation}) => {
-    const { labDetail, question } = route.params
+    const { labDetail, question, questions } = route.params
     const lab = labDetail.lab
+    const thisQuestion = questions.questions[0][question-1]
 
     const onPress = ()=>{
         if (question>=3){
             navigation.navigate("Done")
         }else{
+            alert(JSON.stringify(questions))
             navigation.navigate("SurveyLab", {
                 labDetail: {lab}, 
-                question :question+1
+                question :question+1,
+                questions : {questions}
             })
         }
     }
-    
+    alert(JSON.stringify(questions))
         return (
             <View>
                 <ContentJustified>
@@ -26,7 +29,7 @@ const SurveyLab = ({route, navigation}) => {
                     <SurveyQuestion>This is the question {question}</SurveyQuestion>  
                     <XYGrid>
                         <XMin>
-                            <XYGridText>X Label Max</XYGridText> 
+                            <XYGridText>{thisQuestion.warn}</XYGridText> 
                         </XMin>
                             <YMin><YTextMin >Y Label Min</YTextMin>
                         <Grid></Grid>
