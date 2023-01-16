@@ -6,31 +6,14 @@ import StyledCourse from '../components/StyledCourse';
 
 import { ContentJustified, PageTitle } from '../components/styles';
 
-const Courses = ({navigation}) => {
-    const { user } = useContext(AuthContext);
+const Courses = ({navigation}) => { 
+    const { user,userInfo } = useContext(AuthContext);
 
-    const [userInfo, setUserInfo] = useState([])
     const [courses, setCourses] = useState([])
 
     useEffect( ()=>{
-        fetchUserInfo(); 
         fetchUserCourses();
     },[])
-
-    const fetchUserInfo = ()=>{
-        const userUrl = `http://backend-production-94f0.up.railway.app/users/`+ user.user_id
-        fetch(userUrl, {
-            method : 'GET',
-            headers :{
-                'Content-Type' : 'application/json',
-                Authorization: `Token ${localStorage.getItem('token')}`
-            },
-        })
-        .then(res => res.json())
-        .then(data => {
-            setUserInfo(data)
-        })
-    }
 
     const fetchUserCourses = async()=>{
         const courseUrl = `http://backend-production-94f0.up.railway.app/courses/`+ user.user_id

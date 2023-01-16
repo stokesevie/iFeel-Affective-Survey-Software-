@@ -7,10 +7,15 @@ import AuthContext from '../utils/auth_context';
 
 const Pending = ({navigation}) => {
     const { user,userInfo } = useContext(AuthContext);
-    if (userInfo.is_staff){
-        return navigation.navigate("TutorDashboard")
-    } else{
-        return navigation.navigate("StudentDashboard", {userInfo :{userInfo}})
-    }
+    useEffect(()=>{
+        if (userInfo.is_staff){
+            return navigation.navigate("TutorDashboard")
+        } else{
+            return navigation.navigate("StudentDashboard", {userInfo :{userInfo}})
+        }
+    },[])
+    return (
+        <Text>Loading</Text>
+    )
 };
 export default Pending;

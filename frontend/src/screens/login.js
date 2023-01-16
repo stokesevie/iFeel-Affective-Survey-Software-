@@ -43,6 +43,7 @@ const Login = ({navigation}) => {
                 onChangeText= {text => setUsername(text)}
                 placeholderTextColor={Theme.text_dark}
                 placeholder= "1234567a"
+                autoCapitalize='none'
                 />    
                 <TextInput
                 label="Password"
