@@ -91,8 +91,7 @@ export const CourseTitle = styled.Text`
 export const ContentJustified = styled.View`
     padding-left:10px;
     padding-right:10px;
-    padding-top:30px;
-    margin:10px;
+    padding-top:40px;
     height:85.5%;
 `;
 
@@ -128,7 +127,7 @@ export const StyledInputLabel = styled.Text`
 `;
 
 export const StyledButton = styled.TouchableOpacity`
-    padding: 15px;
+    padding: 25px;
     background-color: ${Theme.secondary};
     justify-content: center;
     border-radius: 5px;
@@ -184,7 +183,6 @@ export const ContentsNotification = styled.View`
 export const XYGrid = styled.View`
     width:100%%;
     height:50%;
-    padding: 10px;
     
 `;
 
@@ -199,7 +197,7 @@ export const YText = styled.Text`
     color: ${Theme.text_darker};
     text-align:center;
     transform: rotate(-90deg);
-    left:25px;
+    left:115px;
 `;
 
 export const XMin= styled.View`
@@ -214,8 +212,6 @@ export const YMin= styled.View`
 export const Grid = styled.TouchableOpacity`
     border-width:2px;
     flex-grow:1;
-    left:-72px;
-    width:85%;
     border-color: ${Theme.primary};
 `;
 
@@ -224,7 +220,7 @@ export const YTextMin = styled.Text`
     color: ${Theme.text_darker};
     text-align:center;
     transform: rotate(90deg);
-    left:-68%
+    left:-50%
 `;
 
 export const SurveyQuestion = styled.Text` 

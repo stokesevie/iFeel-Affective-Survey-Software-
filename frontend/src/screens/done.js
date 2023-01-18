@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View} from 'react-native'
 
-import { ContentJustified, PageTitle } from '../components/styles';
+import { ContentJustified, PageTitle, StyledButton,StyledButtonText, SubTitle } from '../components/styles';
 
-const Done = ({navigation}) => {
+const Done = ({route, navigation}) => {
+    const { lab } = route.params
+    const onPress = ()=>{
+       navigation.navigate("StudentDashboard")
+    }
     return (
         <View>
             <ContentJustified>
                 <PageTitle>Hello from done</PageTitle>  
+                <SubTitle>You completed survey for lab {lab.lab.lab_id} for {lab.lab.course_id} </SubTitle>
+                <StyledButton title = "Home" onPress={onPress}><StyledButtonText> Return Home </StyledButtonText></StyledButton>
+              
             </ContentJustified>
         </View>
     )

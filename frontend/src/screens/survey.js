@@ -25,20 +25,23 @@ const Survey = ({route, navigation}) => {
                 Authorization: `Token ${localStorage.getItem('token')}`
             },
         })
-        .then(res => res.json())
-        .then(data => {
-            setSurvey(data)
-            
-        })
+        let body = await survey_response.json()
+        .then(async (data) =>{
+            for (let i = 1; i < 4; i++){
+                let x = await fetchQuestion(data["question_" + i.toString()+"_x"])
+                let y = await fetchQuestion(data["question_" + i.toString()+"_y"])
+                let q = {"x": x, "y": y}
+                setQuestions(current => [...current, q]);
+                
+                
+        }})
+        .catch(console.error)
 
-        for (let i = 1; i < 4; i++){
-            fetchQuestion(survey["question_" + i.toString()])
-        }
-        setLoading(false)
+        
     })
 
     const fetchQuestion = (async (question)=>{
-        const questionUrl = `http://127.0.0.1:8000/question/`+ question
+        const questionUrl = `http://backend-production-94f0.up.railway.app/question/`+ question
         const question_response = await fetch(questionUrl, {
             method : 'GET',
             headers :{
@@ -46,15 +49,15 @@ const Survey = ({route, navigation}) => {
                 Authorization: `Token ${localStorage.getItem('token')}`
             },
         })
-        .then(res => res.json())
-        .then(data => {
-            setQuestions(current=>[...current, data])
-        })
+        let body = await question_response.json()
+        return body
+        
     })
 
     useEffect(()=>{
         fetchSurvey()
-    },[loading])
+        .catch(console.error)
+    },[])
     
 
     return (
