@@ -11,11 +11,10 @@ import { Theme } from '../components/styles';
 const Login = ({navigation}) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [n, setn] = useState([])
 
     const { loginUser,user,staff, userInfo } = useContext(AuthContext);
 
-  
+    
     const handleSubmit = e => {
         e.preventDefault();
         loginUser(username, password,navigation);   

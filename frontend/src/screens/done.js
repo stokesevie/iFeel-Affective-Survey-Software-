@@ -12,7 +12,7 @@ const Done = ({route, navigation}) => {
         <View>
             <ContentJustified>
                 <PageTitle>Hello from done</PageTitle>  
-                <SubTitle>You completed survey for lab {lab.lab.lab_id} for {lab.lab.course_id} </SubTitle>
+                <SubTitle>You completed survey for lab {lab.lab.lab_number} for {lab.lab.course_id} </SubTitle>
                 <StyledButton title = "Home" onPress={onPress}><StyledButtonText> Return Home </StyledButtonText></StyledButton>
               
             </ContentJustified>

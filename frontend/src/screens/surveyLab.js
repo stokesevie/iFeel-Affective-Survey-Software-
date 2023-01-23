@@ -41,21 +41,18 @@ const SurveyLab = ({route, navigation}) => {
         return (
             <View>
                 <ContentJustified>
-                    <PageTitle>Survey for lab {lab.lab_id}</PageTitle>
+                    <PageTitle>Survey for lab {lab.lab_number}</PageTitle>
                     <SurveyQuestion>This is question {question}/3</SurveyQuestion>  
-                    <XYGrid>
-                        <XMin>
+
+    
+                        <Grid>
+                            <YTextMin> {y.neg_title} </YTextMin>
                             <XYGridText>{x.pos_title}</XYGridText> 
-                        </XMin>
-                            <YMin><YTextMin >{y.pos_title}</YTextMin>
-                        <Grid></Grid>
-                        <YText> {y.neg_title} </YText>
-                        
-                        </YMin>
-    
-                        <XYGridText>{x.neg_title}</XYGridText>
-    
-                    </XYGrid>
+                            <XYGrid></XYGrid>
+                            <YText >{y.pos_title}</YText>
+                            <XYGridText>{x.neg_title}</XYGridText>
+                        </Grid>
+
                     <StyledButton title = "next" onPress={onPressForward}><StyledButtonText> Next </StyledButtonText></StyledButton>
                     <StyledButton title = "back" onPress={onPressBack}><StyledButtonText> Back </StyledButtonText></StyledButton>
               

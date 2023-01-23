@@ -14,7 +14,7 @@ export default function StyledLab(props){
                 navigation.navigate("Survey",{ lab:  {lab}})
             }
         }>
-            <CourseDetail>{lab.lab_id}</CourseDetail>
+            <CourseDetail>{lab.lab_number}</CourseDetail>
             <CourseTitle>{lab.title}</CourseTitle>
         </StyledListButton>
             )

@@ -21,7 +21,6 @@ const Courses = ({navigation}) => {
             method : 'GET',
             headers :{
                 'Content-Type' : 'application/json',
-                Authorization: `Token ${localStorage.getItem('token')}`
             },
         })
         .then(res => res.json())

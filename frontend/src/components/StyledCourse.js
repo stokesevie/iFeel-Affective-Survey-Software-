@@ -14,7 +14,6 @@ export default function StyledCourse(props){
             method : 'GET',
             headers :{
                 'Content-Type' : 'application/json',
-                Authorization: `Token ${localStorage.getItem('token')}`
             },
         })
         .then(res => res.json())
@@ -25,6 +24,7 @@ export default function StyledCourse(props){
     useEffect(()=>{
         fetchCourseDetail()
     },[])
+
     return(
         <StyledListButton onPress= {
             ()=>{
