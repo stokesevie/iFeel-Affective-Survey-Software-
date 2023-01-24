@@ -8,9 +8,7 @@ import { NotificationsMessage } from '../components/NotificationsMessage'
 
 
 const StudentDashboard = ({route, navigation}) => {
-    const { user,userInfo } = useContext(AuthContext);
-
-
+    const { user,userInfo,messages } = useContext(AuthContext);
     return (
         <View>
             <ContentJustified>
@@ -22,9 +20,7 @@ const StudentDashboard = ({route, navigation}) => {
                 <NotificationsAlert userInfo={userInfo} onPress={()=>{
                     navigation.navigate('Labs')
                 }}/>
-                <NotificationsMessage userInfo={userInfo} onPress={()=>{
-                    navigation.navigate('Messages')
-                }}/>
+                <NotificationsMessage userInfo = {userInfo} user ={user} messages = {messages}/>
 
                 
            </ContentJustified>

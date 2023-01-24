@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
 import { useNavigation } from "@react-navigation/native";
 
@@ -47,11 +47,40 @@ export const AuthProvider = ({ children }) => {
 
   };
 
+/*   const compareDates = ((d1,d2)=>{
+    let f1 = (d1).split("T")
+    let d1 = f1[0].split("-")
+    let t1 = (f1[1].replace("Z","")).split(":")
 
+    let f2 = (d2).split("T")
+    let d2 = f2[0].split("-")
+    let t2 = (f2[1].replace("Z","")).split(":")
+
+    if (d1[2]>d2[2]){
+      return d1
+    }else{
+      if ()
+    }
+
+  }) */
+
+  const formatDate = ((date)=>{
+    let dt = (date).split("T")
+    let d = dt[0].split("-")
+    let t = (dt[1].replace("Z","")).split(":")
+      return <Text>{d[0]}/{d[1]}/{d[2]} - {t[0]}:{t[1]}</Text>
+  })
 
 
   const [userInfo, setUserInfo] = useState([])
+  const [messages, setMessages] = useState([])
+
+  const updateMessages= ((m)=>{
+      setMessages(m)
+  })
+
   
+
   const fetchUserInfo = async ()=>{
         const response = await fetch(`http://backend-production-94f0.up.railway.app/users/`+ user.user_id, {
           method : 'GET',
@@ -65,6 +94,7 @@ export const AuthProvider = ({ children }) => {
       });
 
   }
+
 
   useEffect(()=>{
     if (user){
@@ -93,6 +123,8 @@ export const AuthProvider = ({ children }) => {
     setAuthTokens,
     loginUser,
     logoutUser,
+    messages,
+    updateMessages
   };
 
   useEffect(() => {

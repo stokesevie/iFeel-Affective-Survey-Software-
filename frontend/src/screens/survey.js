@@ -50,7 +50,6 @@ const Survey = ({route, navigation}) => {
             },
         })
         let body = await question_response.json()
-        alert(JSON.stringify(body))
         return body
     })
 
