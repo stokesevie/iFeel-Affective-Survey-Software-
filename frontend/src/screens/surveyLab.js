@@ -5,50 +5,63 @@ import { XYGrid, XMin, YMin, XYGridText, YTextMin, Grid, YText, SurveyQuestion, 
 import { ContentJustified, PageTitle, StyledButton } from '../components/styles';
 
 const SurveyLab = ({route, navigation}) => {
-    const { labDetail, question } = route.params
+    const { labDetail, question, questions } = route.params
     const lab = labDetail.lab
-     
-    if (question>3){
-        return navigation.navigate("Done");
-        
-    } else{
+    const q = questions.questions[question-1]
+    const x = q.x[0]
+    const y = q.y[0]
+
+    const onPressForward = ()=>{
+        if (question>=3){
+            navigation.navigate("Done",{
+                lab : {lab}
+            })
+        }else{
+
+            navigation.navigate("SurveyLab", {
+                labDetail: {lab}, 
+                question :question+1,
+                questions : questions
+            })
+        }
+    }
+
+    const onPressBack = ()=>{
+        if (question<=1){
+            navigation.navigate("StudentDashboard")
+        }else{
+
+            navigation.navigate("SurveyLab", {
+                labDetail: {lab}, 
+                question :question-1,
+                questions : questions
+            })
+        }
+    }
         return (
             <View>
                 <ContentJustified>
-                    <PageTitle>Survey for lab {lab.lab_id}</PageTitle>
-                    <SurveyQuestion>This is the question {question}</SurveyQuestion>  
-                    <XYGrid>
-                        <XMin>
-                            <XYGridText>X Label Max</XYGridText> 
-                        </XMin>
-                            <YMin><YTextMin >Y Label Min</YTextMin>
-                        <Grid></Grid>
-                        <YText> Y Label Max </YText>
-                        
-                        </YMin>
+                    <PageTitle>Survey for lab {lab.lab_number}</PageTitle>
+                    <SurveyQuestion>This is question {question}/3</SurveyQuestion>  
+
     
-                        <XYGridText>X Label Min</XYGridText>
-    
-                    </XYGrid>
-                    <View style = {styles.container}/>
-                    <StyledButton title = "next" onPress={()=>(
-                        navigation.navigate("SurveyLab", {
-                            labDetail: {lab}, 
-                            question :question+1
-                        })
-                    )}><StyledButtonText> Next </StyledButtonText></StyledButton>
+                        <Grid>
+                            <YTextMin> {y.neg_title} </YTextMin>
+                            <XYGridText>{x.pos_title}</XYGridText> 
+                            <XYGrid></XYGrid>
+                            <YText >{y.pos_title}</YText>
+                            <XYGridText>{x.neg_title}</XYGridText>
+                        </Grid>
+
+                    <StyledButton title = "next" onPress={onPressForward}><StyledButtonText> Next </StyledButtonText></StyledButton>
+                    <StyledButton title = "back" onPress={onPressBack}><StyledButtonText> Back </StyledButtonText></StyledButton>
               
                 </ContentJustified>
             </View>
         )
-    }
     
 };
 
-const styles = StyleSheet.create({
-    container: {
-      padding: 24,
-    },
-})
+
 
 export default SurveyLab;

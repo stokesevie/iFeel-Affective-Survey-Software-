@@ -1,5 +1,5 @@
 
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import AuthContext  from "../utils/auth_context"
 import { View,Text, StyledForm, Button} from "react-native";
 import { ContentJustified, PageTitle, StyledInputLabel, StyledTextInput,StyledButton, StyledButtonText,Logo , LeftIcon,RightIcon} from "../components/styles";
@@ -7,18 +7,27 @@ import { Formik } from "formik";
 import { Octicons, Ionicons } from '@expo/vector-icons';
 import { Theme } from '../components/styles';
 
+
 const Login = ({navigation}) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const { loginUser } = useContext(AuthContext);
+    const { loginUser,user,staff, userInfo } = useContext(AuthContext);
+
     
     const handleSubmit = e => {
         e.preventDefault();
         loginUser(username, password,navigation);   
-
     };
 
+    const updateDetails = async ()=>{
+      if (typeof userInfo != undefined){
+          return navigation.navigate("Pending", {userInfo : {userInfo}})
+      }
+
+    }
+
+    useEffect(()=>updateDetails,[userInfo])
   
     return (
         <ContentJustified>
@@ -33,6 +42,7 @@ const Login = ({navigation}) => {
                 onChangeText= {text => setUsername(text)}
                 placeholderTextColor={Theme.text_dark}
                 placeholder= "1234567a"
+                autoCapitalize='none'
                 />    
                 <TextInput
                 label="Password"

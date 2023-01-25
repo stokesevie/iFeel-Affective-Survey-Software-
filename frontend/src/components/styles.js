@@ -91,8 +91,7 @@ export const CourseTitle = styled.Text`
 export const ContentJustified = styled.View`
     padding-left:10px;
     padding-right:10px;
-    padding-top:30px;
-    margin:10px;
+    padding-top:40px;
     height:85.5%;
 `;
 
@@ -128,7 +127,7 @@ export const StyledInputLabel = styled.Text`
 `;
 
 export const StyledButton = styled.TouchableOpacity`
-    padding: 15px;
+    padding: 25px;
     background-color: ${Theme.secondary};
     justify-content: center;
     border-radius: 5px;
@@ -182,13 +181,15 @@ export const ContentsNotification = styled.View`
 `;
 
 export const XYGrid = styled.View`
-    width:100%%;
-    height:50%;
-    padding: 10px;
+    width:80%;
+    height:80%;
+    border-width:2px;
+    border-color: ${Theme.primary}};
     
 `;
 
 export const XYGridText = styled.Text`
+    top:-10px;
     font-size:19px;
     color: ${Theme.text_darker};
     text-align:center;
@@ -198,25 +199,18 @@ export const YText = styled.Text`
     font-size:19px;
     color: ${Theme.text_darker};
     text-align:center;
-    transform: rotate(-90deg);
-    left:25px;
+    transform: rotate(90deg);
+    left:160px;
+    top:-155px;
 `;
 
-export const XMin= styled.View`
-    flex-direction:column;  
-`;
-export const YMin= styled.View`
-    flex-direction:row;
-    height:87%;
- 
-`;
 
-export const Grid = styled.TouchableOpacity`
-    border-width:2px;
-    flex-grow:1;
-    left:-72px;
-    width:85%;
-    border-color: ${Theme.primary};
+
+export const Grid = styled.View`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:60%;
 `;
 
 export const YTextMin = styled.Text` 
@@ -224,7 +218,8 @@ export const YTextMin = styled.Text`
     color: ${Theme.text_darker};
     text-align:center;
     transform: rotate(90deg);
-    left:-68%
+    left:-160px;
+    top:165px;
 `;
 
 export const SurveyQuestion = styled.Text` 
@@ -232,4 +227,33 @@ export const SurveyQuestion = styled.Text`
     color: ${Theme.secondary};
     text-align: center
     padding: 10px
+`;
+
+export const StyledBubble = styled.TouchableOpacity`
+    background-color: ${Theme.text_light};
+    border-radius: 5px;
+    height: 25%;
+    margin-bottom: 20px;
+`;
+
+export const StyledBubbleLarge = styled.TouchableOpacity`
+    background-color: ${Theme.text_light};
+    border-radius: 5px;
+    height: 50%;
+    margin-bottom: 20px;
+`;
+
+export const BubbleText = styled.Text`
+    font-size:22px;
+    color: ${Theme.text_darker}
+    padding: 5px;
+    letter-spacing: 1px;
+`;
+
+export const BubbleTextBold = styled.Text`
+    font-size:22px;
+    color: ${Theme.text_darker}
+    padding: 5px;
+    letter-spacing: 1px;
+    font-weight:bold;
 `;

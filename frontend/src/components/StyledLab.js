@@ -1,8 +1,5 @@
-import React, {Component} from 'react';
-import { Button } from 'react-bootstrap';
-import { Text,View } from 'react-native';
+import React from 'react';
 import { CourseDetail, StyledListButton, CourseTitle } from './styles';
-import { useState, setState, useEffect } from 'react';
 
 
 export default function StyledLab(props){
@@ -14,7 +11,7 @@ export default function StyledLab(props){
                 navigation.navigate("Survey",{ lab:  {lab}})
             }
         }>
-            <CourseDetail>{lab.lab_id}</CourseDetail>
+            <CourseDetail>{lab.lab_number}</CourseDetail>
             <CourseTitle>{lab.title}</CourseTitle>
         </StyledListButton>
             )
