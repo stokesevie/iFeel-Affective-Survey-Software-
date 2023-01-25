@@ -37,7 +37,10 @@ const Pending = ({navigation}) => {
 
     
     return (
-        <Text>LOADING</Text>
+        <ContentJustified>
+            <PageTitle>LOADING</PageTitle>
+        </ContentJustified>
+        
     )
 };
 export default Pending;

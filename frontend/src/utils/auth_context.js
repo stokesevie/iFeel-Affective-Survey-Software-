@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
 import { useNavigation } from "@react-navigation/native";
+import { Text } from "react-native";
 
 
 const AuthContext = createContext();
@@ -47,28 +48,55 @@ export const AuthProvider = ({ children }) => {
 
   };
 
-/*   const compareDates = ((d1,d2)=>{
-    let f1 = (d1).split("T")
-    let d1 = f1[0].split("-")
-    let t1 = (f1[1].replace("Z","")).split(":")
+  const listFormatDate = ((date)=>{
 
-    let f2 = (d2).split("T")
-    let d2 = f2[0].split("-")
-    let t2 = (f2[1].replace("Z","")).split(":")
+  })
 
-    if (d1[2]>d2[2]){
-      return d1
+  const compare = ((d1,d2,time = false)=>{
+    if (time){
+      if (d1[3]>d2[3]){
+        return d1
+      }else if (d1[3]<d2[3]){
+        return d2
+      }else{
+        if (d1[4]>d2[4]){
+          return d1
+        }else if (d1[4]<d2[4]){
+          return d2
+        } else{
+          return d1
+        }
+      }
     }else{
-      if ()
+    if (d1[0]>d2[0]){
+      return d1
+    }else if (d1[0]<d2[0]){
+      return d2
+    } else{
+      if (d1[1]>d2[1]){
+        return d1
+      }else if (d1[1]<d2[1]) {
+        return d2
+      }else{
+        if (d1[2]>d2[2]){
+          return d1
+        }else if (d1[2]<d2[2]){
+          return d2
+        }else{
+          compare(d1,d2,true)
+        }
+      }
     }
+  }
 
-  }) */
+  })
 
   const formatDate = ((date)=>{
     let dt = (date).split("T")
     let d = dt[0].split("-")
     let t = (dt[1].replace("Z","")).split(":")
-      return <Text>{d[0]}/{d[1]}/{d[2]} - {t[0]}:{t[1]}</Text>
+    let format = d.concat(t)
+      return <Text>{format[0]}/{format[1]}/{format[2]} - {format[3]}:{format[4]}</Text>
   })
 
 
@@ -124,7 +152,8 @@ export const AuthProvider = ({ children }) => {
     loginUser,
     logoutUser,
     messages,
-    updateMessages
+    updateMessages,
+    formatDate
   };
 
   useEffect(() => {

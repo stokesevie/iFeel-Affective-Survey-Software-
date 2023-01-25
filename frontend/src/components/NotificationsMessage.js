@@ -8,19 +8,47 @@ import AuthContext from "../utils/auth_context";
 import { renderMatches } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
 
+
 export function NotificationsMessage(props){
   const userInfo = props.userInfo
   const user = props.user
   const messages = props.messages
-  const [loading,setLoading]= useState(true)
+  const [date,setDate]= useState([])
+  const [sender,setSender] = useState([])
 
-  
-  const compare = ((date1,date2)=>{
 
+
+  const fetchSender = async ()=>{
+    const userUrl = `http://backend-production-94f0.up.railway.app/sender/`+ messages[0].sender_id
+    const response = await fetch(userUrl, {
+        method : 'GET',
+        headers :{
+            'Content-Type' : 'application/json',
+        },
+    })
+    .then(res => res.json())
+    .then(data => {
+        setSender(data)})
+}
+
+useEffect(()=>{
+    fetchSender()
+  },[])
+
+  const formatDate = ((date)=>{
+    let dt = (date).split("T")
+    let d = dt[0].split("-")
+    let t = (dt[1].replace("Z","")).split(":")
+    let format = d.concat(t)
+      return <Text>{format[0]}/{format[1]}/{format[2]}</Text>
   })
+
+  useEffect(()=>{
+    setDate(formatDate(userInfo.last_login))
+  },[])
   return(
     <StyledBubble>
-        <BubbleText>You have 3 messages since your last login ({userInfo.last_login}) Most recent message from <BubbleTextBold>{messages[0].sender_id}</BubbleTextBold></BubbleText>
+        <BubbleText>You have 3 messages since your last login ({date}) Most recent message from <BubbleTextBold>{sender.first_name}</BubbleTextBold></BubbleText>
       </StyledBubble>
         
   )
