@@ -102,11 +102,16 @@ export const AuthProvider = ({ children }) => {
 
   const [userInfo, setUserInfo] = useState([])
   const [messages, setMessages] = useState([])
+  const [courses, setCourses] = useState([])
 
   const updateMessages= ((m)=>{
       setMessages(m)
   })
 
+  const updateCourses = ((c)=>{
+    setCourses(c)
+  }
+  )
   
 
   const fetchUserInfo = async ()=>{
@@ -122,6 +127,8 @@ export const AuthProvider = ({ children }) => {
       });
 
   }
+
+
 
 
   useEffect(()=>{
@@ -153,7 +160,8 @@ export const AuthProvider = ({ children }) => {
     logoutUser,
     messages,
     updateMessages,
-    formatDate
+    updateCourses,
+    courses
   };
 
   useEffect(() => {

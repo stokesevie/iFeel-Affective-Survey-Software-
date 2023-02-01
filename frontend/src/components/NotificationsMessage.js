@@ -17,7 +17,6 @@ export function NotificationsMessage(props){
   const [sender,setSender] = useState([])
 
 
-
   const fetchSender = async ()=>{
     const userUrl = `http://backend-production-94f0.up.railway.app/sender/`+ messages[0].sender_id
     const response = await fetch(userUrl, {
@@ -46,9 +45,10 @@ useEffect(()=>{
   useEffect(()=>{
     setDate(formatDate(userInfo.last_login))
   },[])
+
   return(
     <StyledBubble>
-        <BubbleText>You have 3 messages since your last login ({date}) Most recent message from <BubbleTextBold>{sender.first_name}</BubbleTextBold></BubbleText>
+        <BubbleText>You have <BubbleTextBold>3</BubbleTextBold> messages since your last login ({date}) Most recent message from <BubbleTextBold>{sender.first_name}</BubbleTextBold></BubbleText>
       </StyledBubble>
         
   )

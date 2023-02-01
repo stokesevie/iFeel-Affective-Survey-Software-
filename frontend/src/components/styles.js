@@ -4,11 +4,11 @@ import {View, Text, Image, TextInput, TouchableOpacity} from 'react-native';
 import Constants from 'expo-constants';
 
 export const Theme = {
-    text_light:'#FCDFA6', //neutral beige
-    text_dark:'#F4B886', //darker beige
-    text_darker:'#F18831', //dark beige
-    primary:'#5C898A', //light blue
-    secondary:'#3A606E', //dark blue
+    text_light:'#B0BFF7', //neutral beige
+    text_dark:'#D64C5A', //darker beige
+    text_darker:'#340068', //dark beige
+    primary:'#D64C5A', //light blue
+    secondary:'#D64C5A', //dark blue
     third: 'white', // white
     fourth: 'grey', // white
 };
@@ -31,19 +31,18 @@ export const StyledMessage = styled.View`
 
 export const MessageSender = styled.Text`
     justify-content: space-between;
-    font-size: 15px;
+    font-size: 25px;
     text-align: left;
     font-weight: bold;
     color: ${Theme.text_darker};
-    padding: 10px;
+    padding-left: 5px;
 `;
 export const MessageContent = styled.Text`
     justify-content: space-between;
-    font-size: 10px;
+    font-size: 20px;
     text-align: left;
-    font-weight: bold;
     color: ${Theme.text_darker};
-    padding: 10px;
+    padding-left: 5px;
 `;
 
 export const MessageTime = styled.Text`
@@ -56,7 +55,7 @@ export const MessageTime = styled.Text`
 `;
 
 export const CourseDetail = styled.Text`
-    font-size: 15px;
+    font-size: 20px;
     text-align: center;
     font-weight: bold;
     color: ${Theme.text_darker};
@@ -80,7 +79,7 @@ export const MessageObject = styled.View`
 `;
 
 export const CourseTitle = styled.Text`
-    font-size: 20px;
+    font-size: 25px;
     text-align: center;
     font-weight: bold;
     color: ${Theme.text_darker};

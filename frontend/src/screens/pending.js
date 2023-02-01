@@ -6,7 +6,7 @@ import { useContext } from 'react';
 import AuthContext from '../utils/auth_context';
 
 const Pending = ({navigation}) => {
-    const { user,userInfo,updateMessages } = useContext(AuthContext);
+    const { user,userInfo,updateMessages, updateCourses } = useContext(AuthContext);
   
     const getMessages = async()=>{
       const messageUrl = `http://backend-production-94f0.up.railway.app/message/`+ user.user_id   
@@ -17,22 +17,44 @@ const Pending = ({navigation}) => {
             },
         })
         let m = await message_response.json()
-        nav(m)   
+
+
+        updateAuthM(m)   
     }
-  
+
+    const getCourses = async()=>{
+        const coursesUrl = `http://backend-production-94f0.up.railway.app/courses/`+ user.user_id   
+        const course_response = await fetch(coursesUrl, {
+            method : 'GET',
+            headers :{
+                'Content-Type' : 'application/json',
+            },
+        })
+        let c = await course_response.json()
+
+
+        nav(c)   
+    }
+
+
     useEffect(()=>{
         getMessages()
+        getCourses()
         
         
     },[])
 
-    const nav = async (m) =>{
+    const updateAuthM = async (m) =>{
         updateMessages(m)
-            if (userInfo.is_staff){
-                return navigation.navigate("TutorDashboard")
-            } else{
-                return navigation.navigate("StudentDashboard")
-            }
+    }
+
+    const nav = async(c)=>{
+        updateCourses(c)
+        if (userInfo.is_staff){
+            return navigation.navigate("TutorDashboard")
+        } else{
+            return navigation.navigate("StudentDashboard")
+        }
     }
 
     
