@@ -7,17 +7,16 @@ import AuthContext from '../utils/auth_context';
 
 const Pending = ({navigation}) => {
     const { user,userInfo,updateMessages, updateCourses } = useContext(AuthContext);
-  
+
     const getMessages = async()=>{
-      const messageUrl = `http://backend-production-94f0.up.railway.app/message/`+ user.user_id   
+      const messageUrl = `http://127.0.0.1:8000/message/`+ user.user_id   
         const message_response = await fetch(messageUrl, {
             method : 'GET',
             headers :{
                 'Content-Type' : 'application/json',
             },
         })
-        let m = await message_response.json()
-
+        let m = await message_response.json().catch(console.error)
 
         updateAuthM(m)   
     }

@@ -91,7 +91,7 @@ export const ContentJustified = styled.View`
     padding-left:10px;
     padding-right:10px;
     padding-top:40px;
-    height:85.5%;
+    height:90%;
 `;
 
 export const ContentJustifiedBack = styled.View`
@@ -120,6 +120,19 @@ export const StyledTextInput = styled.TextInput`
     font-size: 16px;
     font-weight: bold;
     height: 60px;
+    margin-vertical: 3px;
+    margin-bottom: 10px;
+    
+`;
+
+export const StyledTextInputParagraph = styled.TextInput`
+    background-color: ${Theme.text_light};
+    color: ${Theme.text_darker};
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    height: 200px;
     margin-vertical: 3px;
     margin-bottom: 10px;
     

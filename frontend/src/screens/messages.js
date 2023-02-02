@@ -10,7 +10,6 @@ const Messages = ({navigation}) => {
 
 
     return (
-        <View>
             <ContentJustified>
                 <PageTitle>Messages</PageTitle> 
                 <FlatList
@@ -18,12 +17,14 @@ const Messages = ({navigation}) => {
                 renderItem ={({item})=>(
                     <StyledMessage
                      message = {item}
+                     onPress={()=>{
+                        navigation.navigate("Send",{message:{item}})
+                     }}
                      />
                 )
-                }/>
+                } />
 
             </ContentJustified>
-        </View>
     )
 };
 export default Messages;

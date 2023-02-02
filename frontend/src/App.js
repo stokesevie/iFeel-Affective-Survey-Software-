@@ -18,6 +18,7 @@ import SurveyLab from './screens/surveyLab'
 import Done from './screens/done';
 import TutorDashboard from './screens/dashboard_tutor';
 import Pending from './screens/pending';
+import Send from './screens/send';
 
 import  localStorage from 'localstorage-polyfill'; 
 
@@ -80,6 +81,7 @@ function App() {
                             <Stack.Screen name="SurveyLab" component={SurveyLab} options={{ title:'' ,headerTransparent: true, headerTintColor:colours.primary }}/>
                             <Stack.Screen name="Done" component={Done} options={{ headerShown: false }}/>
                             <Stack.Screen name="Pending" component={Pending} options={{ headerShown: false }}/>
+                            <Stack.Screen name="Send" component={Send} options={{ presentation:'modal',headerShown:false }}/>
                     </Stack.Navigator>
             </NavigationContainer>
         </AuthProvider>
