@@ -5,12 +5,13 @@ import { MessageSender,MessageTime,MessageContent, StyledListButton, SenderTime,
 export default function StyledMessage(props){
     const {message} = props
     const [sender, setSender] = useState([])
+    const [fetched, setFetched] = useState(false)
 
     let dt = (message.sent_at).split("T")
     let d = dt[0].split("-")
     let t = (dt[1].replace("Z","")).split(":")
     const fetchSender = async ()=>{
-        const userUrl = `http://backend-production-94f0.up.railway.app/sender/`+ message.sender_id
+        const userUrl = `http://127.0.0.1:8000/sender/`+ message.sender_id
         response = await fetch(userUrl, {
             method : 'GET',
             headers :{
@@ -19,14 +20,17 @@ export default function StyledMessage(props){
         })
         .then(res => res.json())
         .then(data => {
-            setSender(data)})
+            setSender(data)}).catch(console.error)
+
+        setFetched(true)
     }
 
     useEffect(()=>{
         fetchSender()
     },[])
 
-    return(
+    if (fetched){
+        return(
             <StyledListButton>
                 <SenderTime>
                         <MessageObject>
@@ -41,5 +45,8 @@ export default function StyledMessage(props){
             
 
         )
+    }
+
+    
 }
 

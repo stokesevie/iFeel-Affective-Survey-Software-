@@ -3,7 +3,7 @@ import { StyleSheet, Text, View} from 'react-native'
 import { FlatList } from 'react-native';
 import StyledLab from '../components/StyledLab';
 
-import { ContentJustified, PageTitle } from '../components/styles';
+import { ContentJustifiedBack, PageTitle } from '../components/styles';
 
 const Course = ({route, navigation}) => {
     const { course } = route.params
@@ -28,7 +28,7 @@ const Course = ({route, navigation}) => {
         
         <View>
             
-            <ContentJustified>
+            <ContentJustifiedBack>
                 <PageTitle>{courseDetail.title} Labs:</PageTitle>  
                 <FlatList
                 data = {labs}
@@ -40,7 +40,7 @@ const Course = ({route, navigation}) => {
                 )
                 }
                 />
-            </ContentJustified>
+            </ContentJustifiedBack>
         </View>
     )
 };

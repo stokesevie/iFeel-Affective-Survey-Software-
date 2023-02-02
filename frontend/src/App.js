@@ -29,9 +29,10 @@ const colours = Theme;
 
 
 
-export function CreateTabsStudent(){
+const CreateTabsStudent =()=> {
     return(
-        <NavBar.Navigator screenOptions={{
+        <NavBar.Navigator
+            screenOptions={{
             tabBarActiveTintColor: colours.secondary,
             tabBarInactiveTintColor: colours.fourth
         }}>
@@ -74,9 +75,9 @@ function App() {
                             <Stack.Screen name="Login"component={Login} options={{ headerShown: false }} />
                             <Stack.Screen name="StudentDashboard" component={CreateTabsStudent} options={{ headerShown: false }}/>
                             <Stack.Screen name="TutorDashboard" component={CreateTabsTutor} options={{ headerShown: false }}/>
-                            <Stack.Screen name="Course" component={Course} options={{ headerShown: false }}/>
-                            <Stack.Screen name="Survey" component={Survey} options={{ headerShown: false }}/>
-                            <Stack.Screen name="SurveyLab" component={SurveyLab} options={{ headerShown: false }}/>
+                            <Stack.Screen name="Course" component={Course} options={{ title:'' ,headerTransparent: true, headerTintColor:colours.primary }}/>
+                            <Stack.Screen name="Survey" component={Survey} options={{ title:'' ,headerTransparent: true, headerTintColor:colours.primary }}/>
+                            <Stack.Screen name="SurveyLab" component={SurveyLab} options={{ title:'' ,headerTransparent: true, headerTintColor:colours.primary }}/>
                             <Stack.Screen name="Done" component={Done} options={{ headerShown: false }}/>
                             <Stack.Screen name="Pending" component={Pending} options={{ headerShown: false }}/>
                     </Stack.Navigator>

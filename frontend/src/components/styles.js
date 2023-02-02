@@ -94,6 +94,13 @@ export const ContentJustified = styled.View`
     height:85.5%;
 `;
 
+export const ContentJustifiedBack = styled.View`
+    padding-left:10px;
+    padding-right:10px;
+    padding-top:86px;
+    height:85.5%;
+`;
+
 
 export const LeftIcon = styled.View`
     left: 15px;

@@ -8,6 +8,9 @@ import Course from '../screens/course';
 export default function StyledCourse(props){
     const {course, navigation } = props
     const [courseDetail, setCourseDetail] = useState([])
+    const [fetched, setFetched] = useState(false)
+
+
     const fetchCourseDetail = async ()=>{
         const userUrl = `http://backend-production-94f0.up.railway.app/courseDetail/`+ course.lab_id
         response = await fetch(userUrl, {
@@ -18,22 +21,27 @@ export default function StyledCourse(props){
         })
         .then(res => res.json())
         .then(data => {
-            setCourseDetail(data)})
+            setCourseDetail(data)}).catch(console.error)
+        setFetched(true)
     }
 
     useEffect(()=>{
         fetchCourseDetail()
     },[])
 
-    return(
-        <StyledListButton onPress= {
-            ()=>{
-                navigation.navigate("Course",{ course:  {courseDetail}})
-            }
-        }>
-            <CourseDetail>{course.lab_id}</CourseDetail>
-            <CourseTitle>{courseDetail.title}</CourseTitle>
-        </StyledListButton>
-            )
+
+    if (fetched){
+        return(
+            <StyledListButton onPress= {
+                ()=>{
+                    navigation.navigate("Course",{ course:  {courseDetail}})
+                }
+            }>
+                <CourseDetail>{course.lab_id}</CourseDetail>
+                <CourseTitle>{courseDetail.title}</CourseTitle>
+            </StyledListButton>
+                )
+    }
+
 }
 
