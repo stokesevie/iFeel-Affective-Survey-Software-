@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { NotificationTitle,StyledNotification,NotificationText,Arrow ,ContentsNotification,Theme,StyledBubble, BubbleText, BubbleTextBold} from './styles'
+import { NotificationTitle,StyledNotification,NotificationText,Arrow ,BubbleContent,Theme,StyledBubble, BubbleText, BubbleTextBold, Center} from './styles'
 import {Ionicons} from '@expo/vector-icons';
 import { NavigationHelpersContext, useNavigation } from '@react-navigation/native';
 import PropTypes from 'prop-types';
@@ -80,7 +80,16 @@ export function NotificationsSurvey(props){
   if (!loading){
     return(
     <StyledBubble>
-    <BubbleText>This is a survey reminder for course <BubbleTextBold>{courses[0].lab_id}</BubbleTextBold>. You must complete <BubbleTextBold>{surveys[0][0].title} survey</BubbleTextBold>.</BubbleText>
+          <Center><Ionicons name="alert-circle-outline" size={35} color={Theme.secondary}></Ionicons></Center>
+         <BubbleText>Reminder for
+          <BubbleTextBold> {courses[0].lab_id}</BubbleTextBold>
+          . You must complete 
+          <BubbleTextBold> {surveys[0][0].title} survey</BubbleTextBold>.
+          </BubbleText>
+
+
+
+   
   </StyledBubble>
     )
     

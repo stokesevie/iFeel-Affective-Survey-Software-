@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { StyleSheet, Text, View} from 'react-native'
-import { TextInput } from 'react-native';
+import { TextInput,Alert } from 'react-native';
 
 import { ContentJustified, PageTitle, StyledButton,StyledButtonText, StyledTextInputParagraph, SubTitle } from '../components/styles';
 import AuthContext from '../utils/auth_context';
@@ -25,8 +25,14 @@ const Send = ({route, navigation}) => {
                 },
                 body: JSON.stringify(data),
             })
+        setLoading(false)
         
     };
+
+    if (!loading){
+        Alert.alert('Message to '+ pastMessage.sender_f_name, 'Message sent!')
+        return navigation.navigate("Messages")
+    }else{
 
     return (
             <ContentJustified>
@@ -43,5 +49,6 @@ const Send = ({route, navigation}) => {
               
             </ContentJustified>
     )
+    }
 };
 export default Send;

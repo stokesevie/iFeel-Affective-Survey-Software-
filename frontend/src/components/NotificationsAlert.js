@@ -1,5 +1,5 @@
 import React, { useEffect,useState } from "react";
-import { NotificationTitle,StyledNotification,NotificationText,Arrow ,ContentsNotification,Theme, StyledBubbleLarge, BubbleText, BubbleTextBold} from './styles'
+import { NotificationTitle,StyledNotification,NotificationText,Center ,ContentsNotification,Theme, StyledBubbleLarge, BubbleText, BubbleTextBold} from './styles'
 import {Ionicons} from '@expo/vector-icons';
 import { NavigationHelpersContext, useNavigation } from '@react-navigation/native';
 import PropTypes from 'prop-types';
@@ -80,6 +80,9 @@ export function NotificationsAlert(props) {
     
     return (
       <StyledBubbleLarge>
+        
+       <Center><Ionicons name="warning-outline" size={35} color={Theme.secondary}></Ionicons></Center> 
+
       <BubbleText>You are in the <BubbleTextBold>{zone}</BubbleTextBold> zone for this weeks lab. You found it more <BubbleTextBold>{label[0].neg_title}</BubbleTextBold> than other students.</BubbleText>
       </StyledBubbleLarge>
   );

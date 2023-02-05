@@ -1,5 +1,5 @@
 import React, { useState,useContext, useEffect } from "react";
-import { NotificationTitle,StyledNotification,NotificationText,Arrow ,ContentsNotification,Theme, StyledBubble, BubbleText, BubbleTextBold} from './styles'
+import { NotificationTitle,StyledNotification,NotificationText,Arrow ,Theme,Center, StyledBubble, BubbleText, BubbleTextBold, BubbleContent} from './styles'
 import {Ionicons} from '@expo/vector-icons';
 import { NavigationHelpersContext, useNavigation } from '@react-navigation/native';
 import PropTypes from 'prop-types';
@@ -48,7 +48,9 @@ useEffect(()=>{
 
   return(
     <StyledBubble>
+          <Center><Ionicons name="mail-unread-outline" size={35} color={Theme.secondary}></Ionicons></Center>
         <BubbleText>You have <BubbleTextBold>3</BubbleTextBold> messages since your last login ({date}) Most recent message from <BubbleTextBold>{sender.first_name}</BubbleTextBold></BubbleText>
+
       </StyledBubble>
         
   )

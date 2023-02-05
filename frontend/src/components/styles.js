@@ -170,6 +170,8 @@ export const RightIcon = styled.TouchableOpacity`
     z-index: 1;
 `;
 
+
+
 export const Logo = styled.Image`
     margin-left:auto;
     margin-right:auto;
@@ -204,8 +206,13 @@ export const XYGrid = styled.View`
     height:80%;
     border-width:2px;
     border-color: ${Theme.primary}};
-    
 `;
+
+export const Cell = styled.TouchableOpacity`
+    width:10%;
+    height:150%;
+`;
+
 
 export const XYGridText = styled.Text`
     top:-10px;
@@ -253,6 +260,7 @@ export const StyledBubble = styled.TouchableOpacity`
     border-radius: 5px;
     height: 25%;
     margin-bottom: 20px;
+
 `;
 
 export const StyledBubbleLarge = styled.TouchableOpacity`
@@ -263,10 +271,17 @@ export const StyledBubbleLarge = styled.TouchableOpacity`
 `;
 
 export const BubbleText = styled.Text`
-    font-size:22px;
+    font-size:20px;
     color: ${Theme.text_darker}
     padding: 5px;
     letter-spacing: 1px;
+
+`;
+
+
+export const Center = styled.TouchableOpacity`
+    margin-left:45%;
+    margin-top:2%;
 `;
 
 export const BubbleTextBold = styled.Text`

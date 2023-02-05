@@ -17,7 +17,7 @@ const Survey = ({route, navigation}) => {
     }, []);
 
     const fetchSurvey = ( async ()=>{
-        const surveyUrl = `http://backend-production-94f0.up.railway.app/survey/`+ lab.lab_number  
+        const surveyUrl = `http://127.0.0.1:8000/survey/`+ lab.lab_number  
         const survey_response = await fetch(surveyUrl, {
             method : 'GET',
             headers :{
@@ -28,10 +28,8 @@ const Survey = ({route, navigation}) => {
         let body = await survey_response.json()
         .then(async (data) =>{
             for (let i = 1; i < 4; i++){
-                let x = await fetchQuestion(data["question_" + i.toString()+"_x"])
-                let y = await fetchQuestion(data["question_" + i.toString()+"_y"])
-                let q = {"x": x, "y": y}
-                setQuestions(current => [...current, q]);
+                let question = await fetchQuestion(data["question_" + i.toString()])
+                setQuestions(current => [...current, question]);
                 
                 
         }})
@@ -44,7 +42,7 @@ const Survey = ({route, navigation}) => {
     })
 
     const fetchQuestion = (async (question)=>{
-        const questionUrl = `http://backend-production-94f0.up.railway.app/question/`+ question
+        const questionUrl = `http://127.0.0.1:8000/question/`+ question
         const question_response = await fetch(questionUrl, {
             method : 'GET',
             headers :{
@@ -53,6 +51,7 @@ const Survey = ({route, navigation}) => {
             },
         })
         let body = await question_response.json()
+        alert(JSON.stringify(body))
         return body
     })
 
@@ -62,12 +61,13 @@ const Survey = ({route, navigation}) => {
     },[])
     
     if (!loading){
+        alert(JSON.stringify(questions))
         return (
             <View>
                 <ContentJustifiedBack>
                     <PageTitle>Survey for lab {lab.lab_number}</PageTitle>  
                     <StyledButton title = "Start" onPress = {()=>(
-                        navigation.navigate("SurveyLab", {labDetail: {lab}, question :1, questions:{questions}})
+                        navigation.navigate("SurveyLab", {labDetail: {lab}, question :1, questions:{questions}, response:[]})
                     )}><StyledButtonText>Start Survey</StyledButtonText></StyledButton>
               
                 </ContentJustifiedBack>
