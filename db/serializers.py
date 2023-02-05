@@ -16,13 +16,19 @@ class UserSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ['username', 'email', 'first_name', 'last_name','is_staff', 'password']
+        fields = ['username', 'email', 'first_name', 'last_name','is_staff', 'password','last_login']
+
+class UserNameSerializer(serializers.ModelSerializer):
+     class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name']
 
 
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = message
-        fields = ['id','sender_id', 'receiver_id', 'sent_at','message']
+        fields = ['id','sender_id', 'receiver_id', 'sent_at','message_content']
+
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -53,3 +59,23 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         # Add custom claims
         token['username'] = user.username
         return token
+
+class surveySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = survey
+        fields = ['question_1','question_2','question_3','lab_id']
+
+class student_lab_riskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = student_lab_risk
+        fields = ['student_id','lab_id', 'axis_id','date','risk', 'warning','avg']
+
+class axisSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = axis
+        fields = ['id','x_id', 'y_id', 'x','y']
+
+class axis_labelsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = axis_labels
+        fields = ['id','pos_title','neg_title']

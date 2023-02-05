@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from datetime import datetime
 
 
 User = get_user_model()
@@ -39,11 +40,12 @@ class student_enroll(models.Model):
     
 class lab(models.Model):
     course_id = models.ForeignKey("course", on_delete=models.CASCADE)
-    lab_id = models.CharField(max_length=10, primary_key=True, default='1')
+    lab_id = models.AutoField(primary_key=True, default='1',)
+    lab_number = models.IntegerField()
+    title = models.CharField(max_length=20, default= "")
     date = models.DateField()
 
 class axis(models.Model):
-    lab_id = models.ForeignKey("lab", on_delete=models.CASCADE)
     x_id = models.ForeignKey("axis_labels", on_delete=models.CASCADE, related_name='x_id')
     y_id= models.ForeignKey("axis_labels", on_delete=models.CASCADE, related_name='y_id')
     x = models.IntegerField()
@@ -59,7 +61,7 @@ class axis_labels(models.Model):
 class student_lab_risk(models.Model):
     student_id = models.ForeignKey("student", on_delete=models.CASCADE)
     lab_id = models.ForeignKey("lab", on_delete=models.CASCADE)
-    axis_id = models.ForeignKey("axis", on_delete=models.CASCADE)
+    axis_id = models.ForeignKey("axis_labels", on_delete=models.CASCADE)
     date = models.DateField()
     risk = models.BooleanField()
     warning = models.BooleanField()
@@ -67,7 +69,31 @@ class student_lab_risk(models.Model):
 
 
 class message(models.Model):
+    date = str(datetime.now())
+    date = date.split('.',1)[0]+'Z'
     sender_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender_id')
     receiver_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiver_id')
-    sent_at = models.DateTimeField()
+    sent_at = models.DateTimeField(default=date)
     message_content = models.TextField()
+
+
+class question(models.Model):
+    x = models.ForeignKey(axis_labels, on_delete=models.CASCADE, related_name='x')
+    y = models.ForeignKey(axis_labels, on_delete=models.CASCADE, related_name='y')
+
+class survey(models.Model):
+    lab_id = models.ForeignKey(lab,on_delete=models.CASCADE, default=1)
+    question_1 = models.ForeignKey(question, on_delete=models.CASCADE, related_name='question_1')
+    question_2 = models.ForeignKey(question, on_delete=models.CASCADE, related_name='question_2')
+    question_3 = models.ForeignKey(question, on_delete=models.CASCADE, related_name='question_3')
+
+class response(models.Model):
+    x = models.ForeignKey(student_lab_risk,on_delete=models.CASCADE, default=1, related_name="x_response")
+    y = models.ForeignKey(student_lab_risk,on_delete=models.CASCADE, default=1, related_name = "y_response")
+
+class student_survey(models.Model):
+    survey_id = models.ForeignKey(survey,on_delete=models.CASCADE, default=1)
+    student_id = models.ForeignKey(student, on_delete=models.CASCADE,default=1)
+    response_1 = models.ForeignKey(response, on_delete=models.CASCADE,default=1, related_name="q_1")
+    response_2 = models.ForeignKey(response, on_delete=models.CASCADE,default=1, related_name="q_2")
+    response_3 = models.ForeignKey(response, on_delete=models.CASCADE,default=1, related_name="q_3")
