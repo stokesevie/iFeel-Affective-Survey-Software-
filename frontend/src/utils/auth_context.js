@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
 
   const loginUser = async (username, password, navigation) => {
 
-    const response = await fetch("http://backend-production-94f0.up.railway.app/token/", {
+    const response = await fetch("http://127.0.0.1:8000/token/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -49,7 +49,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   const listFormatDate = ((date)=>{
-
+    let dt = (date).split("T")
+    let d = dt[0].split("-")
+    let t = (dt[1].replace("Z","")).split(":")
+    let format = d.concat(t)
+    alert(JSON.stringify(format))
   })
 
   const compare = ((d1,d2,time = false)=>{
@@ -115,7 +119,7 @@ export const AuthProvider = ({ children }) => {
   
 
   const fetchUserInfo = async ()=>{
-        const response = await fetch(`http://backend-production-94f0.up.railway.app/users/`+ user.user_id, {
+        const response = await fetch(`http://127.0.0.1:8000/users/`+ user.user_id, {
           method : 'GET',
           headers :{
               'Content-Type' : 'application/json',
@@ -132,21 +136,21 @@ export const AuthProvider = ({ children }) => {
 
 
   useEffect(()=>{
+    try{
     if (user){
       fetchUserInfo()
+    }} catch{
+      alert("no user")
     }
   },[user])
 
-  useEffect(()=>{
-    setStaff(userInfo.is_staff)
-  },[userInfo])
 
   const logoutUser = (navigation) => {
     setAuthTokens(null);
     setUser(null);
     setUserInfo(null)
     localStorage.removeItem("authTokens");
-    navigation.push("Login")
+    navigation.naviagte("Login")
   };
 
   const contextData = {
@@ -156,6 +160,7 @@ export const AuthProvider = ({ children }) => {
     staff,
     authTokens,
     setAuthTokens,
+    setUserInfo,
     loginUser,
     logoutUser,
     messages,

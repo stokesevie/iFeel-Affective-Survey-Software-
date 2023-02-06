@@ -5,8 +5,11 @@ import { ContentJustified, PageTitle } from '../components/styles';
 import { useContext } from 'react';
 import AuthContext from '../utils/auth_context';
 
+
 const Pending = ({navigation}) => {
     const { user,userInfo,updateMessages, updateCourses } = useContext(AuthContext);
+
+
 
     const getMessages = async()=>{
       const messageUrl = `http://127.0.0.1:8000/message/`+ user.user_id   
@@ -22,14 +25,14 @@ const Pending = ({navigation}) => {
     }
 
     const getCourses = async()=>{
-        const coursesUrl = `http://backend-production-94f0.up.railway.app/courses/`+ user.user_id   
+        const coursesUrl = `http://127.0.0.1:8000/courses/`+ user.user_id   
         const course_response = await fetch(coursesUrl, {
             method : 'GET',
             headers :{
                 'Content-Type' : 'application/json',
             },
         })
-        let c = await course_response.json()
+        let c = await course_response.json().catch(console.error)
 
 
         nav(c)   
@@ -37,8 +40,16 @@ const Pending = ({navigation}) => {
 
 
     useEffect(()=>{
-        getMessages()
-        getCourses()
+        try{
+            if (user.user_id){
+                getMessages()
+                getCourses()
+            }
+        } catch{
+            return navigation.navigate("Login")
+        }
+
+
         
         
     },[])

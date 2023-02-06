@@ -10,7 +10,6 @@ const SurveyLab = ({route, navigation}) => {
     const q = questions.questions[question-1][0]
     const [colour, setColour] = useState(-1)
     const [pressed, setPressed] = useState(false)
-    
 
     const onPressForward = ()=>{
         if (question>=3){
@@ -97,8 +96,8 @@ const SurveyLab = ({route, navigation}) => {
 
     
                         <Grid>
-                            <YTextMin> {q.y_neg} </YTextMin>
-                            <XYGridText>{q.x_pos}</XYGridText> 
+                            <YTextMin> {q.y.neg} </YTextMin>
+                            <XYGridText>{q.x.pos}</XYGridText> 
                             <XYGrid>
                                 <FlatList 
                                 data={grid}
@@ -110,8 +109,8 @@ const SurveyLab = ({route, navigation}) => {
                                 ></FlatList>
                                 
                             </XYGrid>
-                            <YText >{q.y_pos}</YText>
-                            <XYGridText>{q.x_neg}</XYGridText>
+                            <YText >{q.y.pos}</YText>
+                            <XYGridText>{q.x.neg}</XYGridText>
                         </Grid>
 
                     <StyledButton title = "next" onPress={onPressForward}><StyledButtonText> Next </StyledButtonText></StyledButton>

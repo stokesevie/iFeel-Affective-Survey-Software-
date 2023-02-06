@@ -51,7 +51,6 @@ const Survey = ({route, navigation}) => {
             },
         })
         let body = await question_response.json()
-        alert(JSON.stringify(body))
         return body
     })
 
@@ -61,7 +60,6 @@ const Survey = ({route, navigation}) => {
     },[])
     
     if (!loading){
-        alert(JSON.stringify(questions))
         return (
             <View>
                 <ContentJustifiedBack>

@@ -25,7 +25,10 @@ const Send = ({route, navigation}) => {
                 },
                 body: JSON.stringify(data),
             })
-        setLoading(false)
+
+            let r = response.statusText
+            await r.then(setLoading(false))
+            
         
     };
 
@@ -33,8 +36,7 @@ const Send = ({route, navigation}) => {
         Alert.alert('Message to '+ pastMessage.sender_f_name, 'Message sent!')
         return navigation.navigate("Messages")
     }else{
-
-    return (
+        return(
             <ContentJustified>
                 <PageTitle>Sending message to {pastMessage.sender_f_name} {pastMessage.sender_l_name} </PageTitle> 
                 <StyledTextInputParagraph

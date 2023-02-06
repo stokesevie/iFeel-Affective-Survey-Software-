@@ -4,13 +4,14 @@ import {View, Text, Image, TextInput, TouchableOpacity} from 'react-native';
 import Constants from 'expo-constants';
 
 export const Theme = {
-    text_light:'#B0BFF7', //neutral beige
-    text_dark:'#D64C5A', //darker beige
-    text_darker:'#340068', //dark beige
-    primary:'#D64C5A', //light blue
-    secondary:'#D64C5A', //dark blue
+    text_light:'#B0BFF7', //bubble colours
+    text_dark:'#dd6e79', //dark pink
+    text_darker:'#340068', //colour for bubbles
+    primary:'#D64C5A', //dark pink
+    secondary:'#D64C5A', //dark pink
     third: 'white', // white
     fourth: 'grey', // white
+    fifth: '#dd6e79' //lighter pink than the main colour
 };
 
 export const PageTitle = styled.Text`
@@ -19,6 +20,10 @@ export const PageTitle = styled.Text`
     font-weight: bold;
     color: ${Theme.primary};
     padding: 10px;
+`;
+
+export const Profile = styled.View`
+    margin-left:0px;
 `;
 
 export const StyledMessage = styled.View`
@@ -112,7 +117,7 @@ export const LeftIcon = styled.View`
 
 export const StyledTextInput = styled.TextInput`
     background-color: ${Theme.text_light};
-    color: ${Theme.text_darker};
+    color: ${Theme.third};
     padding: 15px;
     padding-left: 55px;
     padding-right: 55px;
@@ -290,4 +295,13 @@ export const BubbleTextBold = styled.Text`
     padding: 5px;
     letter-spacing: 1px;
     font-weight:bold;
+`;
+
+export const DoneTextBold = styled.Text`
+    font-size:22px;
+    color: ${Theme.text_darker}
+    padding: 5px;
+    letter-spacing: 1px;
+    font-weight:bold;
+    text-align:center;
 `;

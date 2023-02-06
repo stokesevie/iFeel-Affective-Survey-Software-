@@ -11,45 +11,98 @@ import { Spinner } from "react-bootstrap";
 
 export function NotificationsMessage(props){
   const userInfo = props.userInfo
-  const user = props.user
   const messages = props.messages
   const [date,setDate]= useState([])
-  const [sender,setSender] = useState([])
+  const [newMessages, setNewMessages] = useState([])
 
 
-  const fetchSender = async ()=>{
-    const userUrl = `http://backend-production-94f0.up.railway.app/sender/`+ messages[0].sender_id
-    const response = await fetch(userUrl, {
-        method : 'GET',
-        headers :{
-            'Content-Type' : 'application/json',
-        },
-    })
-    .then(res => res.json())
-    .then(data => {
-        setSender(data)})
-}
+  const listFormatDate = ((date)=>{
+    let dt = (date).split("T")
+    let d = dt[0].split("-")
+    let t = (dt[1].replace("Z","")).split(":")
+    let format = d.concat(t)
+    let l = format.map(d => Number(d));
+    return l
+  })
 
-useEffect(()=>{
-    fetchSender()
-  },[])
+  const last_login = listFormatDate(userInfo.last_login)
+
+  const compare = ((d1,d2,time = false)=>{
+    if (time){
+      if (d1[3]>d2[3]){
+        return d1
+      }else if (d1[3]<d2[3]){
+        return d2
+      }else{
+        if (d1[4]>d2[4]){
+          return d1
+        }else if (d1[4]<d2[4]){
+          return d2
+        } else{
+          return d1
+        }
+      }
+    }else{
+    if (d1[0]>d2[0]){
+      return d1
+    }else if (d1[0]<d2[0]){
+      return d2
+    } else{
+      if (d1[1]>d2[1]){
+        return d1
+      }else if (d1[1]<d2[1]) {
+        return d2
+      }else{
+        if (d1[2]>d2[2]){
+          return d1
+        }else if (d1[2]<d2[2]){
+          return d2
+        }else{
+          return compare(d1,d2,true)
+        }
+      }
+    }
+  }})
+
 
   const formatDate = ((date)=>{
-    let dt = (date).split("T")
+    let dt = date.split("T")
     let d = dt[0].split("-")
     let t = (dt[1].replace("Z","")).split(":")
     let format = d.concat(t)
       return <Text>{format[0]}/{format[1]}/{format[2]}</Text>
   })
 
+  const checkRecent = ()=>{
+    let count = 0
+    for (let m in messages){
+      let d = listFormatDate(messages[m].sent_at)
+      if (JSON.stringify(compare(d,last_login))==JSON.stringify(d)){
+        count+=1
+      }
+      newMessages[0] = count
+    }
+  }
+
+
   useEffect(()=>{
     setDate(formatDate(userInfo.last_login))
+    checkRecent()
   },[])
+
+  const CorrectParse=()=>{
+    if (newMessages>1){
+      return <Text>messages</Text>
+    }else{
+      return <Text>message</Text>
+    }
+  }
+
 
   return(
     <StyledBubble>
           <Center><Ionicons name="mail-unread-outline" size={35} color={Theme.secondary}></Ionicons></Center>
-        <BubbleText>You have <BubbleTextBold>3</BubbleTextBold> messages since your last login ({date}) Most recent message from <BubbleTextBold>{sender.first_name}</BubbleTextBold></BubbleText>
+        <BubbleText>You have <BubbleTextBold>{newMessages}</BubbleTextBold> <CorrectParse></CorrectParse> since your last login ({date}). Most recent message from <BubbleTextBold>{messages[0].sender_f_name}</BubbleTextBold></BubbleText>
 
       </StyledBubble>
         
