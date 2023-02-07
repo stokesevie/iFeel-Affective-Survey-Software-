@@ -22,6 +22,7 @@ from db import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('users/<int:pk>/', views.UserDetail.as_view()),
+    path('users/',views.UserDetail.as_view()),
     path('message/<int:receiver_id>/', views.MessageDetail.as_view()),
     path('messages/', views.MessageDetail.as_view()),
     path('message/<int:receiver_id>/<int:sender_id>', views.MessageDetail.as_view()),

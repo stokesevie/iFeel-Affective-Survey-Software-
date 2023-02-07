@@ -10,6 +10,8 @@ from django.contrib.auth.models import User
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.core import serializers
 from datetime import datetime
+from django.utils.dateparse import parse_datetime
+import json
 # Create your views here.
 
 @api_view(['GET','POST'])
@@ -117,16 +119,19 @@ class UserDetail(APIView):
 
     def put(self, request, pk, format=None):
         snippet = self.get_object(pk)
-        serializer = UserSerializer(snippet, data=request.data)
+        d = {'last_login': parse_datetime(request.data.get('last_login'))}
+        serializer = UserSerializer(instance=snippet,data=d,partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
     def delete(self, request, pk, format=None):
         snippet = self.get_object(pk)
         snippet.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class FindUser(APIView):
     """
@@ -169,10 +174,10 @@ class MessageDetail(APIView):
             except message.DoesNotExist:
                 raise status.HTTP_400_BAD_REQUEST
 
-    def get(self, request, receiver_id="", sender_id="", format=None):
+    def get(self, request, receiver_id="", sender_id="",format=None):
         if sender_id=="" and receiver_id!="":
             return Response(self.serialize_message(message.objects.filter(receiver_id=receiver_id).order_by('-sent_at')))
-        elif receiver_id=="" and sender_id!="":
+        elif receiver_id!="" and sender_id!="":
             return Response(self.serialize_message(message.objects.filter(receiver_id=receiver_id,sender_id=sender_id).order_by('-sent_at')))
    
     def post(self,request):
@@ -286,19 +291,20 @@ class LabQuestions(APIView):
     def serialize_questions(self,questions):
         question_list =[]
         for question in questions:
-            json={
-            'x_id': question.x.id,
-            'x_pos': question.x.pos_title,
-            'x_neg': question.x.neg_title,
-            'x_risk':question.x.risk,
-            'x_warn':question.x.warn,
-            'x_ave':question.x.avg,
-            'y_id': question.y.id,
-            'y_pos': question.y.pos_title,
-            'y_neg': question.y.neg_title,
-            'y_risk':question.y.risk,
-            'y_warn':question.y.warn,
-            'y_ave':question.y.avg,
+            json={'x': 
+            {'id': question.x.id,
+            'pos': question.x.pos_title,
+            'neg': question.x.neg_title,
+            'risk':question.x.risk,
+            'warn':question.x.warn,
+            'ave':question.x.avg},
+            'y':
+            {'id': question.y.id,
+            'pos': question.y.pos_title,
+            'neg': question.y.neg_title,
+            'risk':question.y.risk,
+            'warn':question.y.warn,
+            'ave':question.y.avg},
             }
             question_list.append(json)
         return question_list

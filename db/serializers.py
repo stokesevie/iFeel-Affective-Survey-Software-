@@ -13,10 +13,10 @@ class dbSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = User
-        fields = ['username', 'email', 'first_name', 'last_name','is_staff', 'password','last_login']
+        fields = ['username', 'email', 'first_name', 'last_name','is_staff','last_login']
+    
 
 class UserNameSerializer(serializers.ModelSerializer):
      class Meta:
