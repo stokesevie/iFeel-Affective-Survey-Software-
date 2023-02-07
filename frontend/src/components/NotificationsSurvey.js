@@ -20,7 +20,7 @@ export function NotificationsSurvey(props){
   const fetchLabs = async ()=>{
     let pending = []
     let survey = []
-    const labsUrl = `http://127.0.0.1:8000/labs/`+ courses[0].lab_id   
+    const labsUrl = `http://backend-production-94f0.up.railway.app/labs/`+ courses[0].lab_id   
         const lab_response = await fetch(labsUrl, {
             method : 'GET',
             headers :{
@@ -46,7 +46,7 @@ export function NotificationsSurvey(props){
 
   const fetchTodo = async (pending, l)=>{
     let invalid = false;
-    const todoUrl = `http://127.0.0.1:8000/student_lab/`+user.user_id+`/`+l.lab_id
+    const todoUrl = `http://backend-production-94f0.up.railway.app/student_lab/`+user.user_id+`/`+l.lab_id
         const todo_response = await fetch(todoUrl, {
             method : 'GET',
             headers :{

@@ -91,7 +91,7 @@ export function NotificationsMessage(props){
   },[])
 
   const CorrectParse=()=>{
-    if (newMessages>1){
+    if (newMessages>1 | newMessages<1){
       return <Text>messages</Text>
     }else{
       return <Text>message</Text>

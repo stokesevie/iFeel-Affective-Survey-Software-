@@ -12,7 +12,7 @@ const Course = ({route, navigation}) => {
 
     useEffect(()=>{fetchLabs()},[])
     const fetchLabs = async ()=>{
-        const labUrl = `http://127.0.0.1:8000/labs/`+ courseDetail.id
+        const labUrl = `http://backend-production-94f0.up.railway.app/labs/`+ courseDetail.id
         response = await fetch(labUrl, {
             method : 'GET',
             headers :{
@@ -22,6 +22,7 @@ const Course = ({route, navigation}) => {
         .then(res => res.json())
         .then(data => {
             setLabs(data)})
+        .catch(console.error)
     }
     
     return (

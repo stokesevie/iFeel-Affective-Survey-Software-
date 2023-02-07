@@ -14,7 +14,7 @@ const User = ({route, navigation}) => {
 
     const updateUserLastLogin = async ()=>{
         let d = {"last_login" : date}
-        let url = `http://127.0.0.1:8000/users/${user.user_id}/`
+        let url = `http://backend-production-94f0.up.railway.app/users/${user.user_id}/`
         const update = await fetch(url, {
             method: "PUT",
             headers: {

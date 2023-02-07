@@ -161,6 +161,16 @@ export const StyledButton = styled.TouchableOpacity`
     padding-top: 10px;
 `;
 
+export const StyledDoneButton = styled.TouchableOpacity`
+    background-color: ${Theme.secondary};
+    justify-content: center;
+    border-radius: 5px;
+    align-items: center;
+    margin-vertical: 5px;
+    height: 60px;
+    padding-bottom: 10px;
+`;
+
 export const StyledButtonText = styled.Text`
     color: ${Theme.third};
     font-size:19px;
@@ -283,6 +293,13 @@ export const BubbleText = styled.Text`
 
 `;
 
+export const ResponseText = styled.Text`
+    font-size:18px;
+    color: ${Theme.text_darker}
+    padding: 0px;
+
+`;
+
 
 export const Center = styled.TouchableOpacity`
     margin-left:45%;
@@ -300,7 +317,6 @@ export const BubbleTextBold = styled.Text`
 export const DoneTextBold = styled.Text`
     font-size:22px;
     color: ${Theme.text_darker}
-    padding: 5px;
     letter-spacing: 1px;
     font-weight:bold;
     text-align:center;

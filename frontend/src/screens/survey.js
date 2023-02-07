@@ -17,7 +17,7 @@ const Survey = ({route, navigation}) => {
     }, []);
 
     const fetchSurvey = ( async ()=>{
-        const surveyUrl = `http://127.0.0.1:8000/survey/`+ lab.lab_number  
+        const surveyUrl = `http://backend-production-94f0.up.railway.app/survey/`+ lab.lab_number  
         const survey_response = await fetch(surveyUrl, {
             method : 'GET',
             headers :{
@@ -30,6 +30,7 @@ const Survey = ({route, navigation}) => {
             for (let i = 1; i < 4; i++){
                 let question = await fetchQuestion(data["question_" + i.toString()])
                 setQuestions(current => [...current, question]);
+            // setHelp()
                 
                 
         }})
@@ -42,7 +43,7 @@ const Survey = ({route, navigation}) => {
     })
 
     const fetchQuestion = (async (question)=>{
-        const questionUrl = `http://127.0.0.1:8000/question/`+ question
+        const questionUrl = `http://backend-production-94f0.up.railway.app/question/`+ question
         const question_response = await fetch(questionUrl, {
             method : 'GET',
             headers :{

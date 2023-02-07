@@ -18,7 +18,7 @@ export function NotificationsAlert(props) {
     let invalid = false;
     let pending=[]
 
-    const recentUrl = `http://127.0.0.1:8000/student_lab_risks/`+user.user_id
+    const recentUrl = `http://backend-production-94f0.up.railway.app/student_lab_risks/`+user.user_id
         const recent_response = await fetch(recentUrl, {
             method : 'GET',
             headers :{
@@ -31,7 +31,7 @@ export function NotificationsAlert(props) {
   }
 
   const fetchAxis = async (risks) =>{
-    const axisUrl = `http://127.0.0.1:8000/axis_detail/`+ risks[0].axis_id
+    const axisUrl = `http://backend-production-94f0.up.railway.app/axis_detail/`+ risks[0].axis_id
         const axis_response = await fetch(axisUrl, {
             method : 'GET',
             headers :{
@@ -44,7 +44,7 @@ export function NotificationsAlert(props) {
 
   const fetchAxisLabels = async (axis)=>{
 
-    const labelsUrl = `http://127.0.0.1:8000/axis_labels/`+axis.x_id
+    const labelsUrl = `http://backend-production-94f0.up.railway.app/axis_labels/`+axis.x_id
         const labels_response = await fetch(labelsUrl, {
             method : 'GET',
             headers :{

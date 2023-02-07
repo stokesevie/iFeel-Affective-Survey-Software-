@@ -69,6 +69,9 @@ export function CreateTabsTutor(){
             <NavBar.Screen name= "Courses" component={Courses} options={{headerShown: false, tabBarIcon: ({ color }) => (
                   <Ionicons name="school" color={color} size={25} />
               ),}}/>
+            <NavBar.Screen name= "Profile" component={User} options={{headerShown: false, tabBarIcon: ({ color }) => (
+                  <Ionicons name="person-outline" color={color} size={25} />
+              ),}}/>
         </NavBar.Navigator>
     );
 }

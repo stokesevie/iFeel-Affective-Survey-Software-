@@ -17,14 +17,14 @@ const Send = ({route, navigation}) => {
             "receiver_id": pastMessage.s_id,
             "message_content": message 
         }
-            const sendUrl = `http://127.0.0.1:8000/messages/`
+            const sendUrl = `http://backend-production-94f0.up.railway.app/messages/`
             let response = await fetch(sendUrl, {
                 method : 'POST',
                 headers :{
                     'Content-Type' : 'application/json',
                 },
                 body: JSON.stringify(data),
-            })
+            }).catch(console.error)
 
             let r = response.statusText
             await r.then(setLoading(false))
