@@ -4,13 +4,14 @@ import {View, Text, Image, TextInput, TouchableOpacity} from 'react-native';
 import Constants from 'expo-constants';
 
 export const Theme = {
-    text_light:'#FCDFA6', //neutral beige
-    text_dark:'#F4B886', //darker beige
-    text_darker:'#F18831', //dark beige
-    primary:'#5C898A', //light blue
-    secondary:'#3A606E', //dark blue
+    text_light:'#B0BFF7', //bubble colours
+    text_dark:'#dd6e79', //dark pink
+    text_darker:'#340068', //colour for bubbles
+    primary:'#D64C5A', //dark pink
+    secondary:'#D64C5A', //dark pink
     third: 'white', // white
     fourth: 'grey', // white
+    fifth: '#dd6e79' //lighter pink than the main colour
 };
 
 export const PageTitle = styled.Text`
@@ -19,6 +20,10 @@ export const PageTitle = styled.Text`
     font-weight: bold;
     color: ${Theme.primary};
     padding: 10px;
+`;
+
+export const Profile = styled.View`
+    margin-left:0px;
 `;
 
 export const StyledMessage = styled.View`
@@ -31,19 +36,18 @@ export const StyledMessage = styled.View`
 
 export const MessageSender = styled.Text`
     justify-content: space-between;
-    font-size: 15px;
+    font-size: 25px;
     text-align: left;
     font-weight: bold;
     color: ${Theme.text_darker};
-    padding: 10px;
+    padding-left: 5px;
 `;
 export const MessageContent = styled.Text`
     justify-content: space-between;
-    font-size: 10px;
+    font-size: 20px;
     text-align: left;
-    font-weight: bold;
     color: ${Theme.text_darker};
-    padding: 10px;
+    padding-left: 5px;
 `;
 
 export const MessageTime = styled.Text`
@@ -56,7 +60,7 @@ export const MessageTime = styled.Text`
 `;
 
 export const CourseDetail = styled.Text`
-    font-size: 15px;
+    font-size: 20px;
     text-align: center;
     font-weight: bold;
     color: ${Theme.text_darker};
@@ -80,7 +84,7 @@ export const MessageObject = styled.View`
 `;
 
 export const CourseTitle = styled.Text`
-    font-size: 20px;
+    font-size: 25px;
     text-align: center;
     font-weight: bold;
     color: ${Theme.text_darker};
@@ -92,6 +96,13 @@ export const ContentJustified = styled.View`
     padding-left:10px;
     padding-right:10px;
     padding-top:40px;
+    height:90%;
+`;
+
+export const ContentJustifiedBack = styled.View`
+    padding-left:10px;
+    padding-right:10px;
+    padding-top:86px;
     height:85.5%;
 `;
 
@@ -106,7 +117,7 @@ export const LeftIcon = styled.View`
 
 export const StyledTextInput = styled.TextInput`
     background-color: ${Theme.text_light};
-    color: ${Theme.text_darker};
+    color: ${Theme.third};
     padding: 15px;
     padding-left: 55px;
     padding-right: 55px;
@@ -114,6 +125,19 @@ export const StyledTextInput = styled.TextInput`
     font-size: 16px;
     font-weight: bold;
     height: 60px;
+    margin-vertical: 3px;
+    margin-bottom: 10px;
+    
+`;
+
+export const StyledTextInputParagraph = styled.TextInput`
+    background-color: ${Theme.text_light};
+    color: ${Theme.text_darker};
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    height: 200px;
     margin-vertical: 3px;
     margin-bottom: 10px;
     
@@ -137,6 +161,16 @@ export const StyledButton = styled.TouchableOpacity`
     padding-top: 10px;
 `;
 
+export const StyledDoneButton = styled.TouchableOpacity`
+    background-color: ${Theme.secondary};
+    justify-content: center;
+    border-radius: 5px;
+    align-items: center;
+    margin-vertical: 5px;
+    height: 60px;
+    padding-bottom: 10px;
+`;
+
 export const StyledButtonText = styled.Text`
     color: ${Theme.third};
     font-size:19px;
@@ -150,6 +184,8 @@ export const RightIcon = styled.TouchableOpacity`
     position: absolute;
     z-index: 1;
 `;
+
+
 
 export const Logo = styled.Image`
     margin-left:auto;
@@ -185,8 +221,13 @@ export const XYGrid = styled.View`
     height:80%;
     border-width:2px;
     border-color: ${Theme.primary}};
-    
 `;
+
+export const Cell = styled.TouchableOpacity`
+    width:10%;
+    height:150%;
+`;
+
 
 export const XYGridText = styled.Text`
     top:-10px;
@@ -234,6 +275,7 @@ export const StyledBubble = styled.TouchableOpacity`
     border-radius: 5px;
     height: 25%;
     margin-bottom: 20px;
+
 `;
 
 export const StyledBubbleLarge = styled.TouchableOpacity`
@@ -244,10 +286,24 @@ export const StyledBubbleLarge = styled.TouchableOpacity`
 `;
 
 export const BubbleText = styled.Text`
-    font-size:22px;
+    font-size:20px;
     color: ${Theme.text_darker}
     padding: 5px;
     letter-spacing: 1px;
+
+`;
+
+export const ResponseText = styled.Text`
+    font-size:18px;
+    color: ${Theme.text_darker}
+    padding: 0px;
+
+`;
+
+
+export const Center = styled.TouchableOpacity`
+    margin-left:45%;
+    margin-top:2%;
 `;
 
 export const BubbleTextBold = styled.Text`
@@ -256,4 +312,12 @@ export const BubbleTextBold = styled.Text`
     padding: 5px;
     letter-spacing: 1px;
     font-weight:bold;
+`;
+
+export const DoneTextBold = styled.Text`
+    font-size:22px;
+    color: ${Theme.text_darker}
+    letter-spacing: 1px;
+    font-weight:bold;
+    text-align:center;
 `;

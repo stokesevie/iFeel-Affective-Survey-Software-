@@ -18,6 +18,8 @@ import SurveyLab from './screens/surveyLab'
 import Done from './screens/done';
 import TutorDashboard from './screens/dashboard_tutor';
 import Pending from './screens/pending';
+import Send from './screens/send';
+import User from './screens/user';
 
 import  localStorage from 'localstorage-polyfill'; 
 
@@ -29,9 +31,10 @@ const colours = Theme;
 
 
 
-export function CreateTabsStudent(){
+const CreateTabsStudent =()=> {
     return(
-        <NavBar.Navigator screenOptions={{
+        <NavBar.Navigator
+            screenOptions={{
             tabBarActiveTintColor: colours.secondary,
             tabBarInactiveTintColor: colours.fourth
         }}>
@@ -43,6 +46,9 @@ export function CreateTabsStudent(){
               )}}/>
             <NavBar.Screen name= "Courses" component={Courses} options={{headerShown: false, tabBarIcon: ({ color }) => (
                   <Ionicons name="school" color={color} size={25} />
+              ),}}/>
+            <NavBar.Screen name= "Profile" component={User} options={{headerShown: false, tabBarIcon: ({ color }) => (
+                  <Ionicons name="person-outline" color={color} size={25} />
               ),}}/>
         </NavBar.Navigator>
     );
@@ -63,6 +69,9 @@ export function CreateTabsTutor(){
             <NavBar.Screen name= "Courses" component={Courses} options={{headerShown: false, tabBarIcon: ({ color }) => (
                   <Ionicons name="school" color={color} size={25} />
               ),}}/>
+            <NavBar.Screen name= "Profile" component={User} options={{headerShown: false, tabBarIcon: ({ color }) => (
+                  <Ionicons name="person-outline" color={color} size={25} />
+              ),}}/>
         </NavBar.Navigator>
     );
 }
@@ -74,11 +83,13 @@ function App() {
                             <Stack.Screen name="Login"component={Login} options={{ headerShown: false }} />
                             <Stack.Screen name="StudentDashboard" component={CreateTabsStudent} options={{ headerShown: false }}/>
                             <Stack.Screen name="TutorDashboard" component={CreateTabsTutor} options={{ headerShown: false }}/>
-                            <Stack.Screen name="Course" component={Course} options={{ headerShown: false }}/>
-                            <Stack.Screen name="Survey" component={Survey} options={{ headerShown: false }}/>
-                            <Stack.Screen name="SurveyLab" component={SurveyLab} options={{ headerShown: false }}/>
+                            <Stack.Screen name="Course" component={Course} options={{ title:'' ,headerTransparent: true, headerTintColor:colours.primary }}/>
+                            <Stack.Screen name="Survey" component={Survey} options={{ title:'' ,headerTransparent: true, headerTintColor:colours.primary }}/>
+                            <Stack.Screen name="SurveyLab" component={SurveyLab} options={{ title:'' ,headerTransparent: true, headerTintColor:colours.primary }}/>
                             <Stack.Screen name="Done" component={Done} options={{ headerShown: false }}/>
                             <Stack.Screen name="Pending" component={Pending} options={{ headerShown: false }}/>
+                            <Stack.Screen name="Send" component={Send} options={{ presentation:'modal',headerShown:false }}/>
+                            <Stack.Screen name="Profile" component={User} options={{ presentation:'modal',headerShown:false }}/>
                     </Stack.Navigator>
             </NavigationContainer>
         </AuthProvider>

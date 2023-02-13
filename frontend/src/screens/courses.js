@@ -7,27 +7,8 @@ import StyledCourse from '../components/StyledCourse';
 import { ContentJustified, PageTitle } from '../components/styles';
 
 const Courses = ({navigation}) => { 
-    const { user,userInfo } = useContext(AuthContext);
+    const { user,userInfo,courses } = useContext(AuthContext);
 
-    const [courses, setCourses] = useState([])
-
-    useEffect( ()=>{
-        fetchUserCourses();
-    },[])
-
-    const fetchUserCourses = async()=>{
-        const courseUrl = `http://backend-production-94f0.up.railway.app/courses/`+ user.user_id
-        const response = await fetch(courseUrl, {
-            method : 'GET',
-            headers :{
-                'Content-Type' : 'application/json',
-            },
-        })
-        .then(res => res.json())
-        .then(data => {
-            setCourses(data)
-        })
-    }
      
     return (
         <View>

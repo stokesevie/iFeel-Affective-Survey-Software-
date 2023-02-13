@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View} from 'react-native'
 import StyledComponentsNative from 'styled-components/native';
 
-import { ContentJustified, PageTitle, StyledButton, StyledButtonText } from '../components/styles';
+import { ContentJustifiedBack, PageTitle, StyledButton, StyledButtonText } from '../components/styles';
 
 const Survey = ({route, navigation}) => {
     const { lab } = route.params.lab
@@ -17,7 +17,7 @@ const Survey = ({route, navigation}) => {
     }, []);
 
     const fetchSurvey = ( async ()=>{
-        const surveyUrl = `http://backend-production-94f0.up.railway.app/survey/`+ lab.lab_number  
+        const surveyUrl = `http://127.0.0.1:8000/survey/`+ lab.lab_number  
         const survey_response = await fetch(surveyUrl, {
             method : 'GET',
             headers :{
@@ -27,21 +27,24 @@ const Survey = ({route, navigation}) => {
         })
         let body = await survey_response.json()
         .then(async (data) =>{
+            survey[0]=data
             for (let i = 1; i < 4; i++){
-                let x = await fetchQuestion(data["question_" + i.toString()+"_x"])
-                let y = await fetchQuestion(data["question_" + i.toString()+"_y"])
-                let q = {"x": x, "y": y}
-                setQuestions(current => [...current, q]);
+                let question = await fetchQuestion(data["question_" + i.toString()])
+                setQuestions(current => [...current, question]);
+            // setHelp()
                 
                 
         }})
         .catch(console.error)
+        
+
+        setLoading(false)
 
         
     })
 
     const fetchQuestion = (async (question)=>{
-        const questionUrl = `http://backend-production-94f0.up.railway.app/question/`+ question
+        const questionUrl = `http://127.0.0.1:8000/question/`+ question
         const question_response = await fetch(questionUrl, {
             method : 'GET',
             headers :{
@@ -58,17 +61,20 @@ const Survey = ({route, navigation}) => {
         .catch(console.error)
     },[])
     
+    if (!loading){
+        return (
+            <View>
+                <ContentJustifiedBack>
+                    <PageTitle>Survey for lab {lab.lab_number}</PageTitle>  
+                    <StyledButton title = "Start" onPress = {()=>(
+                        navigation.navigate("SurveyLab", {labDetail: {lab}, question :1, questions:{questions}, response:[],survey:{survey}})
+                    )}><StyledButtonText>Start Survey</StyledButtonText></StyledButton>
+              
+                </ContentJustifiedBack>
+            </View>
+        )
 
-    return (
-        <View>
-            <ContentJustified>
-                <PageTitle>Survey for lab {lab.lab_number}</PageTitle>  
-                <StyledButton title = "Start" onPress = {()=>(
-                    navigation.navigate("SurveyLab", {labDetail: {lab}, question :1, questions:{questions}})
-                )}><StyledButtonText>Start Survey</StyledButtonText></StyledButton>
-          
-            </ContentJustified>
-        </View>
-    )
+    }
+   
 };
 export default Survey;
