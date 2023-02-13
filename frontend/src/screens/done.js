@@ -12,7 +12,7 @@ score to the average */
 
 
 const Done = ({route, navigation}) => {
-    const { lab,response,questions } = route.params
+    const { lab,response,questions,survey } = route.params
     const {user} = useContext(AuthContext)
     const [stats, setStats] = useState([])
     const [loading, setLoading] = useState(true)
@@ -48,11 +48,37 @@ const Done = ({route, navigation}) => {
         }
         stats[0] = buildStats(responses)
         postResponses(responses)
+        setCompleted()
         setLoading(false)
 
         
 
     })
+
+    const setCompleted = async ()=>{
+        let survey_id = survey.survey[0].id
+        let lab_id = lab.lab.lab_id
+        let student_id = user.user_id
+
+        let p ={
+            'survey_id': survey_id,
+            'lab_id': lab_id,
+            'student_id':student_id,
+            'completed':true
+        }
+
+        const surveyUrl = `http://127.0.0.1:8000/survey/`
+            let response = await fetch(surveyUrl, {
+                method : 'POST',
+                headers :{
+                    'Content-Type' : 'application/json',
+                },
+                body: JSON.stringify(p),
+            }).catch(console.error)
+
+            let api_r = response.status
+            await api_r
+    }
 
     const buildStats = (responses)=>{
         let good = []

@@ -20,7 +20,7 @@ export function NotificationsSurvey(props){
   const fetchLabs = async ()=>{
     let pending = []
     let survey = []
-    const labsUrl = `http://backend-production-94f0.up.railway.app/labs/`+ courses[0].lab_id   
+    const labsUrl = `http://127.0.0.1:8000/labs/`+ courses[0].lab_id   
         const lab_response = await fetch(labsUrl, {
             method : 'GET',
             headers :{
@@ -28,7 +28,6 @@ export function NotificationsSurvey(props){
             },
         })
         let labs = await lab_response.json()
-        
         for (const x in labs){
           let l = labs[x]
           pending = await fetchTodo(pending,l)
@@ -36,7 +35,6 @@ export function NotificationsSurvey(props){
             survey.push(l)
           }
         }
-
         surveys[0] = survey
         setLoading(false)
         
@@ -46,7 +44,7 @@ export function NotificationsSurvey(props){
 
   const fetchTodo = async (pending, l)=>{
     let invalid = false;
-    const todoUrl = `http://backend-production-94f0.up.railway.app/student_lab/`+user.user_id+`/`+l.lab_id
+    const todoUrl = `http://127.0.0.1:8000/survey/`+l.lab_id+`/`+user.user_id
         const todo_response = await fetch(todoUrl, {
             method : 'GET',
             headers :{
@@ -82,7 +80,7 @@ export function NotificationsSurvey(props){
     <StyledBubble>
           <Center><Ionicons name="alert-circle-outline" size={35} color={Theme.secondary}></Ionicons></Center>
          <BubbleText>Reminder for
-          <BubbleTextBold> {courses[0].lab_id}</BubbleTextBold>
+          <BubbleTextBold> {surveys[0][0].course_id}</BubbleTextBold>
           . You must complete 
           <BubbleTextBold> {surveys[0][0].title} survey</BubbleTextBold>.
           </BubbleText>

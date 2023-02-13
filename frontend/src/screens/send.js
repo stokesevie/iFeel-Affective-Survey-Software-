@@ -17,7 +17,7 @@ const Send = ({route, navigation}) => {
             "receiver_id": pastMessage.s_id,
             "message_content": message 
         }
-            const sendUrl = `http://backend-production-94f0.up.railway.app/messages/`
+            const sendUrl = `http://127.0.0.1:8000/messages/`
             let response = await fetch(sendUrl, {
                 method : 'POST',
                 headers :{

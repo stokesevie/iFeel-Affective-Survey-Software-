@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
 
   const loginUser = async (username, password, navigation) => {
 
-    const response = await fetch("http://backend-production-94f0.up.railway.app/token/", {
+    const response = await fetch("http://127.0.0.1:8000/token/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -119,7 +119,7 @@ export const AuthProvider = ({ children }) => {
   
 
   const fetchUserInfo = async ()=>{
-        const response = await fetch(`http://backend-production-94f0.up.railway.app/users/`+ user.user_id, {
+        const response = await fetch(`http://127.0.0.1:8000/users/`+ user.user_id, {
           method : 'GET',
           headers :{
               'Content-Type' : 'application/json',

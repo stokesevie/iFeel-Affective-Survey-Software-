@@ -12,7 +12,7 @@ const Pending = ({navigation}) => {
 
 
     const getMessages = async()=>{
-      const messageUrl = `http://backend-production-94f0.up.railway.app/message/`+ user.user_id   
+      const messageUrl = `http://127.0.0.1:8000/message/`+ user.user_id   
         const message_response = await fetch(messageUrl, {
             method : 'GET',
             headers :{
@@ -25,7 +25,7 @@ const Pending = ({navigation}) => {
     }
 
     const getCourses = async()=>{
-        const coursesUrl = `http://backend-production-94f0.up.railway.app/courses/`+ user.user_id   
+        const coursesUrl = `http://127.0.0.1:8000/courses/`+ user.user_id   
         const course_response = await fetch(coursesUrl, {
             method : 'GET',
             headers :{

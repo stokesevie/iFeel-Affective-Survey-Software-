@@ -17,7 +17,7 @@ const Survey = ({route, navigation}) => {
     }, []);
 
     const fetchSurvey = ( async ()=>{
-        const surveyUrl = `http://backend-production-94f0.up.railway.app/survey/`+ lab.lab_number  
+        const surveyUrl = `http://127.0.0.1:8000/survey/`+ lab.lab_number  
         const survey_response = await fetch(surveyUrl, {
             method : 'GET',
             headers :{
@@ -27,6 +27,7 @@ const Survey = ({route, navigation}) => {
         })
         let body = await survey_response.json()
         .then(async (data) =>{
+            survey[0]=data
             for (let i = 1; i < 4; i++){
                 let question = await fetchQuestion(data["question_" + i.toString()])
                 setQuestions(current => [...current, question]);
@@ -35,7 +36,7 @@ const Survey = ({route, navigation}) => {
                 
         }})
         .catch(console.error)
-
+        
 
         setLoading(false)
 
@@ -43,7 +44,7 @@ const Survey = ({route, navigation}) => {
     })
 
     const fetchQuestion = (async (question)=>{
-        const questionUrl = `http://backend-production-94f0.up.railway.app/question/`+ question
+        const questionUrl = `http://127.0.0.1:8000/question/`+ question
         const question_response = await fetch(questionUrl, {
             method : 'GET',
             headers :{
@@ -66,7 +67,7 @@ const Survey = ({route, navigation}) => {
                 <ContentJustifiedBack>
                     <PageTitle>Survey for lab {lab.lab_number}</PageTitle>  
                     <StyledButton title = "Start" onPress = {()=>(
-                        navigation.navigate("SurveyLab", {labDetail: {lab}, question :1, questions:{questions}, response:[]})
+                        navigation.navigate("SurveyLab", {labDetail: {lab}, question :1, questions:{questions}, response:[],survey:{survey}})
                     )}><StyledButtonText>Start Survey</StyledButtonText></StyledButton>
               
                 </ContentJustifiedBack>

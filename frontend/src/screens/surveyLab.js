@@ -5,7 +5,7 @@ import { XYGrid, XMin, YMin, XYGridText, YTextMin, Grid, YText, SurveyQuestion, 
 import { ContentJustified, PageTitle, StyledButton } from '../components/styles';
 
 const SurveyLab = ({route, navigation}) => {
-    const { labDetail, question, questions,response } = route.params
+    const { labDetail, question, questions,response,survey } = route.params
     const lab = labDetail.lab
     const q = questions.questions[question-1][0]
     const [colour, setColour] = useState(-1)
@@ -16,7 +16,8 @@ const SurveyLab = ({route, navigation}) => {
             navigation.navigate("Done",{
                 lab : {lab},
                 response :response,
-                questions: questions
+                questions: questions,
+                survey:survey
             })
         }else{
             setPressed(false)
@@ -25,7 +26,8 @@ const SurveyLab = ({route, navigation}) => {
                 labDetail: {lab}, 
                 question :question+1,
                 questions : questions,
-                response:response
+                response:response,
+                survey:survey
                 
             })
         }
@@ -40,14 +42,16 @@ const SurveyLab = ({route, navigation}) => {
                     labDetail: {lab}, 
                     question :question-1,
                     questions : questions,
-                    response:response.splice(-1)
+                    response:response.splice(-1),
+                    survey:survey
                 })
             }else{
                 navigation.navigate("SurveyLab", {
                     labDetail: {lab}, 
                     question :question-1,
                     questions : questions,
-                    response:response
+                    response:response,
+                    survey:survey
                 })
             }
         }
@@ -85,8 +89,6 @@ const SurveyLab = ({route, navigation}) => {
             <Text style = {{color: c}}>X</Text>
         </Cell>)
     }
-
-
 
         return (
             <View>
