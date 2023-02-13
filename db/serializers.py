@@ -60,10 +60,14 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['username'] = user.username
         return token
 
+class labSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = lab
+        fields =['course_id','lab_id','lab_number','title','date','help']
 class surveySerializer(serializers.ModelSerializer):
     class Meta:
         model = survey
-        fields = ['question_1','question_2','question_3','lab_id']
+        fields = ['id','question_1','question_2','question_3','lab_id'] 
 
 class student_lab_riskSerializer(serializers.ModelSerializer):
     class Meta:
@@ -79,3 +83,8 @@ class axis_labelsSerializer(serializers.ModelSerializer):
     class Meta:
         model = axis_labels
         fields = ['id','pos_title','neg_title']
+
+class student_surveySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = student_survey
+        fields = ['lab_id','survey_id','student_id','completed']

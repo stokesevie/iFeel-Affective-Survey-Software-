@@ -44,6 +44,7 @@ class lab(models.Model):
     lab_number = models.IntegerField()
     title = models.CharField(max_length=20, default= "")
     date = models.DateField()
+    help = models.URLField(null=True)
 
 class axis(models.Model):
     x_id = models.ForeignKey("axis_labels", on_delete=models.CASCADE, related_name='x_id')
@@ -92,8 +93,7 @@ class response(models.Model):
     y = models.ForeignKey(student_lab_risk,on_delete=models.CASCADE, default=1, related_name = "y_response")
 
 class student_survey(models.Model):
+    lab_id = models.ForeignKey(lab,on_delete=models.CASCADE, default=1)
     survey_id = models.ForeignKey(survey,on_delete=models.CASCADE, default=1)
     student_id = models.ForeignKey(student, on_delete=models.CASCADE,default=1)
-    response_1 = models.ForeignKey(response, on_delete=models.CASCADE,default=1, related_name="q_1")
-    response_2 = models.ForeignKey(response, on_delete=models.CASCADE,default=1, related_name="q_2")
-    response_3 = models.ForeignKey(response, on_delete=models.CASCADE,default=1, related_name="q_3")
+    completed = models.BooleanField(default=False)

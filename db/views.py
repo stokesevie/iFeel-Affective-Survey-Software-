@@ -272,9 +272,6 @@ class LabDetail(APIView):
         return Response(self.serialize_labs(lab.objects.filter(course_id=course_id)))
 
 class FindSurvey(APIView):
-    """
-    Retrieve, update or delete a snippet instance.
-    """
     def get_object(self, lab_id):
         try:
             return survey.objects.get(lab_id=lab_id)
@@ -285,6 +282,34 @@ class FindSurvey(APIView):
         snippet = self.get_object(lab_id=lab_id)
         serializer = surveySerializer(snippet)
         return Response(serializer.data)
+
+class FindStudentSurvey(APIView):
+    def student_survey_serialize(self,data):
+        return [{
+            'lab_id': data.lab_id.lab_id,
+            'survey_id':data.survey_id.id,
+            'course': data.lab_id.course_id.id,
+            'student_id': data.student_id.username.id,
+            'completed':data.completed
+        }]
+
+    def get_object(self, lab_id,student_id):
+        try:
+            return student_survey.objects.get(lab_id=lab_id,student_id=student_id)
+        except student_survey.DoesNotExist:
+            raise status.HTTP_400_BAD_REQUEST
+
+    def get(self, request, lab_id,student_id, format=None):
+        snippet = self.get_object(lab_id=lab_id,student_id=student_id)
+        serializer = self.student_survey_serialize(snippet)
+        return Response(serializer)
+
+    def post(self,request,format=None):
+        serializer = student_surveySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LabQuestions(APIView):
@@ -333,6 +358,14 @@ class FindStudentLabRisk(APIView):
         snippet = self.get_object(student_id=student_id,lab_id=lab_id)
         serializer = student_lab_riskSerializer(snippet)
         return Response(serializer.data)
+    
+    def post(self, request,format=None):
+        serializer = student_lab_riskSerializer(data=request.data)
+        serializer.date=datetime.strptime(request.data.get('date'), "%Y-%m-%d").date()
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LabRisksByStudent(APIView):
@@ -353,7 +386,7 @@ class LabRisksByStudent(APIView):
 
     def get_object(self, student_id):
         try:
-            return student_lab_risk.objects.filter(student_id=student_id).order_by('date')
+            return student_lab_risk.objects.filter(student_id=student_id).order_by('-date')
         except student_lab_risk.DoesNotExist:
             raise status.HTTP_400_BAD_REQUEST
 

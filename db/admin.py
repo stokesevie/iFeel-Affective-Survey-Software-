@@ -36,7 +36,7 @@ class responseAdmin(admin.ModelAdmin):
     list_display = ('x','y')
 
 class student_surveyAdmin(admin.ModelAdmin):
-    list_display = ('survey_id', 'student_id','response_1', 'response_2', 'response_3')
+    list_display = ('survey_id', 'student_id','completed')
 
 admin.site.register(student, studentAdmin)
 admin.site.register(course, courseAdmin)
