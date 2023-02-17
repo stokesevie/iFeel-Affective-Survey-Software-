@@ -137,7 +137,7 @@ export const StyledTextInputParagraph = styled.TextInput`
     border-radius: 5px;
     font-size: 16px;
     font-weight: bold;
-    height: 200px;
+    height: 150px;
     margin-vertical: 3px;
     margin-bottom: 10px;
     
@@ -169,6 +169,16 @@ export const StyledDoneButton = styled.TouchableOpacity`
     margin-vertical: 5px;
     height: 60px;
     padding-bottom: 10px;
+`;
+
+export const TutorStudentFeedback = styled.TouchableOpacity`
+    height: 60px;
+    background-color: ${Theme.secondary};
+    justify-content:center;
+    border-radius: 5px;
+    margin:5px;
+    padding:5px;
+
 `;
 
 export const StyledButtonText = styled.Text`
@@ -204,7 +214,7 @@ export const NotificationsSurvey = styled.TouchableOpacity`
 
 export const SubTitle= styled.Text`
     font-size: 18px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     letter-spacing: 1px;
     font-weight: bold;
     color: ${Theme.text_darker};
@@ -273,8 +283,8 @@ export const SurveyQuestion = styled.Text`
 export const StyledBubble = styled.TouchableOpacity`
     background-color: ${Theme.text_light};
     border-radius: 5px;
-    height: 25%;
-    margin-bottom: 20px;
+    height: 28%;
+    margin-bottom: 10px;
 
 `;
 
@@ -282,11 +292,11 @@ export const StyledBubbleLarge = styled.TouchableOpacity`
     background-color: ${Theme.text_light};
     border-radius: 5px;
     height: 50%;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 `;
 
 export const BubbleText = styled.Text`
-    font-size:20px;
+    font-size:18px;
     color: ${Theme.text_darker}
     padding: 5px;
     letter-spacing: 1px;

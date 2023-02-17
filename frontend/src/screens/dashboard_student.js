@@ -5,7 +5,6 @@ import AuthContext from "../utils/auth_context";
 import { NotificationsSurvey } from '../components/NotificationsSurvey'
 import { NotificationsAlert } from '../components/NotificationsAlert'
 import { NotificationsMessage } from '../components/NotificationsMessage'
-import { Ionicons } from '@expo/vector-icons';
 
 const StudentDashboard = ({route, navigation}) => {
     const { user,userInfo,messages,courses } = useContext(AuthContext);
@@ -13,10 +12,10 @@ const StudentDashboard = ({route, navigation}) => {
         <View>
             <ContentJustified>
                 <PageTitle>Home</PageTitle>  
-                <SubTitle> Welcome, {userInfo.first_name} !</SubTitle>
+                <SubTitle> Welcome, {userInfo.first_name}!</SubTitle>
                 <NotificationsSurvey userInfo={userInfo} user ={user} courses = {courses}/>
                 <NotificationsAlert userInfo={userInfo} user={user}/>
-                <NotificationsMessage userInfo = {userInfo} user ={user} messages = {messages}/>
+                <NotificationsMessage userInfo = {userInfo} user ={user}/>
 
                 
            </ContentJustified>

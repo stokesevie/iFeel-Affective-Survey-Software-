@@ -25,6 +25,10 @@ const Course = ({route, navigation}) => {
         .catch(console.error)
     }
     
+    const checkIfdone = ()=>{
+
+    }
+    
     return (
         
         <View>

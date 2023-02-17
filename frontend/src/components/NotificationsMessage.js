@@ -1,17 +1,14 @@
 import React, { useState,useContext, useEffect } from "react";
-import { NotificationTitle,StyledNotification,NotificationText,Arrow ,Theme,Center, StyledBubble, BubbleText, BubbleTextBold, BubbleContent} from './styles'
+import {Theme,Center, StyledBubble, BubbleText, BubbleTextBold} from './styles'
 import {Ionicons} from '@expo/vector-icons';
-import { NavigationHelpersContext, useNavigation } from '@react-navigation/native';
-import PropTypes from 'prop-types';
-import { View,Text } from "react-native";
+import { Text } from "react-native";
 import AuthContext from "../utils/auth_context";
-import { renderMatches } from "react-router-dom";
-import { Spinner } from "react-bootstrap";
+
 
 
 export function NotificationsMessage(props){
   const userInfo = props.userInfo
-  const messages = props.messages
+  const {messages} = useContext(AuthContext)
   const [date,setDate]= useState([])
   const [newMessages, setNewMessages] = useState([])
 
@@ -98,11 +95,16 @@ export function NotificationsMessage(props){
     }
   }
 
+  const CheckIfTutor = ()=>{
+    if (messages[0].staff){
+      return (<Text style={{color:Theme.primary, fontWeight:'bold'}}> This is a message from your tutor.</Text>)
+    }
+  }
 
   return(
     <StyledBubble>
           <Center><Ionicons name="mail-unread-outline" size={35} color={Theme.secondary}></Ionicons></Center>
-        <BubbleText>You have <BubbleTextBold>{newMessages}</BubbleTextBold> <CorrectParse></CorrectParse> since your last login ({date}). Most recent message from <BubbleTextBold>{messages[0].sender_f_name}</BubbleTextBold></BubbleText>
+        <BubbleText>You have <BubbleTextBold>{newMessages}</BubbleTextBold> <CorrectParse></CorrectParse> since your last login ({date}). Most recent message from <BubbleTextBold>{messages[0].sender_f_name}</BubbleTextBold><CheckIfTutor/></BubbleText>
 
       </StyledBubble>
         

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
-import {View,Text, FlatList} from 'react-native'
+import {View,Linking, FlatList} from 'react-native'
 
-import { BubbleText, DoneTextBold, ContentJustified, PageTitle, StyledButton, StyledDoneButton,StyledButtonText, SubTitle } from '../components/styles';
+import { DoneTextBold, ContentJustified, PageTitle, StyledButton, StyledDoneButton,StyledButtonText, SubTitle, TutorStudentFeedback, ResponseText } from '../components/styles';
 import SurveyResponseText from '../components/SurveyResponseText';
 import AuthContext from '../utils/auth_context';
 import moment from '../node_modules/moment'
@@ -16,6 +16,10 @@ const Done = ({route, navigation}) => {
     const {user} = useContext(AuthContext)
     const [stats, setStats] = useState([])
     const [loading, setLoading] = useState(true)
+    const [tutor, setTutor] = useState(false);
+    const [student, setStudent] = useState(false)
+    const [avg, setAvg] = useState([])
+    const [studentStats, setStudentStats] = useState([])
 
     const onPress = ()=>{
        navigation.navigate("StudentDashboard")
@@ -36,20 +40,41 @@ const Done = ({route, navigation}) => {
             }
         }
     }
+
+    const AxisAverage = async (axis,r)=>{
+        let a = {
+            'lab_id': lab.lab.lab_id,
+            'axis_id': axis,
+            'point': r
+        }
+        const lab_risk = `http://127.0.0.1:8000/average/`
+            let response = await fetch(lab_risk, {
+                method : 'POST',
+                headers :{
+                    'Content-Type' : 'application/json',
+                },
+                body: JSON.stringify(a),
+            }).catch(console.error)
+    }
+
     useEffect(()=>{
         let responses = []
         for (let i = 0; i<3;i++){
             let q = questions.questions[i][0]
             let r = response[i]
             let adjust_r = 10-r[0]
+            AxisAverage(q.x.id, adjust_r)
+            AxisAverage(q.y.id, r[1])
             let x = decide(adjust_r,q.x.risk,q.x.warn,q.x.ave)
             let y = decide(r[1],q.y.risk,q.y.warn,q.y.ave)
             responses.push([q,x,y])
         }
-        stats[0] = buildStats(responses)
+        stats[0] = buildStatsTutor(responses)
         postResponses(responses)
         setCompleted()
+        GetAxisAverage()
         setLoading(false)
+
 
         
 
@@ -80,7 +105,7 @@ const Done = ({route, navigation}) => {
             await api_r
     }
 
-    const buildStats = (responses)=>{
+    const buildStatsTutor = (responses)=>{
         let good = []
         let bad = []
         let text =  " You reported yourself to find this lab "
@@ -101,6 +126,20 @@ const Done = ({route, navigation}) => {
             }
         }
         return [[good],[bad]]
+    }
+
+    const buildStatsStudent = (li)=>{
+        let str=[];
+        for (let i = 0;i<6;i++){
+            let ave = li[i][0].point__avg
+            let neg = li[i][1]
+            let r = li[i][2]
+            if (ave> r){
+                str.push("You found this lab more " + neg + " than the average student who took this survey.")
+            }
+        }
+        studentStats[0] = str
+
     }
 
 
@@ -167,9 +206,12 @@ const Done = ({route, navigation}) => {
 
     }
 
+
     const ShowHelp = () =>{
         if (JSON.stringify(stats[0][1][0])!="[]"){
-            return <StyledButton title = "Help" onPress={onPress}><StyledButtonText> Want help with this lab? </StyledButtonText></StyledButton>                 
+            return <StyledButton title = "Help" onPress={()=>{
+                Linking.openURL(lab.lab.help)
+            }}><StyledButtonText> Want help with this lab? </StyledButtonText></StyledButton>                 
         }else{
             return
         }
@@ -196,16 +238,57 @@ const Done = ({route, navigation}) => {
         )
     }
 
+    const fetchAverage = async(axis,r)=>{
+        const averageUrl = `http://127.0.0.1:8000/average/`+lab.lab.lab_id+`/`+axis.id
+        const average_response = await fetch(averageUrl, {
+            method : 'GET',
+            headers :{
+                'Content-Type' : 'application/json',
+            },
+        }).catch(console.error)
+        let average = await average_response.json()
+        return [average,axis.neg,r]
+    }
 
+    const GetAxisAverage = async ()=>{
+        let qs = questions.questions
+        let li = []
+        for (let i = 0;i<3;i++){
+            let q = qs[i][0]
+            let r = response[i]
+            li.push(await fetchAverage(q.x,r[0]))
+            li.push(await fetchAverage(q.y,r[1]))
+        }
+        buildStatsStudent(li)
 
+    }
+
+    const ShowList = ()=>{
+        if (tutor){
+            return (<><ShowFlatList text = "Above Lab Average" data = {stats[0][0][0]}/>
+            <ShowFlatList text = "Below Lab Average" data = {stats[0][1][0]}/></>)    
+        } else if (student){
+            return (<><FlatList ListHeaderComponent={()=><DoneTextBold>Affective Student Average Comparison</DoneTextBold>} data = {studentStats[0]} renderItem={item=><ResponseText>{'\n'}{item.item}</ResponseText>}/></>)
+        }
+       } 
     if (!loading){
         return (
             <View>
                 <ContentJustified>
                     <PageTitle>Survey Completed</PageTitle>  
                     <SubTitle>You completed survey for lab {lab.lab.lab_number} for {lab.lab.course_id}. In this survey your response showed:  </SubTitle>
-                    <ShowFlatList text = "Above Lab Average" data = {stats[0][0][0]}/>
-                    <ShowFlatList text = "Below Lab Average" data = {stats[0][1][0]}/>
+                    <View style={{ flexDirection:"row",justifyContent:'space-between' }}>
+                        <TutorStudentFeedback title = "Tutor" onPress={()=>{if (student){
+                            setStudent(false)
+                        }
+                        setTutor(true)}}><StyledButtonText>Tutor Feedback</StyledButtonText></TutorStudentFeedback>
+                        <TutorStudentFeedback title = "Student"onPress={()=>{
+                            if (tutor){
+                                setTutor(false)
+                            }
+                            setStudent(true)}}><StyledButtonText>Student Feedback</StyledButtonText></TutorStudentFeedback>
+                    </View>
+                    <ShowList/>
                         <ShowHelp/>
                         <StyledDoneButton title = "Home" onPress={onPress}><StyledButtonText> Return Home </StyledButtonText></StyledDoneButton>
                 </ContentJustified>
