@@ -18,8 +18,10 @@ const Done = ({route, navigation}) => {
     const [loading, setLoading] = useState(true)
     const [tutor, setTutor] = useState(false);
     const [student, setStudent] = useState(false)
-    const [avg, setAvg] = useState([])
     const [studentStats, setStudentStats] = useState([])
+    const [posted, setPosted] = useState(false)
+    const [surveyPosted, setSurveyPosted] = useState(false)
+    const [responsesPosted, setResponsesPosted] = useState(false)
 
     const onPress = ()=>{
        navigation.navigate("StudentDashboard")
@@ -41,12 +43,16 @@ const Done = ({route, navigation}) => {
         }
     }
 
-    const AxisAverage = async (axis,r)=>{
+    const AxisAverage = async (axis,r,above)=>{  
+       if (!posted){ 
         let a = {
             'lab_id': lab.lab.lab_id,
             'axis_id': axis,
-            'point': r
+            'point': r,
+            'student_id':user.user_id,
+            'above':above,
         }
+
         const lab_risk = `http://127.0.0.1:8000/average/`
             let response = await fetch(lab_risk, {
                 method : 'POST',
@@ -55,6 +61,9 @@ const Done = ({route, navigation}) => {
                 },
                 body: JSON.stringify(a),
             }).catch(console.error)
+    }else{
+        return
+    }
     }
 
     useEffect(()=>{
@@ -63,22 +72,35 @@ const Done = ({route, navigation}) => {
             let q = questions.questions[i][0]
             let r = response[i]
             let adjust_r = 10-r[0]
-            AxisAverage(q.x.id, adjust_r)
-            AxisAverage(q.y.id, r[1])
             let x = decide(adjust_r,q.x.risk,q.x.warn,q.x.ave)
             let y = decide(r[1],q.y.risk,q.y.warn,q.y.ave)
             responses.push([q,x,y])
         }
         stats[0] = buildStatsTutor(responses)
-        postResponses(responses)
-        setCompleted()
         GetAxisAverage()
+        postResponses(responses)
+        if (!surveyPosted){
+            setCompleted()
+        }
         setLoading(false)
 
 
         
 
     })
+    const GetAxisAverage = async ()=>{
+        let qs = questions.questions
+        let li = []
+        for (let i = 0;i<3;i++){
+            let q = qs[i][0]
+            let r = response[i]
+            let adjust_r = 10-r[0]
+            li.push(await fetchAverage(q.x,adjust_r))
+            li.push(await fetchAverage(q.y,r[1]))
+        }
+        buildStatsStudent(li)
+
+    }
 
     const setCompleted = async ()=>{
         let survey_id = survey.survey[0].id
@@ -103,6 +125,7 @@ const Done = ({route, navigation}) => {
 
             let api_r = response.status
             await api_r
+        setSurveyPosted(true)
     }
 
     const buildStatsTutor = (responses)=>{
@@ -134,23 +157,30 @@ const Done = ({route, navigation}) => {
             let ave = li[i][0].point__avg
             let neg = li[i][1]
             let r = li[i][2]
+            let id = li[i][3]
             if (ave> r){
                 str.push("You found this lab more " + neg + " than the average student who took this survey.")
+                AxisAverage(id, r,false)
+            }else{
+                AxisAverage(id,r,true)
             }
         }
+        setPosted(true)
         studentStats[0] = str
 
     }
 
 
-    const postResponses = (responses)=>{
+    const postResponses = async (responses)=>{
         for (let i = 0; i<3;i++){
             let r = responses[i]
-            post(r,"x")
+            await post(r,"x")
         }
+        setResponsesPosted(true)
     }
 
     const post = async (r,axis)=>{
+        if (!responsesPosted){
         let d = moment().format("YYYY-MM-DD")
         let a;
         if (axis =="x"){
@@ -202,16 +232,24 @@ const Done = ({route, navigation}) => {
 
             let api_r = response.status
             await api_r
-
+}else{
+    return
+}
 
     }
 
 
     const ShowHelp = () =>{
         if (JSON.stringify(stats[0][1][0])!="[]"){
-            return <StyledButton title = "Help" onPress={()=>{
+            return <>
+            <DoneTextBold>Want help with this lab?</DoneTextBold>
+            <StyledButton title = "Help" onPress={()=>{
                 Linking.openURL(lab.lab.help)
-            }}><StyledButtonText> Want help with this lab? </StyledButtonText></StyledButton>                 
+            }}><StyledButtonText> Online resources </StyledButtonText></StyledButton>
+            <StyledButton title = "Message" onPress={()=>{
+                return navigation.navigate("SendNew", {'receiver_id':'24440303s','lab':lab.lab.course_id})
+            }}><StyledButtonText> Message Tutor </StyledButtonText></StyledButton>
+            </>                 
         }else{
             return
         }
@@ -247,20 +285,7 @@ const Done = ({route, navigation}) => {
             },
         }).catch(console.error)
         let average = await average_response.json()
-        return [average,axis.neg,r]
-    }
-
-    const GetAxisAverage = async ()=>{
-        let qs = questions.questions
-        let li = []
-        for (let i = 0;i<3;i++){
-            let q = qs[i][0]
-            let r = response[i]
-            li.push(await fetchAverage(q.x,r[0]))
-            li.push(await fetchAverage(q.y,r[1]))
-        }
-        buildStatsStudent(li)
-
+        return [average,axis.neg,r,axis.id]
     }
 
     const ShowList = ()=>{

@@ -22,6 +22,7 @@
     "react": "^18.1.0",
     "react-bootstrap": "^2.7.0",
     "react-native": "0.70.5",
+    "react-native-notifications": "^4.3.3",
     "react-router-dom": "^6.6.1",
     "react-router-native": "^6.6.1",
     "reactstrap": "^8.9.0",

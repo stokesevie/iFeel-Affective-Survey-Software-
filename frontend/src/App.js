@@ -19,6 +19,7 @@ import Done from './screens/done';
 import TutorDashboard from './screens/dashboard_tutor';
 import Pending from './screens/pending';
 import Send from './screens/send';
+import SendNew from './screens/new_message';
 import User from './screens/user';
 
 import  localStorage from 'localstorage-polyfill'; 
@@ -89,6 +90,8 @@ function App() {
                             <Stack.Screen name="Done" component={Done} options={{ headerShown: false }}/>
                             <Stack.Screen name="Pending" component={Pending} options={{ headerShown: false }}/>
                             <Stack.Screen name="Send" component={Send} options={{ presentation:'modal',headerShown:false }}/>
+
+                            <Stack.Screen name="SendNew" component={SendNew} options={{ presentation:'modal',headerShown:false }}/>
                             <Stack.Screen name="Profile" component={User} options={{ presentation:'modal',headerShown:false }}/>
                     </Stack.Navigator>
             </NavigationContainer>
