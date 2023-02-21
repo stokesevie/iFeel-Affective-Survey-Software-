@@ -6,8 +6,7 @@ import { ContentJustified, PageTitle } from '../components/styles';
 import   StyledMessage   from '../components/StyledMessage';
 
 const Messages = ({navigation}) => {
-    const { user,userInfo,messages } = useContext(AuthContext);
-
+    const { messages } = useContext(AuthContext);
 
     return (
             <ContentJustified>

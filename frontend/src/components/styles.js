@@ -75,6 +75,16 @@ export const StyledListButton = styled.TouchableOpacity`
     margin-bottom: 20px;
 `;
 
+export const StyledListButtonC = styled.TouchableOpacity`
+    padding: 1px;
+    background-color: ${Theme.text_light};
+    border-color:${Theme.primary};
+    border-radius: 5px;
+    border-width:5px;
+    height: 120px;
+    margin-bottom: 20px;
+`;
+
 export const SenderTime = styled.View`
     display: flex;
 `;
@@ -307,6 +317,7 @@ export const ResponseText = styled.Text`
     font-size:18px;
     color: ${Theme.text_darker}
     padding: 0px;
+    text-align:center;
 
 `;
 

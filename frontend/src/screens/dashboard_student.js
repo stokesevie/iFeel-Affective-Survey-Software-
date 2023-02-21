@@ -7,7 +7,8 @@ import { NotificationsAlert } from '../components/NotificationsAlert'
 import { NotificationsMessage } from '../components/NotificationsMessage'
 
 const StudentDashboard = ({route, navigation}) => {
-    const { user,userInfo,messages,courses } = useContext(AuthContext);
+    const { user,courses,userInfo,messages } = useContext(AuthContext)
+
     return (
         <View>
             <ContentJustified>
@@ -15,7 +16,7 @@ const StudentDashboard = ({route, navigation}) => {
                 <SubTitle> Welcome, {userInfo.first_name}!</SubTitle>
                 <NotificationsSurvey userInfo={userInfo} user ={user} courses = {courses}/>
                 <NotificationsAlert userInfo={userInfo} user={user}/>
-                <NotificationsMessage userInfo = {userInfo} user ={user}/>
+                <NotificationsMessage userInfo = {userInfo} user ={user} messages = {messages}/>
 
                 
            </ContentJustified>

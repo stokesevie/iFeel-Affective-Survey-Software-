@@ -1,13 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { NotificationTitle,StyledNotification,NotificationText,Arrow ,BubbleContent,Theme,StyledBubble, BubbleText, BubbleTextBold, Center} from './styles'
 import {Ionicons} from '@expo/vector-icons';
-import { NavigationHelpersContext, useNavigation } from '@react-navigation/native';
-import PropTypes from 'prop-types';
-import { View,Text } from "react-native";
-import StyledMessage from "./StyledMessage";
+
 import AuthContext from "../utils/auth_context";
-import { setGlobalCssModule } from "reactstrap/es/utils";
-import { UNSAFE_DataRouterContext } from "react-router-dom";
 
 export function NotificationsSurvey(props){
   const userInfo = props.userInfo
@@ -15,16 +10,19 @@ export function NotificationsSurvey(props){
   const courses = props.courses
   const [surveys, setSurveys] = useState([])
   const [loading , setLoading] = useState([true])
-
+  const {authTokens} = useContext(AuthContext)
+  const access = JSON.parse(localStorage.getItem("authTokens"))['access']
 
   const fetchLabs = async ()=>{
     let pending = []
     let survey = []
-    const labsUrl = `http://127.0.0.1:8000/labs/`+ courses[0].lab_id   
+    const labsUrl = `http://127.0.0.1:8000/labs/`+ courses[0].lab_id
         const lab_response = await fetch(labsUrl, {
             method : 'GET',
             headers :{
-                'Content-Type' : 'application/json',
+              'Authorization': `Bearer ${access}`,
+              'Content-Type' : 'application/json',
+              'Accept':'application/json',
             },
         })
         let labs = await lab_response.json()
@@ -43,12 +41,14 @@ export function NotificationsSurvey(props){
 
 
   const fetchTodo = async (pending, l)=>{
+    
     let invalid = false;
-    const todoUrl = `http://127.0.0.1:8000/survey/`+l.lab_id+`/`+user.user_id
+    const todoUrl = `http://127.0.0.1:8000/survey/`+l.lab_id+`/`+user.user_id+`/`
         const todo_response = await fetch(todoUrl, {
             method : 'GET',
             headers :{
-                'Content-Type' : 'application/json',
+              'Authorization' : `Bearer ${access}`, 
+              'Content-Type' : 'application/json',
             },
         })
         let todo = await todo_response.json().catch((error)=>{

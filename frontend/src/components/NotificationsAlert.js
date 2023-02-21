@@ -1,9 +1,7 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect,useState,useContext } from "react";
 import { NotificationTitle,StyledNotification,NotificationText,Center ,ContentsNotification,Theme, StyledBubbleLarge, BubbleText, BubbleTextBold} from './styles'
 import {Ionicons} from '@expo/vector-icons';
-import { NavigationHelpersContext, useNavigation } from '@react-navigation/native';
-import PropTypes from 'prop-types';
-import { View,Text } from "react-native";
+import AuthContext from "../utils/auth_context";
 
 export function NotificationsAlert(props) {
   const user = props.user
@@ -12,14 +10,17 @@ export function NotificationsAlert(props) {
   const [label, setLabel] = useState([])
   const [risksFetched,setRisksFetched] = useState(false)
   const [emotional, setEmotional] = useState([])
+  const [emotionalFetched,setEmotionalFetched] = useState(false)
+  const {authTokens} = useContext(AuthContext)
+  const access = JSON.parse(localStorage.getItem("authTokens"))['access']
 
   const fetchRecent = async ()=>{
-
-    const recentUrl = `http://127.0.0.1:8000/student_lab_risks/`+user.user_id
+    const recentUrl = `http://127.0.0.1:8000/student_lab_risks/`+user.user_id+`/`
         const recent_response = await fetch(recentUrl, {
             method : 'GET',
             headers :{
-                'Content-Type' : 'application/json',
+              'Authorization' :`Bearer ${access}`, 
+              'Content-Type' : 'application/json',
             },
         })
         risks[0] = await recent_response.json()
@@ -29,26 +30,29 @@ export function NotificationsAlert(props) {
   }
 
   const fetchStudentAverage = async ()=>{
-    const recentUrl = `http://127.0.0.1:8000/average/`+user.user_id
+    const recentUrl = `http://127.0.0.1:8000/average/`+user.user_id+`/`
         const recent_response = await fetch(recentUrl, {
             method : 'GET',
             headers :{
-                'Content-Type' : 'application/json',
+              'Authorization' :`Bearer ${access}`, 
+              'Content-Type' : 'application/json',
             },
         })
         let p = await recent_response.json()
         emotional[0]= p
+        setEmotionalFetched(true)
 
   }
 
   const fetchAxisLabel = async (axis)=>{
     let a = axis[0].axis_id
 
-    const labelsUrl = `http://127.0.0.1:8000/axis_labels/`+a
+    const labelsUrl = `http://127.0.0.1:8000/axis_labels/`+a+`/`
         const labels_response = await fetch(labelsUrl, {
             method : 'GET',
             headers :{
-                'Content-Type' : 'application/json',
+              'Authorization' :`Bearer ${access}`, 
+              'Content-Type' : 'application/json',
             },
         })
         label[0] = await labels_response.json()
@@ -74,7 +78,7 @@ export function NotificationsAlert(props) {
     }
   }
 
-  if (!loading){
+  if (!loading && emotionalFetched){
     let r = risks[0][0]
     let zone = ""
     if (r.risk){

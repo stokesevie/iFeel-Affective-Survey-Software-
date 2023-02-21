@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useContext } from 'react'
 import {View,Text} from 'react-native'
 
 import { BubbleText, DoneTextBold, ContentJustified, PageTitle, StyledBubbleLarge, StyledButton,StyledButtonText, SubTitle } from '../components/styles';

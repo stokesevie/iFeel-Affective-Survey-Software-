@@ -14,7 +14,7 @@ export function NotificationsMessage(props){
 
 
   const listFormatDate = ((date)=>{
-    let dt = (date).split("T")
+    let dt = date.split("T")
     let d = dt[0].split("-")
     let t = (dt[1].replace("Z","")).split(":")
     let format = d.concat(t)

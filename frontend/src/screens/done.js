@@ -22,6 +22,7 @@ const Done = ({route, navigation}) => {
     const [posted, setPosted] = useState(false)
     const [surveyPosted, setSurveyPosted] = useState(false)
     const [responsesPosted, setResponsesPosted] = useState(false)
+    const access = JSON.parse(localStorage.getItem("authTokens"))['access']
 
     const onPress = ()=>{
        navigation.navigate("StudentDashboard")
@@ -51,14 +52,17 @@ const Done = ({route, navigation}) => {
             'point': r,
             'student_id':user.user_id,
             'above':above,
+            'date': moment().format("YYYY-MM-DD")
         }
 
         const lab_risk = `http://127.0.0.1:8000/average/`
             let response = await fetch(lab_risk, {
                 method : 'POST',
                 headers :{
-                    'Content-Type' : 'application/json',
-                },
+              'Authorization': `Bearer ${access}`,
+              'Content-Type' : 'application/json',
+              'Accept':'application/json',
+            },
                 body: JSON.stringify(a),
             }).catch(console.error)
     }else{
@@ -118,13 +122,14 @@ const Done = ({route, navigation}) => {
             let response = await fetch(surveyUrl, {
                 method : 'POST',
                 headers :{
+                    'Authorization' :`Bearer ${access}`, 
                     'Content-Type' : 'application/json',
-                },
+                  },
                 body: JSON.stringify(p),
             }).catch(console.error)
 
             let api_r = response.status
-            await api_r
+            alert( api_r)
         setSurveyPosted(true)
     }
 
@@ -225,8 +230,10 @@ const Done = ({route, navigation}) => {
             let response = await fetch(lab_risk, {
                 method : 'POST',
                 headers :{
+                    'Authorization': `Bearer ${access}`,
                     'Content-Type' : 'application/json',
-                },
+                    'Accept':'application/json',
+                  },
                 body: JSON.stringify(p),
             }).catch(console.error)
 
@@ -277,12 +284,14 @@ const Done = ({route, navigation}) => {
     }
 
     const fetchAverage = async(axis,r)=>{
-        const averageUrl = `http://127.0.0.1:8000/average/`+lab.lab.lab_id+`/`+axis.id
+        const averageUrl = `http://127.0.0.1:8000/average/`+lab.lab.lab_id+`/`+axis.id+`/`
         const average_response = await fetch(averageUrl, {
             method : 'GET',
             headers :{
+                'Authorization': `Bearer ${access}`,
                 'Content-Type' : 'application/json',
-            },
+                'Accept':'application/json',
+              },
         }).catch(console.error)
         let average = await average_response.json()
         return [average,axis.neg,r,axis.id]

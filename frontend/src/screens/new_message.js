@@ -13,6 +13,7 @@ const SendNew = ({route, navigation}) => {
 
 
 
+
     const handleSend = async () => {
         let data = {
             "sender_id": user.user_id, 
@@ -35,10 +36,11 @@ const SendNew = ({route, navigation}) => {
         
     };
 
-    if (!loading){
+    useEffect(()=>{
         Alert.alert('Message to '+ receiver_id + 'Message sent!')
         return navigation.navigate("Messages")
-    }else{
+    },[loading])
+
         return(
             <ContentJustified>
                 <SubTitle> Message to Tutor for course {route.params.lab}</SubTitle>
@@ -54,6 +56,6 @@ const SendNew = ({route, navigation}) => {
               
             </ContentJustified>
     )
-    }
+    
 };
 export default SendNew;
