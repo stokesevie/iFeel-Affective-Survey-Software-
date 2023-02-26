@@ -8,11 +8,11 @@ import jwt_decode from "jwt-decode";
 
 
 const Pending = ({navigation}) => {
-    const { user,updateMessages, updateCourses,updateUserInfo,userInfo } = useContext(AuthContext);
+    const { user,updateMessages, updateCourses} = useContext(AuthContext);
    
 
     const getMessages = async()=>{
-        const access = JSON.parse(localStorage.getItem("authTokens"))['access']
+    const access = JSON.parse(localStorage.getItem("authTokens"))['access']
       const messageUrl = `http://127.0.0.1:8000/message/`+ user.user_id+`/`   
         const message_response = await fetch(messageUrl, {
             method : 'GET',
@@ -39,26 +39,11 @@ const Pending = ({navigation}) => {
         let c = await course_response.json().then(course=>nav(course)).catch(console.error)
     }
 
-    const fetchUserInfo = async ()=>{
-        const access = JSON.parse(localStorage.getItem("authTokens"))['access']
-        const userUrl = `http://127.0.0.1:8000/users/`+ user.user_id +`/`
-        const response = await fetch(userUrl, {
-          method : 'GET',
-          headers :{
-            'Authorization' :`Bearer ${access}`, 
-            'Content-Type' : 'application/json',
-          },
-      })
-      let i = await response.json().then(info=>updateUserInfo(info)).catch(error=>{})
-      
-    }
-
 
     useEffect(()=>{
         try{
             if (user.user_id){
                 getMessages()
-                fetchUserInfo()
                 getCourses()
                
             }
@@ -78,7 +63,7 @@ const Pending = ({navigation}) => {
 
     const nav = async(c)=>{
         updateCourses(c)
-        if (userInfo.is_staff){
+        if (user.is_staff){
             return navigation.navigate("TutorDashboard")
         } else{
             return navigation.navigate("StudentDashboard")

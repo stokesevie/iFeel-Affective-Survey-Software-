@@ -77,7 +77,6 @@ export const AuthProvider = ({ children }) => {
 
   const [messages, setMessages] = useState([])
   const [courses, setCourses] = useState([])
-  const [userInfo,setUserInfo] = useState([])
 
 
   const updateMessages= ((m)=>{
@@ -87,10 +86,6 @@ export const AuthProvider = ({ children }) => {
     setCourses(c)
   }
   )
-  const updateUserInfo = (i)=>{
-    setUserInfo(i)
-  }
-
 
 
   const logoutUser = (navigation) => {
@@ -111,8 +106,6 @@ export const AuthProvider = ({ children }) => {
     updateCourses,
     messages,
     courses,
-    updateUserInfo,
-    userInfo
   };
 
   useEffect(() => {

@@ -64,7 +64,15 @@ export const CourseDetail = styled.Text`
     text-align: center;
     font-weight: bold;
     color: ${Theme.text_darker};
-    padding: 10px;
+    padding: 5px;
+`;
+
+export const RelatedLab = styled.Text`
+    font-size: 15px;
+    text-align: right;
+    font-weight: bold;
+    color: ${Theme.primary};
+    padding: 5px;
 `;
 
 export const StyledListButton = styled.TouchableOpacity`
@@ -72,7 +80,15 @@ export const StyledListButton = styled.TouchableOpacity`
     background-color: ${Theme.text_light};
     border-radius: 5px;
     height: 120px;
-    margin-bottom: 20px;
+    margin-bottom: 8px;
+`;
+
+export const AxisListButton = styled.TouchableOpacity`
+    padding: 1px;
+    background-color: ${Theme.text_light};
+    border-radius: 5px;
+    height: 150px;
+    margin-bottom: 8px;
 `;
 
 export const StyledListButtonC = styled.TouchableOpacity`
@@ -98,7 +114,7 @@ export const CourseTitle = styled.Text`
     text-align: center;
     font-weight: bold;
     color: ${Theme.text_darker};
-    padding: 10px;
+    padding: 5px;
 `;
 
 
@@ -127,7 +143,7 @@ export const LeftIcon = styled.View`
 
 export const StyledTextInput = styled.TextInput`
     background-color: ${Theme.text_light};
-    color: ${Theme.third};
+    color: ${Theme.primary};
     padding: 15px;
     padding-left: 55px;
     padding-right: 55px;
@@ -169,6 +185,16 @@ export const StyledButton = styled.TouchableOpacity`
     margin-vertical: 5px;
     height: 60px;
     padding-top: 10px;
+`;
+
+export const StyledButtonTutor = styled.TouchableOpacity`
+    padding: 25px;
+    background-color: ${Theme.secondary};
+    justify-content: center;
+    border-radius: 5px;
+    align-items: center;
+    margin-vertical: 5px;
+    height: 100px;
 `;
 
 export const StyledDoneButton = styled.TouchableOpacity`
@@ -325,6 +351,10 @@ export const ResponseText = styled.Text`
 export const Center = styled.TouchableOpacity`
     margin-left:45%;
     margin-top:2%;
+`;
+
+export const CenterText = styled.Text`
+text-align:center;
 `;
 
 export const BubbleTextBold = styled.Text`

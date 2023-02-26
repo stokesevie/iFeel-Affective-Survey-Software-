@@ -4,7 +4,6 @@ import { CourseDetail, StyledListButton,StyledListButtonC, CourseTitle } from '.
 
 export default function StyledLab(props){
     const {lab, navigation,pending } = props
-
         if (!pending){
             return(
                 <StyledListButtonC onPress= {
@@ -14,6 +13,7 @@ export default function StyledLab(props){
                 }>
                     <CourseDetail>{lab.lab_number}</CourseDetail>
                     <CourseTitle>{lab.title}</CourseTitle>
+                    <CourseDetail>{lab.date}</CourseDetail>
                 </StyledListButtonC>
                     )
         }else{
@@ -25,6 +25,7 @@ export default function StyledLab(props){
                 }>
                     <CourseDetail>{lab.lab_number}</CourseDetail>
                     <CourseTitle>{lab.title}</CourseTitle>
+                    <CourseDetail>{lab.date}</CourseDetail>
                 </StyledListButton>
                     )
         }

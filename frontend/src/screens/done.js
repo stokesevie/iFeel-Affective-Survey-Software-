@@ -129,7 +129,6 @@ const Done = ({route, navigation}) => {
             }).catch(console.error)
 
             let api_r = response.status
-            alert( api_r)
         setSurveyPosted(true)
     }
 

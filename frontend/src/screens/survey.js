@@ -178,7 +178,7 @@ const Survey = ({route, navigation}) => {
                 Linking.openURL(lab.lab.help)
             }}><StyledButtonText> Online resources </StyledButtonText></StyledButton>
             <StyledButton title = "Message" onPress={()=>{
-                return navigation.navigate("SendNew", {'receiver_id':'24440303s','lab':lab.lab.course_id})
+                return navigation.navigate("SendNew", {'receiver_id':'24440303s','lab':lab.course_id})
             }}><StyledButtonText> Message Tutor </StyledButtonText></StyledButton>
                 </ContentJustifiedBack>
         )

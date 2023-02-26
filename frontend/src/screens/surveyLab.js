@@ -94,7 +94,8 @@ const SurveyLab = ({route, navigation}) => {
             <View>
                 <ContentJustified>
                     <PageTitle>Survey for lab {lab.lab_number}</PageTitle>
-                    <SurveyQuestion>This is question {question}/3</SurveyQuestion>  
+                    <SurveyQuestion>This is question {question}/3</SurveyQuestion> 
+                    <SurveyQuestion>Mark with your finger where you think on this axis matches your emotional response to this lab most effetively (if close to an axis you agree strongly)</SurveyQuestion>
 
     
                         <Grid>

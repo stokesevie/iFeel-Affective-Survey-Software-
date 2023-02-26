@@ -26,8 +26,16 @@ import Send from './screens/send';
 import SendNew from './screens/new_message';
 import User from './screens/user';
 import TutorCourses from './screens/tutor_courses';
+import TutorCourse from './screens/tutor_course';
+import TutorLab from './screens/tutor_lab';
+import StudentRisk from './screens/student_risk';
+import AllRisks from './screens/all_risks';
+import QuestionsEdit from './screens/questions_edit';
+import QuestionEdit from './screens/question_edit';
 
 import { Theme } from './components/styles'
+
+
 
 const Stack = createNativeStackNavigator();
 const NavBar = createBottomTabNavigator();
@@ -136,7 +144,13 @@ function App() {
                                     <Stack.Screen name="Send" component={Send} options={{ presentation:'modal',headerShown:false }}/>
                                     <Stack.Screen name="SendNew" component={SendNew} options={{ presentation:'modal',headerShown:false }}/>
                                     <Stack.Screen name="Profile" component={User} options={{ presentation:'modal',headerShown:false }}/>
-                                    <Stack.Screen name="TutorCourses" component={TutorCourses} options={{ presentation:'modal',headerShown:false }}/>
+                                    <Stack.Screen name="TutorCourses" component={TutorCourses} options={{ title:'' ,headerTransparent: true, headerTintColor:colours.primary }}/>
+                                    <Stack.Screen name="TutorCourse" component={TutorCourse} options={{ title:'' ,headerTransparent: true, headerTintColor:colours.primary }}/>
+                                    <Stack.Screen name="TutorLab" component={TutorLab} options={{ title:'' ,headerTransparent: true, headerTintColor:colours.primary }}/>
+                                    <Stack.Screen name="StudentRisk" component={StudentRisk} options={{ title:'' ,headerTransparent: true, headerTintColor:colours.primary }}/>
+                                    <Stack.Screen name="AllRisks" component={AllRisks} options={{ title:'' ,headerTransparent: true, headerTintColor:colours.primary }}/>
+                                    <Stack.Screen name= "QuestionsEdit" component={QuestionsEdit} options={{ title:'' ,headerTransparent: true, headerTintColor:colours.primary }}/>
+                                    <Stack.Screen name= "QuestionEdit" component={QuestionEdit} options={{ title:'' ,headerTransparent: true, headerTintColor:colours.primary }}/>
                             </Stack.Navigator>
                     </NavigationContainer>
                 </AuthProvider>

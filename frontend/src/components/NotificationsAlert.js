@@ -1,5 +1,5 @@
 import React, { useEffect,useState,useContext } from "react";
-import { NotificationTitle,StyledNotification,NotificationText,Center ,ContentsNotification,Theme, StyledBubbleLarge, BubbleText, BubbleTextBold} from './styles'
+import { Center ,CenterText,Theme, StyledBubbleLarge, BubbleText, BubbleTextBold} from './styles'
 import {Ionicons} from '@expo/vector-icons';
 import AuthContext from "../utils/auth_context";
 
@@ -91,7 +91,7 @@ export function NotificationsAlert(props) {
       <StyledBubbleLarge>
         
        <Center><Ionicons name="warning-outline" size={35} color={Theme.secondary}></Ionicons></Center> 
-       <BubbleTextBold>{risks[0][0].course_name} - lab {risks[0][0].lab_number}</BubbleTextBold>
+       <CenterText><BubbleTextBold>{risks[0][0].course_name} - lab {risks[0][0].lab_number}</BubbleTextBold></CenterText>
       <BubbleText>You are in the <BubbleTextBold>{zone}</BubbleTextBold> zone for this lab. You found it more <BubbleTextBold>{label[0].neg_title}</BubbleTextBold> than the tutor expected.</BubbleText>
       <ShowEmotional/>
       </StyledBubbleLarge>
