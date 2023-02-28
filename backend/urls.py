@@ -18,6 +18,12 @@ from django.urls import path, include, re_path
 from rest_framework import routers
 from db import views
 
+from rest_framework_simplejwt.views import (
+    TokenRefreshView,
+    TokenObtainPairView
+)
+
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -28,18 +34,28 @@ urlpatterns = [
     path('message/<int:receiver_id>/<int:sender_id>', views.MessageDetail.as_view()),
     path('sender/<str:username>/', views.FindUser.as_view()),
     path('courses/<int:student_id>/', views.StudentEnrollFind.as_view()),
-    path('token/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('courseDetail/<str:id>', views.CourseDetail.as_view()),
     path('labs/<str:course_id>', views.LabDetail.as_view()),
     path('recent_message/<int:receiver_id>', views.RecentMessage.as_view()),
     path('survey/<int:lab_id>/', views.FindSurvey.as_view()),
+    path('post_survey/', views.FindSurvey.as_view()),
     path('survey/', views.FindStudentSurvey.as_view()),
     path('survey/<int:lab_id>/<int:student_id>/', views.FindStudentSurvey.as_view()),
-    path('question/<int:question_id>', views.LabQuestions.as_view()),
+    path('question/<int:question_id>/', views.LabQuestions.as_view()),
+    path('question/', views.LabQuestions.as_view()),
     path('student_lab/<int:student_id>/<int:lab_id>/', views.FindStudentLabRisk.as_view()),
     path('student_lab_risk/', views.FindStudentLabRisk.as_view()),
     path('student_lab_risks/<int:student_id>/', views.LabRisksByStudent.as_view()),
-    path('axis_detail/<int:axis_id>/', views.FindAxisDetail.as_view()),
+    path('student_lab_risks/lab/<int:lab_id>/', views.LabRisksByLab.as_view()),
     path('axis_labels/<int:axis_id>/', views.FindAxisLabel.as_view()),
-    
+    path('axis_labels/', views.FindAxisLabel.as_view()),
+    path('average/', views.AxisAverage.as_view()),
+    path('average/<int:lab_id>/<int:axis_id>/', views.AxisAverage.as_view()),
+    path('average/<int:student_id>/', views.AxisAverage.as_view()),
+    path('average_lab/<int:student_id>/<int:lab_id>/', views.AxisAverage.as_view()),
+    path('tutor_teaching/<int:user_id>/', views.FindTutorTeaching.as_view()),
+    path('students/<int:pk>/', views.StudentDetail.as_view()),
 ]
+

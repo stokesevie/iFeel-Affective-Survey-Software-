@@ -26,7 +26,7 @@ class student(models.Model):
 
 class tutor(models.Model):
     username = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,primary_key=True, default='2444030s' )
-
+    
 class course(models.Model):
     id = models.CharField(max_length=10, primary_key=True)
     title = models.CharField(max_length=20)
@@ -40,24 +40,26 @@ class student_enroll(models.Model):
     
 class lab(models.Model):
     course_id = models.ForeignKey("course", on_delete=models.CASCADE)
-    lab_id = models.AutoField(primary_key=True, default='1',)
+    lab_id = models.AutoField(primary_key=True)
     lab_number = models.IntegerField()
     title = models.CharField(max_length=20, default= "")
     date = models.DateField()
-    help = models.URLField(null=True)
+    help = models.URLField(blank=True)
 
-class axis(models.Model):
-    x_id = models.ForeignKey("axis_labels", on_delete=models.CASCADE, related_name='x_id')
-    y_id= models.ForeignKey("axis_labels", on_delete=models.CASCADE, related_name='y_id')
-    x = models.IntegerField()
-    y = models.IntegerField()
+class axis_average(models.Model):
+    axis_id = models.ForeignKey("axis_labels", on_delete=models.CASCADE)
+    lab_id = models.ForeignKey("lab", on_delete=models.CASCADE)
+    student_id = models.ForeignKey(student,on_delete=models.CASCADE)
+    date = models.DateField(default='2022-02-02')
+    point = models.IntegerField()
+    above = models.BooleanField()
 
 class axis_labels(models.Model):
-    pos_title = models.CharField(max_length=20)
-    neg_title = models.CharField(max_length=20)
-    risk = models.IntegerField()
-    warn = models.IntegerField()
-    avg = models.IntegerField()
+    pos_title = models.CharField(max_length=25)
+    neg_title = models.CharField(max_length=25)
+    risk = models.IntegerField(default=8)
+    warn = models.IntegerField(default=7)
+    avg = models.IntegerField(default=6)
 
 class student_lab_risk(models.Model):
     student_id = models.ForeignKey("student", on_delete=models.CASCADE)
@@ -70,12 +72,12 @@ class student_lab_risk(models.Model):
 
 
 class message(models.Model):
-    date = str(datetime.now())
-    date = date.split('.',1)[0]+'Z'
+    date = datetime.now()
     sender_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender_id')
     receiver_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiver_id')
     sent_at = models.DateTimeField(default=date)
     message_content = models.TextField()
+    related_lab = models.ForeignKey("lab", on_delete=models.CASCADE,blank=True, null=True)
 
 
 class question(models.Model):
@@ -88,12 +90,13 @@ class survey(models.Model):
     question_2 = models.ForeignKey(question, on_delete=models.CASCADE, related_name='question_2')
     question_3 = models.ForeignKey(question, on_delete=models.CASCADE, related_name='question_3')
 
-class response(models.Model):
-    x = models.ForeignKey(student_lab_risk,on_delete=models.CASCADE, default=1, related_name="x_response")
-    y = models.ForeignKey(student_lab_risk,on_delete=models.CASCADE, default=1, related_name = "y_response")
-
 class student_survey(models.Model):
     lab_id = models.ForeignKey(lab,on_delete=models.CASCADE, default=1)
     survey_id = models.ForeignKey(survey,on_delete=models.CASCADE, default=1)
     student_id = models.ForeignKey(student, on_delete=models.CASCADE,default=1)
     completed = models.BooleanField(default=False)
+
+class tutor_teaching(models.Model):
+    tutor_id = models.ForeignKey(tutor,on_delete=models.CASCADE)
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    lab_id = models.ForeignKey(lab, on_delete=models.CASCADE)

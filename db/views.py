@@ -1,96 +1,27 @@
 from django.shortcuts import render
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
-
+from rest_framework.decorators import permission_classes,api_view
+from django.db.models import Avg
 from rest_framework.views import APIView
 from rest_framework import status
 from .serializers import *
 from .models import *
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.views import TokenObtainPairView
-from django.core import serializers
 from datetime import datetime
 from django.utils.dateparse import parse_datetime
-import json
+from rest_framework.permissions import IsAuthenticated
+
+
+
 # Create your views here.
-
-@api_view(['GET','POST'])
-def students(request):
-    if request.method == 'GET':
-        data = db.objects.all()
-        serializer = dbSerializer(data, context={'request': request}, many=True)
-        return Response(serializer.data)
-    elif request.method == 'POST':
-        serializer = dbSerializer(data = request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(status = status.HTTP_201_CREATED)
-        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
-
-@api_view(['PUT', 'DELETE'])
-def students_edit(request, pk):
-    try:
-        student = db.objects.get(pk=pk)
-    except db.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'PUT':
-        serializer = dbSerializer(student, data=request.data,context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    elif request.method == 'DELETE':
-        student.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-@api_view(['GET','POST'])
-def courses(request):
-    if request.method == 'GET':
-        data = course.objects.all()
-        serializer = CourseSerializer(data, context={'request': request}, many=True)
-        return Response(serializer.data)
-    elif request.method == 'POST':
-        serializer = CourseSerializer(data = request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(status = status.HTTP_201_CREATED)
-        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['GET','POST'])
-def students(request):
-    if request.method == 'GET':
-        data = student.objects.all()
-        serializer = StudentSerializer(data, context={'request': request}, many=True)
-        return Response(serializer.data)
-    elif request.method == 'POST':
-        serializer = StudentSerializer(data = request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(status = status.HTTP_201_CREATED)
-        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['GET','POST'])
-def tutors(request):
-    if request.method == 'GET':
-        data = tutor.objects.all()
-        serializer = TutorSerializer(data, context={'request': request}, many=True)
-        return Response(serializer.data)
-    elif request.method == 'POST':
-        serializer = TutorSerializer(data = request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(status = status.HTTP_201_CREATED)
-        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
 class UserList(APIView):
+    permission_classes=[IsAuthenticated]
+
     def get(self, request, format=None):
         snippets = User.objects.all()
         serializer = UserSerializer(snippets, many=True)
@@ -101,7 +32,7 @@ class UserList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+        
 class UserDetail(APIView):
     """
     Retrieve, update or delete a snippet instance.
@@ -114,6 +45,7 @@ class UserDetail(APIView):
 
     def get(self, request, pk, format=None):
         snippet = self.get_object(pk)
+        
         serializer = UserSerializer(snippet)
         return Response(serializer.data)
 
@@ -133,10 +65,26 @@ class UserDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+class StudentDetail(APIView):
+    def get_object(self, pk):
+        try:
+            return student.objects.get(pk=pk)
+        except student.DoesNotExist:
+            raise status.HTTP_400_BAD_REQUEST
+
+    def get(self, request, pk, format=None):
+        snippet = self.get_object(pk)
+        
+        serializer = StudentSerializer(snippet)
+        return Response(serializer.data)
+
+
+
 class FindUser(APIView):
     """
     Retrieve, update or delete a snippet instance.
     """
+    permission_classes= (IsAuthenticated,)
     def get_object(self, username):
         try:
             return User.objects.get(username=username)
@@ -150,24 +98,37 @@ class FindUser(APIView):
 
 
 class MessageDetail(APIView):
-
-    http_method_names = ['get', 'post']
-
+    permission_classes= (IsAuthenticated,)
     def serialize_message(self,messages):
             msg =[]
             for message in messages:
-                json={'id': message.id,
-                'sender_id': message.sender_id.username,
-                's_id':message.sender_id.id,
-                'sender_f_name': message.sender_id.first_name,
-                'sender_l_name': message.sender_id.last_name,
-                'receiver_id': message.receiver_id.username,
-                'sent_at': message.sent_at,
-                'message_content': message.message_content,
-                }
+                try:
+                        json={
+                    'id': message.id,
+                    'sender_id': message.sender_id.username,
+                    's_id':message.sender_id.id,
+                    'staff': message.sender_id.is_staff,
+                    'sender_f_name': message.sender_id.first_name,
+                    'sender_l_name': message.sender_id.last_name,
+                    'receiver_id': message.receiver_id.username,
+                    'sent_at': str(message.sent_at),
+                    'message_content': message.message_content,
+                    'related_lab_title': message.related_lab.title,
+                    'related_lab': message.related_lab.lab_id,
+                    'related_lab_course_title': message.related_lab.course_id.title
+                    }
+                except:
+                    json = {'id': message.id,
+                    'sender_id': message.sender_id.username,
+                    's_id':message.sender_id.id,
+                    'staff': message.sender_id.is_staff,
+                    'sender_f_name': message.sender_id.first_name,
+                    'sender_l_name': message.sender_id.last_name,
+                    'receiver_id': message.receiver_id.username,
+                    'sent_at': str(message.sent_at),
+                    'message_content': message.message_content}
                 msg.append(json)
             return msg
-
     def get_object(self, receiver_id):
             try:
                 return message.objects.filter(receiver_id=receiver_id).order_by('-sent_at')
@@ -175,6 +136,7 @@ class MessageDetail(APIView):
                 raise status.HTTP_400_BAD_REQUEST
 
     def get(self, request, receiver_id="", sender_id="",format=None):
+        print(receiver_id,sender_id)
         if sender_id=="" and receiver_id!="":
             return Response(self.serialize_message(message.objects.filter(receiver_id=receiver_id).order_by('-sent_at')))
         elif receiver_id!="" and sender_id!="":
@@ -194,6 +156,7 @@ class MessageDetail(APIView):
 
 
 class RecentMessage(APIView):
+    permission_classes= (IsAuthenticated,)
     def serialize_message(self,messages):
             msg =[]
             for message in messages:
@@ -218,6 +181,7 @@ class RecentMessage(APIView):
 
 
 class StudentEnrollFind(APIView):
+    permission_classes= (IsAuthenticated,)
     def serialize_student_enroll(self,student_enroll):
         enroll =[]
         for courses in student_enroll:
@@ -237,7 +201,9 @@ class StudentEnrollFind(APIView):
     def get(self, request, student_id, format=None):
         return Response(self.serialize_student_enroll(student_enroll.objects.filter(student_id=student_id)))
 
+
 class CourseDetail(APIView):
+    permission_classes= (IsAuthenticated,)
     def get_object(self, id):
         try:
             return course.objects.get(id=id)
@@ -250,6 +216,7 @@ class CourseDetail(APIView):
         return Response(serializer.data)
 
 class LabDetail(APIView):
+    permission_classes= (IsAuthenticated,)
     def serialize_labs(self,labs):
         lab_list =[]
         for lab in labs:
@@ -258,6 +225,7 @@ class LabDetail(APIView):
             'lab_number': lab.lab_number,
             'title':lab.title,
             'date': lab.date,
+            'help': lab.help
             }
             lab_list.append(json)
         return lab_list
@@ -271,7 +239,9 @@ class LabDetail(APIView):
     def get(self, request, course_id, format=None):
         return Response(self.serialize_labs(lab.objects.filter(course_id=course_id)))
 
+
 class FindSurvey(APIView):
+    permission_classes= (IsAuthenticated,)
     def get_object(self, lab_id):
         try:
             return survey.objects.get(lab_id=lab_id)
@@ -283,15 +253,25 @@ class FindSurvey(APIView):
         serializer = surveySerializer(snippet)
         return Response(serializer.data)
 
+    def post(self, request, format=None):
+        serializer = surveySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 class FindStudentSurvey(APIView):
+    permission_classes= (IsAuthenticated,)
     def student_survey_serialize(self,data):
-        return [{
+        return {
             'lab_id': data.lab_id.lab_id,
             'survey_id':data.survey_id.id,
             'course': data.lab_id.course_id.id,
             'student_id': data.student_id.username.id,
             'completed':data.completed
-        }]
+        }
 
     def get_object(self, lab_id,student_id):
         try:
@@ -312,11 +292,84 @@ class FindStudentSurvey(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class AxisAverage(APIView):
+    permission_classes= (IsAuthenticated,)
+    def ser(self,data):
+        return {
+            'id':data.id,
+            'lab_id': data.lab_id.lab_id,
+            'student_id': data.student_id.username.id,
+            'axis_id': data.axis_id.id,
+            'axis_pos': data.axis_id.pos_title,
+            'axis_neg':data.axis_id.neg_title,
+            'above':data.above,
+            'point': data.point,
+            'date': data.date,
+        }
+    def ser_all(self,data):
+        records=[]
+        for record in data:
+            records.append({
+            'id':record.id,
+            'lab_id': record.lab_id.lab_id,
+            'student_id': record.student_id.username.id,
+            'axis_id': record.axis_id.id,
+            'axis_pos': record.axis_id.pos_title,
+            'axis_neg':record.axis_id.neg_title,
+            'above':record.above,
+            'point': record.point,
+            'date': record.date,
+        })
+        return records
+
+
+    def get_object(self, lab_id,axis_id):
+        try:
+            avg = axis_average.objects.filter(lab_id=lab_id,axis_id=axis_id).aggregate(Avg('point'))
+            return avg
+        except axis_average.DoesNotExist:
+            raise status.HTTP_400_BAD_REQUEST
+    
+    def get_all_lab(self, lab_id,student_id):
+        try:
+            return axis_average.objects.filter(lab_id=lab_id,student_id=student_id)
+        except axis_average.DoesNotExist:
+            raise status.HTTP_400_BAD_REQUEST
+
+    def get_recent(self,student_id):
+        try:
+            avg = axis_average.objects.filter(student_id=student_id).order_by('-date')[:1].get()
+            return avg
+        except axis_average.DoesNotExist:
+            raise status.HTTP_400_BAD_REQUEST
+
+    def get(self, request, lab_id=0,axis_id=0,student_id=0, format=None):
+        if (student_id!=0 and lab_id==0):
+            snippet = self.get_recent(student_id=student_id)
+            r = self.ser(snippet)
+            return Response(r)
+        elif (student_id!=0 and lab_id!=0):
+            snippet = self.get_all_lab(student_id=student_id, lab_id=lab_id)
+            return Response(self.ser_all(snippet))
+        else:
+            snippet = self.get_object(lab_id=lab_id,axis_id=axis_id)
+            r = Response(snippet)
+            return r
+
+    def post(self,request,format=None):
+        serializer = axis_averageSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class LabQuestions(APIView):
+    permission_classes= (IsAuthenticated,)
     def serialize_questions(self,questions):
         question_list =[]
         for question in questions:
-            json={'x': 
+            json={'question_id':question.id,
+            'x': 
             {'id': question.x.id,
             'pos': question.x.pos_title,
             'neg': question.x.neg_title,
@@ -336,28 +389,56 @@ class LabQuestions(APIView):
 
     def get_object(self, question_id):
         try:
-            return question.objects.filter(id=question_id)
+            return question.objects.get(id=question_id)
         except question.DoesNotExist:
             raise status.HTTP_400_BAD_REQUEST
 
     def get(self, request, question_id, format=None):
         return Response(self.serialize_questions(question.objects.filter(id=question_id)))
+    def put(self,request,question_id,format=None):
+        snippet = self.get_object(question_id=question_id)
+        serializer = questionSerializer(instance=snippet,data=request.data,partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    def post(self,request,format=None):
+        serializer = questionSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class FindStudentLabRisk(APIView):
-    """
-    Retrieve, update or delete a snippet instance.
-    """
+    permission_classes= (IsAuthenticated,)
+    def ser(self,data):
+        rs = []
+        for r in data:
+            rs.append({
+            "student_id": r.student_id.username.id,
+            "lab_id": r.lab_id.lab_id,
+            "axis_id": r.axis_id.id,
+            "axis_negative": r.axis_id.neg_title,
+            "date": r.date,
+            "risk": r.risk,
+            "warning": r.warning,
+            "avg": r.avg
+            })
+        return rs
+
     def get_object(self, student_id,lab_id):
         try:
-            return student_lab_risk.objects.get(student_id=student_id,lab_id=lab_id)
+            return student_lab_risk.objects.filter(student_id=student_id,lab_id=lab_id)
         except student_lab_risk.DoesNotExist:
             raise status.HTTP_400_BAD_REQUEST
 
     def get(self, request, student_id, lab_id, format=None):
         snippet = self.get_object(student_id=student_id,lab_id=lab_id)
-        serializer = student_lab_riskSerializer(snippet)
-        return Response(serializer.data)
+        serializer = self.ser(snippet)
+        return Response(serializer)
     
     def post(self, request,format=None):
         serializer = student_lab_riskSerializer(data=request.data)
@@ -369,13 +450,20 @@ class FindStudentLabRisk(APIView):
 
 
 class LabRisksByStudent(APIView):
+    permission_classes= (IsAuthenticated,)
     def serialize_risks(self,risks):
         risk_list =[]
         for r in risks:
             json={
             'student_id': r.student_id.username.id,
+            'student_name': r.student_id.username.first_name+" "+r.student_id.username.last_name,
             'lab_id': r.lab_id.lab_id,
+            'lab_number':r.lab_id.lab_number,
+            'lab_title':r.lab_id.title,
+            'course_name': r.lab_id.course_id.title,
             'axis_id' :r.axis_id.id,
+            'axis_neg' :r.axis_id.neg_title,
+            'axis_pos' :r.axis_id.pos_title,
             'date': r.date,
             'risk': r.risk,
             'warning': r.warning,
@@ -396,19 +484,44 @@ class LabRisksByStudent(APIView):
         return Response(serializer)
 
 
-class FindAxisDetail(APIView):
-    def get_object(self, axis_id):
+class LabRisksByLab(APIView):
+    permission_classes= (IsAuthenticated,)
+    def serialize_risks(self,risks):
+        risk_list =[]
+        for r in risks:
+            json={
+            'student_id': r.student_id.username.id,
+            'student_first_name': r.student_id.username.first_name,
+            'student_last_name': r.student_id.username.last_name,
+            'lab_id': r.lab_id.lab_id,
+            'lab_number':r.lab_id.lab_number,
+            'lab_title': r.lab_id.title,
+            'course_name': r.lab_id.course_id.title,
+            'axis_id' :r.axis_id.id,
+            'axis_neg': r.axis_id.neg_title,
+            'axis_pos': r.axis_id.pos_title,
+            'date': r.date,
+            'risk': r.risk,
+            'warning': r.warning,
+            'avg' : r.avg
+            }
+            risk_list.append(json)
+        return risk_list
+
+    def get(self,request,lab_id):
+        snippet = self.get_labs(lab_id=lab_id)
+        serializer = self.serialize_risks(snippet)
+        return Response(serializer)
+    
+    def get_labs(self,lab_id):
         try:
-            return axis.objects.get(id= axis_id)
-        except axis.DoesNotExist:
+            return student_lab_risk.objects.filter(lab_id = lab_id).order_by('-risk')
+        except student_lab_risk.DoesNotExist:
             raise status.HTTP_400_BAD_REQUEST
 
-    def get(self, request, axis_id, format=None):
-        snippet = self.get_object(axis_id = axis_id)
-        serializer = axisSerializer(snippet)
-        return Response(serializer.data)
 
 class FindAxisLabel(APIView):
+    permission_classes= (IsAuthenticated,)
     def get_object(self, axis_id):
         try:
             return axis_labels.objects.get(id= axis_id)
@@ -419,3 +532,46 @@ class FindAxisLabel(APIView):
         snippet = self.get_object(axis_id = axis_id)
         serializer = axis_labelsSerializer(snippet)
         return Response(serializer.data)
+    
+    def put(self,request,axis_id,format=None):
+        snippet = self.get_object(axis_id = axis_id)
+        serializer = axis_labelsSerializer(instance=snippet,data=request.data,partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    def post(self,request,format=None):
+        serializer = axis_labelsSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class FindTutorTeaching(APIView):
+    permission_classes= (IsAuthenticated,)
+    def ser(self, data):
+        rs = []
+        for r in data:
+            rs.append({
+                "tutor_user_id": r.tutor_id.username.id,
+                "course_id": r.lab_id.course_id.id,
+                "course_title": r.lab_id.course_id.title,
+                'lab':{
+                "lab_date" :r.lab_id.date,
+                "lab_id": r.lab_id.lab_id,
+                "lab_title": r.lab_id.title,
+                "lab_number" : r.lab_id.lab_number,
+                "help": r.lab_id.help}
+                })
+        return rs
+    def get_objects(self,user_id,request):
+        try:
+            return tutor_teaching.objects.filter(user_id=user_id)
+        except tutor_teaching.DoesNotExist:
+            return status.HTTP_400_BAD_REQUEST
+
+    def get(self, request,user_id,format=None):
+        snippet = self.get_objects(user_id,request)
+        serializer = self.ser(snippet)
+        return Response(serializer)
