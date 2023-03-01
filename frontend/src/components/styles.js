@@ -11,7 +11,7 @@ export const Theme = {
     secondary:'#D64C5A', //dark pink
     third: 'white', // white
     fourth: 'grey', // white
-    fifth: '#dd6e79' //lighter pink than the main colour
+    fifth: '#DB616D' //lighter pink than the main colour
 };
 
 export const PageTitle = styled.Text`
@@ -139,6 +139,18 @@ export const LeftIcon = styled.View`
     position: absolute;
     z-index: 1;
 `;
+export const Left = styled.View`
+    left: 15px;
+    top: 17px;
+    position: absolute;
+    z-index: 1;
+`;
+export const Right = styled.View`
+    left: 325px;
+    top: 23px;
+    position: absolute;
+    z-index: 1;
+`;
 
 
 export const StyledTextInput = styled.TextInput`
@@ -187,6 +199,24 @@ export const StyledButton = styled.TouchableOpacity`
     padding-top: 10px;
 `;
 
+export const StyledButtonEdit = styled.TouchableOpacity`
+    background-color: ${Theme.secondary};
+    justify-content: center;
+    border-radius: 5px;
+    align-items: center;
+    height: 60px;
+    margin:5px;
+    top:30px;
+`;
+
+export const StickToBottom = styled.View`
+    justify-content: flex-end;
+    display: flex;
+    height:60px;
+
+`;
+
+
 export const StyledButtonTutor = styled.TouchableOpacity`
     padding: 25px;
     background-color: ${Theme.secondary};
@@ -214,6 +244,24 @@ export const TutorStudentFeedback = styled.TouchableOpacity`
     border-radius: 5px;
     margin:5px;
     padding:5px;
+
+`;
+
+export const AxisEditSubText = styled.Text`
+    font-size: 18px;
+    letter-spacing: 1px;
+    font-weight: bold;
+    color: ${Theme.text_darker};
+
+`;
+
+export const AxisEditButton = styled.TouchableOpacity`
+    height: 60px;
+    background-color: ${Theme.secondary};
+    justify-content:center;
+    border-radius: 5px;
+    margin:5px;
+    padding:20px;
 
 `;
 
@@ -321,6 +369,7 @@ export const StyledBubble = styled.TouchableOpacity`
     border-radius: 5px;
     height: 28%;
     margin-bottom: 10px;
+    display: flex;
 
 `;
 

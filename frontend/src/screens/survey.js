@@ -1,27 +1,28 @@
 import React, { useState, useEffect } from 'react'
 import { useContext } from 'react';
-import { Text,FlatList } from 'react-native';
-import { BubbleText, ContentJustifiedBack, PageTitle, StyledButton, StyledButtonText, SubTitle, ResponseText, DoneTextBold } from '../components/styles';
+import { Text,FlatList,View } from 'react-native';
+import { BubbleText, ContentJustifiedBack, PageTitle, StyledButton, StyledButtonText, SubTitle, ResponseText, DoneTextBold, TutorStudentFeedback } from '../components/styles';
 import AuthContext from '../utils/auth_context';
-import SurveyResponseText from '../components/SurveyResponseText';
+import { Linking } from 'react-native';
 
 const Survey = ({route, navigation}) => {
     const { lab,completed } = route.params
     const {user} = useContext(AuthContext)
     const [questions, setQuestions] = useState([])
     const [survey, setSurvey] = useState([])
+    const [fetched,setFetched] = useState(false)
     const [loading, setLoading] = useState(true);
     const [results, setResults] = useState([])
     const [studentStats,setStudentStats] = useState([])
     const [tutorStats,setTutorStats] = useState([])
+    const [student,setStudent] = useState(false)
+    const [tutor,setTutor] = useState(false)
+    const [tutorDetail,setTutorDetail] = useState('')
 
     const access = JSON.parse(localStorage.getItem("authTokens"))['access']
 
-    const [count, setCount] = useState(0);
 //only update the value of 'count' when component is first mounted
-    useEffect(() => {
-    setCount((count) => count + 1);
-    }, []);
+
 
 
     const fetchSurvey = ( async ()=>{
@@ -79,7 +80,7 @@ const Survey = ({route, navigation}) => {
                 const emotional_response = await fetch(emotionalUrl, {
                     method : 'GET',
                     headers :{
-                        'Authorization' :`Bearer ${access}`, 
+                        'Authorization' :`Bearer ${access}`,
                         'Content-Type' : 'application/json',
                       },
                 })
@@ -97,7 +98,8 @@ const Survey = ({route, navigation}) => {
             let t = await tutor_response.json()
             tutorStats[0] = t
             buildStatsStudent(p)
-            setLoading(false)
+            getTutor()
+            
      
         
     }
@@ -149,27 +151,89 @@ const Survey = ({route, navigation}) => {
     }
 }
 
+const getTutor = async ()=>{
+    const tutorTeachingUrl = `http://127.0.0.1:8000/student_teaching/`+lab.lab_id+`/`
+    const tutorResponse = await fetch(tutorTeachingUrl, {
+        method : 'GET',
+        headers :{
+            'Authorization' :`Bearer ${access}`, 
+            'Content-Type' : 'application/json',
+          },
+    })
+    let body = await tutorResponse.json().catch(error=>{})
+    setTutorDetail(body[0])
+    setLoading(false)
+
+
+}
+
+useEffect(()=>{
+    if (!loading){
+        
+    }
+},[loading])
+
 
     useEffect(()=>{
         if (completed){
             getResponses().catch(error=>{})
+
         }else{
         fetchSurvey()
         .catch(error=>{})
         }
-    },[])
+    },[completed])
+
+
+
+    const ShowFlatList = (data)=>{
+        let t = data.text
+        let d = data.data
+        if (JSON.stringify(d)=="[]"){
+            return
+        }
+        return (
+        <>
+            <DoneTextBold>
+            {t}
+            </DoneTextBold>
+
+            <FlatList
+                style = {{height:'100%',flex:1}}
+                data={d}
+                renderItem = {item=>renderItem(item)}>
+            </FlatList>
+        </>
+        )
+    }
+
+
+    const ShowList = ()=>{
+        if (tutor){
+            return (<><ShowFlatList text = "Tutor Feedback" data = {tutorStats[0]}/></>)    
+        } else if (student){
+            return (<><FlatList ListHeaderComponent={()=><DoneTextBold>Affective Student Average Comparison</DoneTextBold>} data = {studentStats[0]} renderItem={item=><ResponseText>{'\n'}{item.item}</ResponseText>}/></>)
+        }
+       } 
     
     if (completed && !loading){
-        let r = studentStats[0]
         return (
             <ContentJustifiedBack>
                     <PageTitle>Affective Survey for lab {lab.lab_number}</PageTitle>  
                     <SubTitle>{lab.title}</SubTitle>
                     <SubTitle>You have already completed this survey</SubTitle>
-                    <DoneTextBold>Student Affective Response</DoneTextBold>
-                    <FlatList data={r} renderItem={item=><ResponseText>{item.item}{'\n'}</ResponseText>}/>
-                    <DoneTextBold>Tutor Response</DoneTextBold>
-                    <FlatList data={tutorStats[0]} renderItem={item=>renderItem(item)}></FlatList>
+                    <View style={{ flexDirection:"row",justifyContent:'space-between' }}>
+                        <TutorStudentFeedback title = "Tutor" onPress={()=>{if (student){
+                            setStudent(false)
+                        }
+                        setTutor(true)}}><StyledButtonText>Tutor Feedback</StyledButtonText></TutorStudentFeedback>
+                        <TutorStudentFeedback title = "Student"onPress={()=>{
+                            if (tutor){
+                                setTutor(false)
+                            }
+                            setStudent(true)}}><StyledButtonText>Student Feedback</StyledButtonText></TutorStudentFeedback>
+                    </View>
+                    <ShowList/>
                     <StyledButton title = "Home" onPress = {()=>(
                         navigation.navigate("StudentDashboard")
                     )}><StyledButtonText>Go Home</StyledButtonText></StyledButton>
@@ -178,7 +242,7 @@ const Survey = ({route, navigation}) => {
                 Linking.openURL(lab.lab.help)
             }}><StyledButtonText> Online resources </StyledButtonText></StyledButton>
             <StyledButton title = "Message" onPress={()=>{
-                return navigation.navigate("SendNew", {'receiver_id':'24440303s','lab':lab.course_id})
+                return navigation.navigate("SendNew", {'receiver_id':tutorDetail.tutor_username,'lab':lab.lab_id, 'tutor_name':tutorDetail.tutor_name, 'course':lab.course_id})
             }}><StyledButtonText> Message Tutor </StyledButtonText></StyledButton>
                 </ContentJustifiedBack>
         )

@@ -12,7 +12,7 @@ export default function StyledCourse(props){
     const access = JSON.parse(localStorage.getItem("authTokens"))['access']
 
     const fetchCourseDetail = async ()=>{
-        const userUrl = `http://127.0.0.1:8000/courseDetail/`+ course.lab_id
+        const userUrl = `http://127.0.0.1:8000/courseDetail/`+ course.course_id
         const response = await fetch(userUrl, {
             method : 'GET',
             headers :{
@@ -39,7 +39,7 @@ export default function StyledCourse(props){
                     navigation.navigate("Course",{ course:  {courseDetail}})
                 }
             }>
-                <CourseDetail>{course.lab_id}</CourseDetail>
+                <CourseDetail>{course.course_id}</CourseDetail>
                 <CourseTitle>{courseDetail.title}</CourseTitle>
             </StyledListButton>
                 )

@@ -88,9 +88,13 @@ const SendNew = ({route, navigation}) => {
         </ContentJustified>
         )
     }else{
+        let t= 'tutor'
+        if (route.params.tutor_name){
+            t = t+ ' '+route.params.tutor_name
+        }
         return(
             <ContentJustified>
-                <SubTitle> Message to Tutor for course {route.params.lab}</SubTitle>
+                <SubTitle> Message to {t} for course {route.params.course}</SubTitle>
                 <StyledTextInputParagraph
                     editable
                     multiline

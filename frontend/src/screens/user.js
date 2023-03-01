@@ -16,10 +16,13 @@ const User = ({route, navigation}) => {
     date += '+00:00'
 
     useEffect(()=>{
-        if (user.is_staff){
-        }else{
-        StudentDetails()
+        if (loading){
+            if (user.is_staff){
+            }else{
+            StudentDetails()
+            }
         }
+
     },[loading])
 
     const updateUserLastLogin = async ()=>{
@@ -46,12 +49,12 @@ const User = ({route, navigation}) => {
                 'Content-Type' : 'application/json',
               },
         })
-        let s = await student_response.json().then(data =>setStudent(data)).catch(error=>setStudent(false))
-        setStudent(s)
+        await student_response.json().then(data =>setStudent(data)).catch(error=>setStudent(false))
+        setloading(false)
         
     }
 
-    if (student){
+    if (!user.is_staff&& !loading){
         return (
         <View>
             <ContentJustified>

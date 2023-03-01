@@ -3,17 +3,78 @@ import { StyleSheet, Text, View,FlatList} from 'react-native'
 import AuthContext from '../utils/auth_context';
 
 
-import { BubbleText, BubbleTextBold, CenterText, ContentJustifiedBack, CourseDetail, PageTitle, AxisListButton, SubTitle } from '../components/styles';
-import StyledLabTutor from '../components/StyledLabTutor';
+import { BubbleText, BubbleTextBold, CenterText, ContentJustifiedBack, CourseDetail, PageTitle, AxisListButton, SubTitle, StickToBottom, StyledButtonEdit, StyledButtonText } from '../components/styles';
+import { NavigationContainer } from '@react-navigation/native';
+
 
 const QuestionsEdit = ({route,navigation}) => { 
     const { user } = useContext(AuthContext);
-    const  lab  = route.params.lab.lab
-    const  course  = route.params.course.course
+    const  lab  = route.params.lab
+    const  course  = route.params.course
     const [questions, setQuestions] = useState([])
     const [loading, setLoading] = useState(true)
+    const [noLab,SetNoLab]= useState(false)
+    const [questionsSet,setQuestionsSet] = useState([])
+    const [postReady,setPostReady] = useState(false)
+    const [questionIDs,setQuestionIDs] = useState([])
+    const [refresh,setRefresh] = useState(false)
+    
 
     const access = JSON.parse(localStorage.getItem("authTokens"))['access']
+
+   
+
+    useEffect(()=>{
+        try{
+            if(route.params.refresh && !loading){
+                setQuestions([])
+                setLoading(true)
+            }
+        }catch{
+    
+        }
+    },[route.params.refresh])
+
+    useEffect(()=>{
+        if (refresh){
+            setLoading(true)
+        }
+
+    },[refresh])
+
+
+    useEffect(()=>{
+        if (route.params.questionSet){
+            let alreadyExists = false
+            for (let i in questionsSet){
+                if (route.params.questionNumber==questionsSet[i]){
+                    alreadyExists=true
+
+                }
+            }
+            if (!alreadyExists){
+                setQuestionIDs(current=>[...current,route.params.questionID])
+                setQuestionsSet(current=>[...current,route.params.questionNumber])
+            }
+
+  
+
+
+        }
+    },[route.params.questionNumber])
+
+    useEffect(()=>{
+        let max;
+        try{
+            max = Math.max(...questionsSet);
+        }catch{
+
+        }
+        if (max==3 && questionsSet.length==3){
+                setPostReady(true)
+        }
+    },[questionsSet])
+
 
     const getSurvey = async ()=>{
         const surveyUrl = `http://127.0.0.1:8000/survey/`+lab.lab_id +`/`
@@ -26,21 +87,53 @@ const QuestionsEdit = ({route,navigation}) => {
               },
         })
         let s = await response.json().catch(error=>{})
-        for (let q=1;q<4;q++){
-            let question = await getQuestion(s['question_'+q])
-            if (question){
-                setQuestions(current => [...current, question]);
+        try{
+            for (let q=1;q<4;q++){
+                let question = await getQuestion(s['question_'+q])
+                if (question){
+                    setQuestions(current => [...current, question]);
+                }
             }
+        }catch{
+            SetNoLab(true)
         }
+
         setLoading(false)
     }
 
     useEffect(()=>{
         if (loading){
             getSurvey()
+
+
         }
     },[loading])
 
+
+    const onPressPost = async ()=>{
+       let post = {
+            'question_1':questionIDs[0],
+            'question_2':questionIDs[1],
+            'question_3':questionIDs[2],
+            'lab_id': lab.lab_id,
+        }
+        const surveyUrl = `http://127.0.0.1:8000/post_survey/`
+        let response = await fetch(surveyUrl, {
+            method : 'POST',
+            headers :{
+                'Authorization' :`Bearer ${access}`, 
+                'Content-Type' : 'application/json',
+                'Accept':'application/json',
+              },
+              body: JSON.stringify(post)
+        })
+        let q = await response.json().catch(error=>{})
+        navigation.navigate("TutorCourses")
+        SetNoLab(false)
+        
+        
+
+    }
     const getQuestion = async(question_id)=>{
         const questionsUrl = `http://127.0.0.1:8000/question/`+question_id +`/`
         let response = await fetch(questionsUrl, {
@@ -55,9 +148,39 @@ const QuestionsEdit = ({route,navigation}) => {
         return q
     }
 
+    const makeSurvey = (number)=>{
+        navigation.navigate("NewAxis",{axis:'x',course:course,lab:lab,questionNumber:number})
+    }
+
+    const CheckQuestionSet = ({q})=>{
+        for (let i in questionsSet){
+            if (q==questionsSet[i]){
+                return (<CourseDetail>Question Set</CourseDetail>)
+            }
+        }
+        return (<>
+        <CourseDetail>Set axis x and y</CourseDetail>
+        
+        <StickToBottom>
+    <StyledButtonEdit onPress={()=>{makeSurvey(q)}}><StyledButtonText>Edit Axis</StyledButtonText></StyledButtonEdit>
+    </StickToBottom></>)
+    }
+
+    const PostSurvey = ()=>{
+        if (postReady){
+            return( <StyledButtonEdit onPress={onPressPost}><StyledButtonText>Create Survey</StyledButtonText></StyledButtonEdit>
+            )
+        }
+        else{
+            return 
+        }
+       
+    }
 
 
+    
     if (!loading){
+        if (!noLab){
         return (
                 <ContentJustifiedBack>
                     <PageTitle>Make Survey Changes:</PageTitle>  
@@ -67,7 +190,12 @@ const QuestionsEdit = ({route,navigation}) => {
                     data = {[0,1,2]}
                     renderItem={({item})=>{
                         let question = questions[item][0]
-                        return (<AxisListButton onPress={()=>{}}><CenterText><BubbleTextBold>Question {item+1}{`\n`}</BubbleTextBold>
+                        let r= false;
+                        try{ r = route.params.refresh}catch{}
+                        return (<AxisListButton onPress={()=>{
+                            navigation.navigate("QuestionEdit",{question: question,course: course, questionNumber :item+1, lab:lab,refresh:r})
+                            setRefresh(true)
+                            }}><CenterText><BubbleTextBold>Question {item+1}{`\n`}</BubbleTextBold>
                         <CourseDetail>Axis currently selected:{`\n`}</CourseDetail>
                         <CourseDetail>x: </CourseDetail><BubbleText>{question.x.neg} - {question.x.pos}{`\n`}</BubbleText>
                         <CourseDetail>y: </CourseDetail><BubbleText>{question.y.neg} - {question.y.pos}</BubbleText>
@@ -75,6 +203,22 @@ const QuestionsEdit = ({route,navigation}) => {
                     }}/>
                 </ContentJustifiedBack>
         )
+    }else{
+
+        return (<ContentJustifiedBack>
+        <PageTitle>Make Survey:</PageTitle>  
+        <SubTitle>{course}: Lab {lab.lab_title} (lab {lab.lab_number})</SubTitle>
+        <FlatList
+            data = {[1,2,3]}
+            renderItem={({item})=>{
+                return (<AxisListButton><CenterText><BubbleTextBold>Question {item}</BubbleTextBold></CenterText>
+                <CheckQuestionSet q ={item}></CheckQuestionSet>
+                </AxisListButton>)
+            }}
+        />
+        <PostSurvey/>
+        </ContentJustifiedBack>)
+    }
     }
    
 };

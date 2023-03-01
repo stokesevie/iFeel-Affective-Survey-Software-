@@ -3,7 +3,7 @@ import { StyleSheet, Text, View,FlatList} from 'react-native'
 import AuthContext from '../utils/auth_context';
 
 
-import { BubbleText, BubbleTextBold, CenterText, ContentJustifiedBack, PageTitle, StyledBubble, StyledButton, StyledButtonText, StyledButtonTutor, StyledListButton } from '../components/styles';
+import { BubbleText, BubbleTextBold, CenterText, ContentJustifiedBack, PageTitle, StyledBubble, StyledButton, StyledButtonText, StyledButtonTutor, StyledListButton, SubTitle } from '../components/styles';
 import StyledLabTutor from '../components/StyledLabTutor';
 
 const TutorLab = ({route,navigation}) => { 
@@ -56,13 +56,21 @@ const TutorLab = ({route,navigation}) => {
         return students
     }
 
+    const NoStudents = ({students})=>{
+        if (students==[]){
+            return (<CenterText><BubbleText>No students have taken this survey</BubbleText></CenterText>)
+        }
+    }
+
     if (!loading){
         let students = uniqueStudents()
         return (
             <View>
                 <ContentJustifiedBack>
                     <PageTitle>{lab.lab_title}</PageTitle>  
-                    <StyledButtonTutor onPress={()=>{navigation.navigate("QuestionsEdit",{lab: {lab}, course: {course}})}}><CenterText><StyledButtonText>Would you like to make changes to this lab?</StyledButtonText></CenterText></StyledButtonTutor>
+                    <StyledButtonTutor onPress={()=>{navigation.navigate("QuestionsEdit",{lab: lab, course: course})}}><CenterText><StyledButtonText>Press here to make changes to this lab survey</StyledButtonText></CenterText></StyledButtonTutor>
+                    <SubTitle>Students responses</SubTitle>
+                    <NoStudents s={students}/>
                     <FlatList
                     data={students}
                     renderItem ={({item})=>{

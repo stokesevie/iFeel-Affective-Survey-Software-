@@ -16,7 +16,7 @@ export function NotificationsSurvey(props){
   const fetchLabs = async ()=>{
     let pending = []
     let survey = []
-    const labsUrl = `http://127.0.0.1:8000/labs/`+ courses[0].lab_id
+    const labsUrl = `http://127.0.0.1:8000/labs/`+ courses[0].course_id
         const lab_response = await fetch(labsUrl, {
             method : 'GET',
             headers :{

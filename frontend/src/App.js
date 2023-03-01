@@ -32,6 +32,9 @@ import StudentRisk from './screens/student_risk';
 import AllRisks from './screens/all_risks';
 import QuestionsEdit from './screens/questions_edit';
 import QuestionEdit from './screens/question_edit';
+import EditAxis from './screens/axis_edit';
+import NewAxis from './screens/new_axis';
+import Demo from './screens/demo';
 
 import { Theme } from './components/styles'
 
@@ -151,6 +154,11 @@ function App() {
                                     <Stack.Screen name="AllRisks" component={AllRisks} options={{ title:'' ,headerTransparent: true, headerTintColor:colours.primary }}/>
                                     <Stack.Screen name= "QuestionsEdit" component={QuestionsEdit} options={{ title:'' ,headerTransparent: true, headerTintColor:colours.primary }}/>
                                     <Stack.Screen name= "QuestionEdit" component={QuestionEdit} options={{ title:'' ,headerTransparent: true, headerTintColor:colours.primary }}/>
+                                    <Stack.Screen name= "EditAxis" component={EditAxis} options={{ title:'' ,headerTransparent: true, headerTintColor:colours.primary }}/>
+
+                                    <Stack.Screen name= "NewAxis" component={NewAxis} options={{ title:'' ,headerTransparent: true, headerTintColor:colours.primary }}/>
+                                    <Stack.Screen name= "Demo" component={Demo} options={{ title:'' ,headerTransparent: true, headerTintColor:colours.primary }}/>
+
                             </Stack.Navigator>
                     </NavigationContainer>
                 </AuthProvider>

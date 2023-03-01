@@ -19,9 +19,11 @@ const Done = ({route, navigation}) => {
     const [tutor, setTutor] = useState(false);
     const [student, setStudent] = useState(false)
     const [studentStats, setStudentStats] = useState([])
+    const [allStats,setAllStats] = useState([])
     const [posted, setPosted] = useState(false)
     const [surveyPosted, setSurveyPosted] = useState(false)
     const [responsesPosted, setResponsesPosted] = useState(false)
+    const [fetched,setFetched] = useState(false)
     const access = JSON.parse(localStorage.getItem("authTokens"))['access']
 
     const onPress = ()=>{
@@ -91,7 +93,9 @@ const Done = ({route, navigation}) => {
 
         
 
-    })
+    },[])
+
+
     const GetAxisAverage = async ()=>{
         let qs = questions.questions
         let li = []
@@ -133,25 +137,32 @@ const Done = ({route, navigation}) => {
     }
 
     const buildStatsTutor = (responses)=>{
-        let good = []
+        let stats = []
+        let good=[]
         let bad = []
         let text =  " You reported yourself to find this lab "
         for (let i = 0; i<3; i++){
             if (responses[i][1]!= "GOOD" && responses[i][1]!="AVERAGE"){
                 let s = [responses[i][1], text + responses[i][0].x.neg+ "."]
+                stats.push(s)
                 bad.push(s)
             }else{
                 let s = [responses[i][1], text + responses[i][0].x.pos+ "."]
+                stats.push(s)
                 good.push(s)
             }
             if (responses[i][2]!= "GOOD" && responses[i][2]!="AVERAGE"){
                 let s = [responses[i][2], text + responses[i][0].y.neg+ "."]
+                stats.push(s)
                 bad.push(s)
             } else{
                 let s = [responses[i][2] , text + responses[i][0].y.pos+ "."]
+                stats.push(s)
                 good.push(s)
             }
+
         }
+        setAllStats(stats)
         return [[good],[bad]]
     }
 
@@ -162,7 +173,7 @@ const Done = ({route, navigation}) => {
             let neg = li[i][1]
             let r = li[i][2]
             let id = li[i][3]
-            if (ave> r){
+            if (ave< r){
                 str.push("You found this lab more " + neg + " than the average student who took this survey.")
                 AxisAverage(id, r,false)
             }else{
@@ -179,11 +190,13 @@ const Done = ({route, navigation}) => {
         for (let i = 0; i<3;i++){
             let r = responses[i]
             await post(r,"x")
+            await post(r,"y")
         }
         setResponsesPosted(true)
     }
 
     const post = async (r,axis)=>{
+
         if (!responsesPosted){
         let d = moment().format("YYYY-MM-DD")
         let a;
@@ -234,15 +247,13 @@ const Done = ({route, navigation}) => {
                     'Accept':'application/json',
                   },
                 body: JSON.stringify(p),
-            }).catch(console.error)
+            }).catch(error=>{console.log(error)})
 
             let api_r = response.status
             await api_r
-}else{
-    return
-}
 
     }
+}
 
 
     const ShowHelp = () =>{
@@ -298,8 +309,7 @@ const Done = ({route, navigation}) => {
 
     const ShowList = ()=>{
         if (tutor){
-            return (<><ShowFlatList text = "Above Lab Average" data = {stats[0][0][0]}/>
-            <ShowFlatList text = "Below Lab Average" data = {stats[0][1][0]}/></>)    
+            return (<><ShowFlatList text = "Tutor Feedback" data = {allStats}/></>)    
         } else if (student){
             return (<><FlatList ListHeaderComponent={()=><DoneTextBold>Affective Student Average Comparison</DoneTextBold>} data = {studentStats[0]} renderItem={item=><ResponseText>{'\n'}{item.item}</ResponseText>}/></>)
         }

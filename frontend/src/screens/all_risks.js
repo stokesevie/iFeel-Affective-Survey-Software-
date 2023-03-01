@@ -17,11 +17,11 @@ const AllRisks = ({route,navigation})=>{
 
     const Risk=({item})=>{
         if (item.risk){
-            return (<><BubbleTextBold>{item.axis_neg}</BubbleTextBold><Text>{`\n`}This student is in <Text style={{color:'red',fontWeight:'bold'}}>risk zone</Text> as defined by your axis.</Text></>)
+            return (<><BubbleTextBold>{item.axis_neg}</BubbleTextBold><Text>{`\n`}This student is in <Text style={{color:'red',fontWeight:'bold'}}>risk zone</Text> as defined by tutor axis.</Text></>)
         }else if (item.warning){
-            return (<><BubbleTextBold>{item.axis_neg}</BubbleTextBold><Text>{`\n`}This student is in <Text style={{color:'#e69a11',fontWeight:'bold'}}>warning zone</Text> as defined by your axis.</Text></>)
+            return (<><BubbleTextBold>{item.axis_neg}</BubbleTextBold><Text>{`\n`}This student is in <Text style={{color:'#e69a11',fontWeight:'bold'}}>warning zone</Text> as defined by tutor axis.</Text></>)
         }else if(item.avg){
-            return (<><BubbleTextBold>{item.axis_pos}</BubbleTextBold><Text>{`\n`}This student is in <Text style={{fontWeight:'bold'}}>average zone</Text> as defined by your axis.</Text></>)
+            return (<><BubbleTextBold>{item.axis_pos}</BubbleTextBold><Text>{`\n`}This student is in <Text style={{fontWeight:'bold'}}>average zone</Text> as defined by tutor axis.</Text></>)
         }
     }
 
