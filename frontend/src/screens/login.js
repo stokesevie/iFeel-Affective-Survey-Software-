@@ -13,30 +13,13 @@ const Login = ({route,navigation}) => {
     const [password, setPassword] = useState('');
     const { loginUser,user,userInfo } = useContext(AuthContext);
   
-    
-    const handleSubmit = e => {
+
+    const handleSubmit = async e => {
         e.preventDefault();
-        loginUser(username, password,navigation).then(()=>{setUsername()
-          setPassword()}); 
+        loginUser(username, password,navigation).then(setPassword()).then(setUsername()); 
     };
 
 
-    const updateDetails = async ()=>{
-      if (typeof userInfo != undefined){
-        try{
-          let u = user
-          return navigation.navigate("Pending", {userInfo : {userInfo}})
-        }catch(error){
-          alert("Failed to log in")
-          return navigation.navigate("Login")
-        }
-      }
-
-    }
-
-    useEffect(()=>{
-      updateDetails()},[userInfo])
-  
     return (
         <ContentJustified>
             <PageTitle>Login</PageTitle>

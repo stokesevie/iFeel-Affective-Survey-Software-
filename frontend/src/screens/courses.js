@@ -7,13 +7,13 @@ import StyledCourse from '../components/StyledCourse';
 import { ContentJustified, PageTitle } from '../components/styles';
 
 const Courses = ({navigation}) => { 
-    const { user,userInfo,courses } = useContext(AuthContext);
+    const { user,courses } = useContext(AuthContext);
 
      
     return (
         <View>
             <ContentJustified>
-                <PageTitle>{userInfo.first_name}, you are enrolled in the following courses:</PageTitle>  
+                <PageTitle>{user.first_name}, you are enrolled in the following courses:</PageTitle>  
                 <FlatList
                 data={courses}
                 renderItem ={({item})=>(

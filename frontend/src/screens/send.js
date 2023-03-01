@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { StyleSheet, Text, View} from 'react-native'
 import { TextInput,Alert } from 'react-native';
+import moment from 'moment/moment';
 
-import { ContentJustified, PageTitle, StyledButton,StyledButtonText, StyledTextInputParagraph, SubTitle } from '../components/styles';
+import { ContentJustified, PageTitle, StyledButton,StyledButtonText, StyledTextInputParagraph, MessageObject,MessageContent,MessageSender,MessageTime,Theme, RelatedLab } from '../components/styles';
 import AuthContext from '../utils/auth_context';
 
 const Send = ({route, navigation}) => {
@@ -11,7 +12,22 @@ const Send = ({route, navigation}) => {
     const [loading, setLoading] = useState(true)
     const [message, setMessage] = useState([])
 
+    let dt = (pastMessage.sent_at).split(" ")
+    let d = dt[0].split("-")
+    let t = (dt[1].split(".")[0]).split(":")
+
+
+
+    const CheckIfTutor = ()=>{
+        if (pastMessage.staff){
+          return (<Text style={{color:Theme.primary, fontSize:18}}> Tutor</Text>)
+        }
+      }
+
     const handleSend = async () => {
+        let date = moment()
+        .format('YYYY-MM-DD HH:mm:ss');
+        date += '+00:00'
         let data = {
             "sender_id": user.user_id, 
             "receiver_id": pastMessage.s_id,
@@ -27,10 +43,17 @@ const Send = ({route, navigation}) => {
             }).catch(console.error)
 
             let r = response.statusText
-            await r.then(setLoading(false))
+            await r
+            setLoading(false)
             
         
     };
+
+    const Related = ()=>{
+        if (pastMessage.related_lab){
+            return (<RelatedLab>Related to {pastMessage.related_lab_title}({pastMessage.related_lab_course_title}) </RelatedLab>)
+        }
+    }
 
     if (!loading){
         Alert.alert('Message to '+ pastMessage.sender_f_name, 'Message sent!')
@@ -38,7 +61,16 @@ const Send = ({route, navigation}) => {
     }else{
         return(
             <ContentJustified>
-                <PageTitle>Sending message to {pastMessage.sender_f_name} {pastMessage.sender_l_name} </PageTitle> 
+                 <MessageObject>
+                 <PageTitle>{pastMessage.sender_f_name} {pastMessage.sender_l_name} </PageTitle> 
+                                <MessageTime>{d[0]}/{d[1]}/{d[2]} - {t[0]}:{t[1]}</MessageTime>
+                                <Related/>
+                        </MessageObject>
+                        <CheckIfTutor/> 
+                        <MessageObject>
+                                <MessageSender>{pastMessage.sender_f_name} {pastMessage.sender_l_name}({pastMessage.sender_id})</MessageSender>
+                        </MessageObject> 
+                        <MessageContent>{pastMessage.message_content}</MessageContent>
                 <StyledTextInputParagraph
                     editable
                     multiline

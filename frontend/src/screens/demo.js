@@ -4,60 +4,10 @@ import { XYGrid, XMin, YMin, XYGridText, YTextMin, Grid, YText, SurveyQuestion, 
 
 import { ContentJustified, PageTitle, StyledButton } from '../components/styles';
 
-const SurveyLab = ({route, navigation}) => {
-    const { labDetail, question, questions,response,survey } = route.params
-    const lab = labDetail.lab
-    const q = questions.questions[question-1][0]
+const Demo = ({route, navigation}) => {
+    const { question,lab,questionNumber } = route.params
     const [colour, setColour] = useState(-1)
     const [pressed, setPressed] = useState(false)
-
-    const onPressForward = ()=>{
-        if (question>=3){
-            navigation.navigate("Done",{
-                lab : {lab},
-                response :response,
-                questions: questions,
-                survey:survey
-            })
-        }else{
-            setPressed(false)
-            setColour(-1)
-            navigation.navigate("SurveyLab", {
-                labDetail: {lab}, 
-                question :question+1,
-                questions : questions,
-                response:response,
-                survey:survey
-                
-            })
-        }
-    }
-
-    const onPressBack = ()=>{
-        if (question<=1){
-            navigation.navigate("StudentDashboard")
-        }else{
-            if (response.length>0){
-                navigation.navigate("SurveyLab", {
-                    labDetail: {lab}, 
-                    question :question-1,
-                    questions : questions,
-                    response:response.splice(-1),
-                    survey:survey
-                })
-            }else{
-                navigation.navigate("SurveyLab", {
-                    labDetail: {lab}, 
-                    question :question-1,
-                    questions : questions,
-                    response:response,
-                    survey:survey
-                })
-            }
-        }
-    }
-
-
 
     let grid = []
 
@@ -66,6 +16,13 @@ const SurveyLab = ({route, navigation}) => {
             grid.push([x,y])
         }
 
+    }
+    const onPressForward = ()=>{
+       alert("Demo Axis")
+    }
+
+    const onPressBack = ()=>{
+        alert("Demo Axis")
     }
 
     const renderGrid = (i)=>{
@@ -79,11 +36,8 @@ const SurveyLab = ({route, navigation}) => {
         <Cell onPress={(c)=>{
             setColour([i.index])
             if (pressed){
-                response.pop()
-                response.push(i.item)
             }else {
                 setPressed(true)
-                response.push(i.item)
             }
         }} >
             <Text style = {{color: c}}>X</Text>
@@ -94,13 +48,13 @@ const SurveyLab = ({route, navigation}) => {
             <View>
                 <ContentJustified>
                     <PageTitle>Survey for lab {lab.lab_number}</PageTitle>
-                    <SurveyQuestion>This is question {question}/3</SurveyQuestion> 
+                    <SurveyQuestion>This is question {questionNumber}/3</SurveyQuestion> 
                     <SurveyQuestion>Mark with your finger where you think on this axis matches your emotional response to this lab most effetively (if close to an axis you agree strongly)</SurveyQuestion>
 
     
                         <Grid>
-                            <YTextMin> {q.y.neg} </YTextMin>
-                            <XYGridText>{q.x.pos}</XYGridText> 
+                            <YTextMin> {question.y.neg} </YTextMin>
+                            <XYGridText>{question.x.pos}</XYGridText> 
                             <XYGrid>
                                 <FlatList 
                                 data={grid}
@@ -112,8 +66,8 @@ const SurveyLab = ({route, navigation}) => {
                                 ></FlatList>
                                 
                             </XYGrid>
-                            <YText >{q.y.pos}</YText>
-                            <XYGridText>{q.x.neg}</XYGridText>
+                            <YText >{question.y.pos}</YText>
+                            <XYGridText>{question.x.neg}</XYGridText>
                         </Grid>
 
                     <StyledButton title = "next" onPress={onPressForward}><StyledButtonText> Next </StyledButtonText></StyledButton>
@@ -127,4 +81,4 @@ const SurveyLab = ({route, navigation}) => {
 
 
 
-export default SurveyLab;
+export default Demo;

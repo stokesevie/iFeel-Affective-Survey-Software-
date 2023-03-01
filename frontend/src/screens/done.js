@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
-import {View,Text, FlatList} from 'react-native'
+import {View,Linking, FlatList} from 'react-native'
 
-import { BubbleText, DoneTextBold, ContentJustified, PageTitle, StyledButton, StyledDoneButton,StyledButtonText, SubTitle } from '../components/styles';
+import { DoneTextBold, ContentJustified, PageTitle, StyledButton, StyledDoneButton,StyledButtonText, SubTitle, TutorStudentFeedback, ResponseText } from '../components/styles';
 import SurveyResponseText from '../components/SurveyResponseText';
 import AuthContext from '../utils/auth_context';
 import moment from '../node_modules/moment'
@@ -16,6 +16,15 @@ const Done = ({route, navigation}) => {
     const {user} = useContext(AuthContext)
     const [stats, setStats] = useState([])
     const [loading, setLoading] = useState(true)
+    const [tutor, setTutor] = useState(false);
+    const [student, setStudent] = useState(false)
+    const [studentStats, setStudentStats] = useState([])
+    const [allStats,setAllStats] = useState([])
+    const [posted, setPosted] = useState(false)
+    const [surveyPosted, setSurveyPosted] = useState(false)
+    const [responsesPosted, setResponsesPosted] = useState(false)
+    const [fetched,setFetched] = useState(false)
+    const access = JSON.parse(localStorage.getItem("authTokens"))['access']
 
     const onPress = ()=>{
        navigation.navigate("StudentDashboard")
@@ -36,6 +45,33 @@ const Done = ({route, navigation}) => {
             }
         }
     }
+
+    const AxisAverage = async (axis,r,above)=>{  
+       if (!posted){ 
+        let a = {
+            'lab_id': lab.lab.lab_id,
+            'axis_id': axis,
+            'point': r,
+            'student_id':user.user_id,
+            'above':above,
+            'date': moment().format("YYYY-MM-DD")
+        }
+
+        const lab_risk = `http://127.0.0.1:8000/average/`
+            let response = await fetch(lab_risk, {
+                method : 'POST',
+                headers :{
+              'Authorization': `Bearer ${access}`,
+              'Content-Type' : 'application/json',
+              'Accept':'application/json',
+            },
+                body: JSON.stringify(a),
+            }).catch(console.error)
+    }else{
+        return
+    }
+    }
+
     useEffect(()=>{
         let responses = []
         for (let i = 0; i<3;i++){
@@ -46,14 +82,33 @@ const Done = ({route, navigation}) => {
             let y = decide(r[1],q.y.risk,q.y.warn,q.y.ave)
             responses.push([q,x,y])
         }
-        stats[0] = buildStats(responses)
+        stats[0] = buildStatsTutor(responses)
+        GetAxisAverage()
         postResponses(responses)
-        setCompleted()
+        if (!surveyPosted){
+            setCompleted()
+        }
         setLoading(false)
+
 
         
 
-    })
+    },[])
+
+
+    const GetAxisAverage = async ()=>{
+        let qs = questions.questions
+        let li = []
+        for (let i = 0;i<3;i++){
+            let q = qs[i][0]
+            let r = response[i]
+            let adjust_r = 10-r[0]
+            li.push(await fetchAverage(q.x,adjust_r))
+            li.push(await fetchAverage(q.y,r[1]))
+        }
+        buildStatsStudent(li)
+
+    }
 
     const setCompleted = async ()=>{
         let survey_id = survey.survey[0].id
@@ -71,47 +126,78 @@ const Done = ({route, navigation}) => {
             let response = await fetch(surveyUrl, {
                 method : 'POST',
                 headers :{
+                    'Authorization' :`Bearer ${access}`, 
                     'Content-Type' : 'application/json',
-                },
+                  },
                 body: JSON.stringify(p),
             }).catch(console.error)
 
             let api_r = response.status
-            await api_r
+        setSurveyPosted(true)
     }
 
-    const buildStats = (responses)=>{
-        let good = []
+    const buildStatsTutor = (responses)=>{
+        let stats = []
+        let good=[]
         let bad = []
         let text =  " You reported yourself to find this lab "
         for (let i = 0; i<3; i++){
             if (responses[i][1]!= "GOOD" && responses[i][1]!="AVERAGE"){
                 let s = [responses[i][1], text + responses[i][0].x.neg+ "."]
+                stats.push(s)
                 bad.push(s)
             }else{
                 let s = [responses[i][1], text + responses[i][0].x.pos+ "."]
+                stats.push(s)
                 good.push(s)
             }
             if (responses[i][2]!= "GOOD" && responses[i][2]!="AVERAGE"){
                 let s = [responses[i][2], text + responses[i][0].y.neg+ "."]
+                stats.push(s)
                 bad.push(s)
             } else{
                 let s = [responses[i][2] , text + responses[i][0].y.pos+ "."]
+                stats.push(s)
                 good.push(s)
             }
+
         }
+        setAllStats(stats)
         return [[good],[bad]]
     }
 
+    const buildStatsStudent = (li)=>{
+        let str=[];
+        for (let i = 0;i<6;i++){
+            let ave = li[i][0].point__avg
+            let neg = li[i][1]
+            let r = li[i][2]
+            let id = li[i][3]
+            if (ave< r){
+                str.push("You found this lab more " + neg + " than the average student who took this survey.")
+                AxisAverage(id, r,false)
+            }else{
+                AxisAverage(id,r,true)
+            }
+        }
+        setPosted(true)
+        studentStats[0] = str
 
-    const postResponses = (responses)=>{
+    }
+
+
+    const postResponses = async (responses)=>{
         for (let i = 0; i<3;i++){
             let r = responses[i]
-            post(r,"x")
+            await post(r,"x")
+            await post(r,"y")
         }
+        setResponsesPosted(true)
     }
 
     const post = async (r,axis)=>{
+
+        if (!responsesPosted){
         let d = moment().format("YYYY-MM-DD")
         let a;
         if (axis =="x"){
@@ -156,20 +242,31 @@ const Done = ({route, navigation}) => {
             let response = await fetch(lab_risk, {
                 method : 'POST',
                 headers :{
+                    'Authorization': `Bearer ${access}`,
                     'Content-Type' : 'application/json',
-                },
+                    'Accept':'application/json',
+                  },
                 body: JSON.stringify(p),
-            }).catch(console.error)
+            }).catch(error=>{console.log(error)})
 
             let api_r = response.status
             await api_r
 
-
     }
+}
+
 
     const ShowHelp = () =>{
         if (JSON.stringify(stats[0][1][0])!="[]"){
-            return <StyledButton title = "Help" onPress={onPress}><StyledButtonText> Want help with this lab? </StyledButtonText></StyledButton>                 
+            return <>
+            <DoneTextBold>Want help with this lab?</DoneTextBold>
+            <StyledButton title = "Help" onPress={()=>{
+                Linking.openURL(lab.lab.help)
+            }}><StyledButtonText> Online resources </StyledButtonText></StyledButton>
+            <StyledButton title = "Message" onPress={()=>{
+                return navigation.navigate("SendNew", {'receiver_id':'24440303s','lab':lab.lab.course_id})
+            }}><StyledButtonText> Message Tutor </StyledButtonText></StyledButton>
+            </>                 
         }else{
             return
         }
@@ -196,16 +293,45 @@ const Done = ({route, navigation}) => {
         )
     }
 
+    const fetchAverage = async(axis,r)=>{
+        const averageUrl = `http://127.0.0.1:8000/average/`+lab.lab.lab_id+`/`+axis.id+`/`
+        const average_response = await fetch(averageUrl, {
+            method : 'GET',
+            headers :{
+                'Authorization': `Bearer ${access}`,
+                'Content-Type' : 'application/json',
+                'Accept':'application/json',
+              },
+        }).catch(console.error)
+        let average = await average_response.json()
+        return [average,axis.neg,r,axis.id]
+    }
 
-
+    const ShowList = ()=>{
+        if (tutor){
+            return (<><ShowFlatList text = "Tutor Feedback" data = {allStats}/></>)    
+        } else if (student){
+            return (<><FlatList ListHeaderComponent={()=><DoneTextBold>Affective Student Average Comparison</DoneTextBold>} data = {studentStats[0]} renderItem={item=><ResponseText>{'\n'}{item.item}</ResponseText>}/></>)
+        }
+       } 
     if (!loading){
         return (
             <View>
                 <ContentJustified>
                     <PageTitle>Survey Completed</PageTitle>  
                     <SubTitle>You completed survey for lab {lab.lab.lab_number} for {lab.lab.course_id}. In this survey your response showed:  </SubTitle>
-                    <ShowFlatList text = "Above Lab Average" data = {stats[0][0][0]}/>
-                    <ShowFlatList text = "Below Lab Average" data = {stats[0][1][0]}/>
+                    <View style={{ flexDirection:"row",justifyContent:'space-between' }}>
+                        <TutorStudentFeedback title = "Tutor" onPress={()=>{if (student){
+                            setStudent(false)
+                        }
+                        setTutor(true)}}><StyledButtonText>Tutor Feedback</StyledButtonText></TutorStudentFeedback>
+                        <TutorStudentFeedback title = "Student"onPress={()=>{
+                            if (tutor){
+                                setTutor(false)
+                            }
+                            setStudent(true)}}><StyledButtonText>Student Feedback</StyledButtonText></TutorStudentFeedback>
+                    </View>
+                    <ShowList/>
                         <ShowHelp/>
                         <StyledDoneButton title = "Home" onPress={onPress}><StyledButtonText> Return Home </StyledButtonText></StyledDoneButton>
                 </ContentJustified>

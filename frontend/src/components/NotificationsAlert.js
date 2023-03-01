@@ -1,55 +1,58 @@
-import React, { useEffect,useState } from "react";
-import { NotificationTitle,StyledNotification,NotificationText,Center ,ContentsNotification,Theme, StyledBubbleLarge, BubbleText, BubbleTextBold} from './styles'
+import React, { useEffect,useState,useContext } from "react";
+import { Center ,CenterText,Theme, StyledBubbleLarge, BubbleText, BubbleTextBold} from './styles'
 import {Ionicons} from '@expo/vector-icons';
-import { NavigationHelpersContext, useNavigation } from '@react-navigation/native';
-import PropTypes from 'prop-types';
-import { View,Text } from "react-native";
+import AuthContext from "../utils/auth_context";
 
 export function NotificationsAlert(props) {
   const user = props.user
   const [loading, setLoading] = useState(true)
   const [risks, setRisks] = useState([])
-  const [axis, setAxis] = useState([])
   const [label, setLabel] = useState([])
   const [risksFetched,setRisksFetched] = useState(false)
-  const [axisFetched,setAxisFetched] = useState(false)
+  const [emotional, setEmotional] = useState([])
+  const [emotionalFetched,setEmotionalFetched] = useState(false)
+  const {authTokens} = useContext(AuthContext)
+  const access = JSON.parse(localStorage.getItem("authTokens"))['access']
 
   const fetchRecent = async ()=>{
-    let invalid = false;
-    let pending=[]
-
-    const recentUrl = `http://127.0.0.1:8000/student_lab_risks/`+user.user_id
+    const recentUrl = `http://127.0.0.1:8000/student_lab_risks/`+user.user_id+`/`
         const recent_response = await fetch(recentUrl, {
             method : 'GET',
             headers :{
-                'Content-Type' : 'application/json',
+              'Authorization' :`Bearer ${access}`, 
+              'Content-Type' : 'application/json',
             },
         })
         risks[0] = await recent_response.json()
+        fetchStudentAverage()
         setRisksFetched(true)
 
   }
 
-  const fetchAxis = async (risks) =>{
-    const axisUrl = `http://127.0.0.1:8000/axis_detail/`+ risks[0].axis_id
-        const axis_response = await fetch(axisUrl, {
+  const fetchStudentAverage = async ()=>{
+    const recentUrl = `http://127.0.0.1:8000/average/`+user.user_id+`/`
+        const recent_response = await fetch(recentUrl, {
             method : 'GET',
             headers :{
-                'Content-Type' : 'application/json',
+              'Authorization' :`Bearer ${access}`, 
+              'Content-Type' : 'application/json',
             },
         })
-        axis[0] = await axis_response.json()
-        setAxisFetched(true)
+        let p = await recent_response.json()
+        emotional[0]= p
+        setEmotionalFetched(true)
+
   }
 
   const fetchAxisLabel = async (axis)=>{
-    let a =axis[0].axis_id
+    let a = axis[0].axis_id
 
-    const labelsUrl = `http://127.0.0.1:8000/axis_labels/`+a
+    const labelsUrl = `http://127.0.0.1:8000/axis_labels/`+a+`/`
         const labels_response = await fetch(labelsUrl, {
             method : 'GET',
             headers :{
-                'Content-Type' : 'application/json',
+              'Authorization' :`Bearer ${access}`, 
+              'Content-Type' : 'application/json',
             },
         })
         label[0] = await labels_response.json()
@@ -65,8 +68,17 @@ export function NotificationsAlert(props) {
     fetchAxisLabel(risks[0])
   }
 
+  const ShowEmotional = ()=>{
+    let r = emotional[0]
+    if (r.above){
+      return(<BubbleText>You recorded a <BubbleTextBold>Above Average </BubbleTextBold>emotional response to this lab. You found it more <BubbleTextBold>{r.axis_pos}</BubbleTextBold> than other students.</BubbleText>)
+   
+    }else{
+      return(<BubbleText>You recorded a <BubbleTextBold>Below Average </BubbleTextBold>emotional response to this lab. You found it more <BubbleTextBold>{r.axis_neg}</BubbleTextBold> than other students.</BubbleText>)
+    }
+  }
 
-  if (!loading){
+  if (!loading && emotionalFetched){
     let r = risks[0][0]
     let zone = ""
     if (r.risk){
@@ -79,8 +91,9 @@ export function NotificationsAlert(props) {
       <StyledBubbleLarge>
         
        <Center><Ionicons name="warning-outline" size={35} color={Theme.secondary}></Ionicons></Center> 
-
-      <BubbleText>You are in the <BubbleTextBold>{zone}</BubbleTextBold> zone for this weeks lab. You found it more <BubbleTextBold>{label[0].neg_title}</BubbleTextBold> than other students.</BubbleText>
+       <CenterText><BubbleTextBold>{risks[0][0].course_name} - lab {risks[0][0].lab_number}</BubbleTextBold></CenterText>
+      <BubbleText>You are in the <BubbleTextBold>{zone}</BubbleTextBold> zone for this lab. You found it more <BubbleTextBold>{label[0].neg_title}</BubbleTextBold> than the tutor expected.</BubbleText>
+      <ShowEmotional/>
       </StyledBubbleLarge>
   );
   }
