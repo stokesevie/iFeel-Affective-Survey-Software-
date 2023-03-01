@@ -27,7 +27,12 @@ const Pending = ({navigation}) => {
 
     const getCourses = async()=>{
         const access = JSON.parse(localStorage.getItem("authTokens"))['access']
-        const coursesUrl = `http://127.0.0.1:8000/courses/`+ user.user_id+`/`
+        let coursesUrl;
+        if (user.is_staff){
+            coursesUrl= `http://127.0.0.1:8000/tutor_teaching/`+ user.user_id+`/`
+        }else{
+            coursesUrl = `http://127.0.0.1:8000/courses/`+ user.user_id+`/`
+        }
         const course_response = await fetch(coursesUrl, {
             method : 'GET',
             headers :{
