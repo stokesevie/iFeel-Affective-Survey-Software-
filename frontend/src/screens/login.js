@@ -13,10 +13,18 @@ This screen allows the user to login
 */
 
 const Login = ({route,navigation}) => {
+    const {up}= useContext(AuthContext)
+    const [loading,setLoading] = useState(true)
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const { loginUser,user,userInfo } = useContext(AuthContext);
   
+    useEffect(()=>{
+      if (loading){
+        up()
+        setLoading(false)
+      }
+    },[loading])
 
     const handleSubmit = async e => {
         e.preventDefault();

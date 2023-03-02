@@ -27,6 +27,7 @@ from rest_framework_simplejwt.views import (
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path('up/',views.CheckUp.as_view()),
     path('users/<int:pk>/', views.UserDetail.as_view()),
     path('users/',views.UserDetail.as_view()),
     path('message/<int:receiver_id>/', views.MessageDetail.as_view()),
