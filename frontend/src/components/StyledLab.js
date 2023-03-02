@@ -3,12 +3,12 @@ import { CourseDetail, StyledListButton,StyledListButtonC, CourseTitle } from '.
 
 
 export default function StyledLab(props){
-    const {lab, navigation,pending } = props
+    const {lab, navigation,pending,tutor } = props
         if (!pending){
             return(
                 <StyledListButtonC onPress= {
                     ()=>{
-                        navigation.navigate("Survey",{ lab:  lab, completed : pending})
+                        navigation.navigate("Survey",{ lab:  lab, completed : pending,tutorDetail:tutor})
                     }
                 }>
                     <CourseDetail>{lab.lab_number}</CourseDetail>
@@ -20,7 +20,7 @@ export default function StyledLab(props){
             return(
                 <StyledListButton onPress= {
                     ()=>{
-                        navigation.navigate("Survey",{ lab:  lab, completed : pending})
+                        navigation.navigate("Survey",{ lab:  lab, completed : pending,tutorDetail:tutor})
                     }
                 }>
                     <CourseDetail>{lab.lab_number}</CourseDetail>

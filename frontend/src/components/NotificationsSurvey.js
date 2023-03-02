@@ -5,7 +5,6 @@ import {Ionicons} from '@expo/vector-icons';
 import AuthContext from "../utils/auth_context";
 
 export function NotificationsSurvey(props){
-  const userInfo = props.userInfo
   const user = props.user
   const courses = props.courses
   const [surveys, setSurveys] = useState([])
@@ -43,7 +42,7 @@ export function NotificationsSurvey(props){
   const fetchTodo = async (pending, l)=>{
     
     let invalid = false;
-    const todoUrl = url+`/survey/${l.lab_id}/${user.user_id}/`
+    const todoUrl = url+`/survey_student/${l.lab_id}/${user.user_id}/`
         const todo_response = await fetch(todoUrl, {
             method : 'GET',
             headers :{

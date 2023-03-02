@@ -12,6 +12,7 @@ export function NotificationsRisk(props){
   const access = JSON.parse(localStorage.getItem("authTokens"))['access']
 const {url} = useContext(AuthContext)
 
+let recent = courses[0][0]
   const fetchStudentRisks = async (lab_id)=>{
     const lab_risk = url +`/student_lab_risks/lab/${lab_id}/`
         let response = await fetch(lab_risk, {
@@ -34,7 +35,7 @@ const {url} = useContext(AuthContext)
 
 useEffect(()=>{
     if (loading){
-        fetchStudentRisks(courses[0].lab.lab_id)
+        fetchStudentRisks(recent.lab.lab_id)
     }
 },[loading])
 
@@ -75,8 +76,8 @@ const IfNoResponses = ()=>{
         return(
             <StyledBubbleLarge>
             <Center><Ionicons name="alert-circle-outline" size={35} color={Theme.secondary}></Ionicons></Center>
-            <CenterText><BubbleTextBold>Responses to {courses[0].course_title}{`\n`} </BubbleTextBold>
-            <BubbleText>{courses[0].lab.lab_title} (lab {courses[0].lab.lab_number})</BubbleText></CenterText>
+            <CenterText><BubbleTextBold>Responses to {recent.course_title}{`\n`} </BubbleTextBold>
+            <BubbleText>{recent.lab.lab_title} (lab {recent.lab.lab_number})</BubbleText></CenterText>
             <IfNoResponses></IfNoResponses>
             </StyledBubbleLarge>
         )

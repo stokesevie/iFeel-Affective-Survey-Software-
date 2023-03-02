@@ -10,14 +10,14 @@ export function NotificationChange(props){
   const [surveys, setSurveys] = useState([])
   const access = JSON.parse(localStorage.getItem("authTokens"))['access']
 
-
+  let c = courses[0][0]
     return(
     <StyledBubble>
           <Center><Ionicons name="terminal-outline" size={35} color={Theme.secondary}></Ionicons></Center>
-          <BubbleTextBold>Would you like to make changes to {courses[0].course_title} surveys?</BubbleTextBold>
+          <BubbleTextBold>Would you like to make changes to {c.course_title} surveys?</BubbleTextBold>
          <BubbleText>Most recently published lab:
-          <BubbleTextBold> Lab {courses[0].lab.lab_number}</BubbleTextBold>
-          <BubbleText> survey, titled : {courses[0].lab.lab_title}</BubbleText>.
+          <BubbleTextBold> Lab {c.lab.lab_number}</BubbleTextBold>
+          <BubbleText> survey, titled {c.lab.lab_title}</BubbleText>.
           </BubbleText>
 
 

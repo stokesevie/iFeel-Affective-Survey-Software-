@@ -14,8 +14,7 @@ This screen will present the dashboard and most relevant information to the tuto
 
 const TutorDashboard = ({navigation}) => {
     const {user,messages,courses} = useContext(AuthContext)
-    const students = [{'student_id': '2563062y', 'at_risk': 'at risk in course social intelligence'},{'student_id': '2333030s', 'at_risk': 'at risk in course human computer interaction'}]
-    return (
+      return (
         <View>
             <ContentJustified>
                 <PageTitle>Tutor Dashboard</PageTitle>  

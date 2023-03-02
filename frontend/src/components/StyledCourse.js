@@ -12,6 +12,8 @@ export default function StyledCourse(props){
     const access = JSON.parse(localStorage.getItem("authTokens"))['access']
     const {url} = useContext(AuthContext)
 
+    
+
     const fetchCourseDetail = async ()=>{
         const userUrl = url+`/courseDetail/${course.course_id}`
         const response = await fetch(userUrl, {
@@ -34,10 +36,11 @@ export default function StyledCourse(props){
 
 
     if (fetched){
+        let tutor = course.tutor
         return(
             <StyledListButton onPress= {
                 ()=>{
-                    navigation.navigate("Course",{ course:  {courseDetail}})
+                    navigation.navigate("Course",{ course:  courseDetail, tutor :tutor})
                 }
             }>
                 <CourseDetail>{course.course_id}</CourseDetail>

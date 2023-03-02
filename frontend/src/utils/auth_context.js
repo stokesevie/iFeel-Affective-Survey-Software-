@@ -73,6 +73,7 @@ export const AuthProvider = ({ children }) => {
       alert("Something went wrong!");
     }
 
+    //error messages here
 
   };
 
