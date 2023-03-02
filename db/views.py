@@ -136,7 +136,6 @@ class MessageDetail(APIView):
                 raise status.HTTP_400_BAD_REQUEST
 
     def get(self, request, receiver_id="", sender_id="",format=None):
-        print(receiver_id,sender_id)
         if sender_id=="" and receiver_id!="":
             return Response(self.serialize_message(message.objects.filter(receiver_id=receiver_id).order_by('-sent_at')))
         elif receiver_id!="" and sender_id!="":
@@ -187,7 +186,7 @@ class StudentEnrollFind(APIView):
         for courses in student_enroll:
             json={'id': courses.id,
             'student_id': courses.student_id.username.id,
-            'lab_id': courses.lab_id.id,
+            'course_id': courses.course_id.id,
             }
             enroll.append(json)
         return enroll
@@ -567,7 +566,7 @@ class FindTutorTeaching(APIView):
         return rs
     def get_objects(self,user_id,request):
         try:
-            return tutor_teaching.objects.filter(user_id=user_id)
+            return tutor_teaching.objects.filter(user_id=user_id).order_by('-lab_id__date')
         except tutor_teaching.DoesNotExist:
             return status.HTTP_400_BAD_REQUEST
 
@@ -575,3 +574,26 @@ class FindTutorTeaching(APIView):
         snippet = self.get_objects(user_id,request)
         serializer = self.ser(snippet)
         return Response(serializer)
+
+class FindTutorStudent(APIView):
+    permission_classes= (IsAuthenticated,)
+    def ser(self, data):
+        rs = []
+        for r in data:
+            rs.append({
+                "tutor_username": r.tutor_id.tutor_id.username.id,
+                "tutor_name": r.tutor_id.tutor_id.username.first_name +' '+r.tutor_id.tutor_id.username.last_name,
+                "course_id": r.lab_id.course_id.id,
+                "student_id":r.student_id.username.id})
+        return rs
+    def get_objects(self,lab_id):
+        try:
+            return student_lab.objects.filter(lab_id=lab_id)
+        except student_lab.DoesNotExist:
+            return status.HTTP_400_BAD_REQUEST
+
+    def get(self,student_id,lab_id,format=None):
+        snippet = self.get_objects(lab_id)
+        serializer = self.ser(snippet)
+        return Response(serializer)
+
