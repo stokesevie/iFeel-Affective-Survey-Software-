@@ -13,7 +13,7 @@ score to the average */
 
 const Done = ({route, navigation}) => {
     const { lab,response,questions,survey } = route.params
-    const {user} = useContext(AuthContext)
+    const {user,url} = useContext(AuthContext)
     const [stats, setStats] = useState([])
     const [loading, setLoading] = useState(true)
     const [tutor, setTutor] = useState(false);
@@ -57,7 +57,7 @@ const Done = ({route, navigation}) => {
             'date': moment().format("YYYY-MM-DD")
         }
 
-        const lab_risk = `http://127.0.0.1:8000/average/`
+        const lab_risk = url+`/average/`
             let response = await fetch(lab_risk, {
                 method : 'POST',
                 headers :{
@@ -122,7 +122,7 @@ const Done = ({route, navigation}) => {
             'completed':true
         }
 
-        const surveyUrl = `http://127.0.0.1:8000/survey/`
+        const surveyUrl = url+`/survey/`
             let response = await fetch(surveyUrl, {
                 method : 'POST',
                 headers :{
@@ -238,7 +238,7 @@ const Done = ({route, navigation}) => {
             }
         }
 
-        const lab_risk = `http://127.0.0.1:8000/student_lab_risk/`
+        const lab_risk = url+`/student_lab_risk/`
             let response = await fetch(lab_risk, {
                 method : 'POST',
                 headers :{
@@ -294,7 +294,7 @@ const Done = ({route, navigation}) => {
     }
 
     const fetchAverage = async(axis,r)=>{
-        const averageUrl = `http://127.0.0.1:8000/average/`+lab.lab.lab_id+`/`+axis.id+`/`
+        const averageUrl = url+`/average/${lab.lab.lab_id}/${axis.id}/`
         const average_response = await fetch(averageUrl, {
             method : 'GET',
             headers :{

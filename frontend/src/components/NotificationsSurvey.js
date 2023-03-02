@@ -10,13 +10,13 @@ export function NotificationsSurvey(props){
   const courses = props.courses
   const [surveys, setSurveys] = useState([])
   const [loading , setLoading] = useState([true])
-  const {authTokens} = useContext(AuthContext)
+  const {url} = useContext(AuthContext)
   const access = JSON.parse(localStorage.getItem("authTokens"))['access']
 
   const fetchLabs = async ()=>{
     let pending = []
     let survey = []
-    const labsUrl = `http://127.0.0.1:8000/labs/`+ courses[0].course_id
+    const labsUrl = url+`/labs/${courses[0].course_id}`
         const lab_response = await fetch(labsUrl, {
             method : 'GET',
             headers :{
@@ -43,7 +43,7 @@ export function NotificationsSurvey(props){
   const fetchTodo = async (pending, l)=>{
     
     let invalid = false;
-    const todoUrl = `http://127.0.0.1:8000/survey/`+l.lab_id+`/`+user.user_id+`/`
+    const todoUrl = url+`/survey/${l.lab_id}/${user.user_id}/`
         const todo_response = await fetch(todoUrl, {
             method : 'GET',
             headers :{

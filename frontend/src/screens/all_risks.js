@@ -1,6 +1,7 @@
 import { ContentJustified, PageTitle, SubTitle,StyledListButton,BubbleText,BubbleTextBold, StyledButton, StyledButtonText } from "../components/styles"
 import { Text ,FlatList} from "react-native";
-import { useEffect, useState } from "react";
+import { useEffect, useState,useContext } from "react";
+import AuthContext from '../utils/auth_context';
 
 const AllRisks = ({route,navigation})=>{
 
@@ -8,6 +9,7 @@ const AllRisks = ({route,navigation})=>{
     const student = route.params.student
     const [loading,setLoading] = useState(true)
     const [risks,setRisks] = useState()
+    const {url} = useContext(AuthContext)
 
     useEffect(()=>{
         if (loading){
@@ -26,7 +28,7 @@ const AllRisks = ({route,navigation})=>{
     }
 
     const fetchStudentRisks = async ()=>{
-        const recentUrl = `http://127.0.0.1:8000/student_lab_risks/`+student+`/`
+        const recentUrl = url+`/student_lab_risks/${student}/`
         const recent_response = await fetch(recentUrl, {
             method : 'GET',
             headers :{

@@ -1,8 +1,9 @@
-import React,{useState} from "react";
+import React,{useState,useContext} from "react";
 import {  ContentJustifiedBack, PageTitle, StyledButton, Right, BubbleText,Left,Theme, StyledTextInput, AxisEditSubText, StyledButtonText, StyledDoneButton, TutorStudentFeedback, AxisEditButton, CenterText } from "../components/styles";
 import { Ionicons } from '@expo/vector-icons';
 import { View,Text } from "react-native";
 import { useEffect } from "react";
+import AuthContext from "../utils/auth_context";
 
 const NewAxis = ({route,navigation})=>{
     const  lab  = route.params.lab
@@ -18,6 +19,7 @@ const NewAxis = ({route,navigation})=>{
     const [postBoth, setPostBoth] = useState()
     const axis = route.params.axis
     const questionNumber = route.params.questionNumber
+    const {url} = useContext(AuthContext)
 
     useEffect(()=>{
         if (loading){
@@ -38,7 +40,7 @@ const NewAxis = ({route,navigation})=>{
             'risk':parseInt(riskZone),
             'warn': parseInt(warningZone),
         }
-        const axisUrl = `http://127.0.0.1:8000/axis_labels/`
+        const axisUrl = url+`/axis_labels/`
         const update = await fetch(axisUrl, {
             method: "POST",
             headers: {
@@ -83,7 +85,7 @@ const NewAxis = ({route,navigation})=>{
         let post = new Object()
         post[axis] = axis_id
 
-        const questionUrl = `http://127.0.0.1:8000/question/`+question.question_id+`/`
+        const questionUrl = url+`/question/${question.question_id}/`
         const put = await fetch(questionUrl, {
             method: "PUT",
             headers: {
@@ -102,7 +104,7 @@ const NewAxis = ({route,navigation})=>{
             'x':x,
             'y':y,
         }
-        const questionUrl = `http://127.0.0.1:8000/question/`
+        const questionUrl = url+`/question/`
         const postQuestion = await fetch(questionUrl, {
             method: "POST",
             headers: {

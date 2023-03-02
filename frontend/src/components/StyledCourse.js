@@ -2,17 +2,18 @@ import React, {useContext} from 'react';
 import { Button } from 'react-bootstrap';
 import { Text,View } from 'react-native';
 import { CourseDetail, StyledListButton, CourseTitle } from './styles';
-import { useState, setState, useEffect } from 'react';
-import Course from '../screens/course';
+import { useState,useEffect } from 'react';
+import AuthContext from '../utils/auth_context';
 
 export default function StyledCourse(props){
     const {course, navigation } = props
     const [courseDetail, setCourseDetail] = useState([])
     const [fetched, setFetched] = useState(false)
     const access = JSON.parse(localStorage.getItem("authTokens"))['access']
+    const {url} = useContext(AuthContext)
 
     const fetchCourseDetail = async ()=>{
-        const userUrl = `http://127.0.0.1:8000/courseDetail/`+ course.course_id
+        const userUrl = url+`/courseDetail/${course.course_id}`
         const response = await fetch(userUrl, {
             method : 'GET',
             headers :{

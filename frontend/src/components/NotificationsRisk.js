@@ -10,11 +10,10 @@ export function NotificationsRisk(props){
   const [risks, setRisks] = useState()
   const [loading,setLoading] = useState(true)
   const access = JSON.parse(localStorage.getItem("authTokens"))['access']
-  const students = [{'student_id': '2563062y', 'at_risk': 'at risk in course social intelligence'},{'student_id': '2333030s', 'at_risk': 'at risk in course human computer interaction'}]
-   
+const {url} = useContext(AuthContext)
 
   const fetchStudentRisks = async (lab_id)=>{
-    const lab_risk = `http://127.0.0.1:8000/student_lab_risks/lab/`+1+`/`
+    const lab_risk = url +`/student_lab_risks/lab/${lab_id}/`
         let response = await fetch(lab_risk, {
             method : 'GET',
             headers :{
@@ -41,9 +40,9 @@ useEffect(()=>{
 
 const risk = (r)=>{
     if (r.risk){
-        return "This student is in risk zone in this lab"
+        return "This student is in the risk zone for this lab"
     }else if (r.warning){
-        return "This student is in warning zone in this lab"
+        return "This student is in the warning zone for this lab"
     }
     return
 }

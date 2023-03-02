@@ -19,7 +19,8 @@ export const AuthProvider = ({ children }) => {
       : null
   );
   const [loading, setLoading] = useState(true);
- 
+  const url = `http://127.0.0.1:8000`
+
   let updateToken = async ()=> {
 
     let response = await fetch('http://127.0.0.1:8000/api/token/refresh/', {
@@ -106,6 +107,7 @@ export const AuthProvider = ({ children }) => {
     updateCourses,
     messages,
     courses,
+    url
   };
 
   useEffect(() => {

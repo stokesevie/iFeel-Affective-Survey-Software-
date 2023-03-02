@@ -7,7 +7,7 @@ import { BubbleText, BubbleTextBold, CenterText, ContentJustifiedBack, PageTitle
 import StyledLabTutor from '../components/StyledLabTutor';
 
 const TutorLab = ({route,navigation}) => { 
-    const { user } = useContext(AuthContext);
+    const { url } = useContext(AuthContext);
     const [loading, setLoading] = useState(true)
     const [risks,setRisks] = useState([])
     const {lab} = route.params.lab
@@ -17,7 +17,7 @@ const TutorLab = ({route,navigation}) => {
 
 
     const fetchStudentRisks = async ()=>{
-        const lab_risk = `http://127.0.0.1:8000/student_lab_risks/lab/`+lab.lab_id +`/`
+        const lab_risk = url+`/student_lab_risks/lab/${lab.lab_id}/`
             let response = await fetch(lab_risk, {
                 method : 'GET',
                 headers :{
