@@ -229,7 +229,7 @@ useEffect(()=>{
                     )}><StyledButtonText>Go Home</StyledButtonText></StyledButton>
             <DoneTextBold>Want help with this lab?</DoneTextBold>
             <StyledButton title = "Help" onPress={()=>{
-                Linking.openURL(lab.lab.help)
+                Linking.openURL(lab.help)
             }}><StyledButtonText> Online resources </StyledButtonText></StyledButton>
             <StyledButton title = "Message" onPress={()=>{
                 return navigation.navigate("SendNew", {'receiver_id':tutorDetail.tutor_id,'lab':lab.lab_id, 'tutor_name':tutorDetail.tutor_name, 'course':lab.course_id})
