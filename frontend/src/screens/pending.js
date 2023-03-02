@@ -71,11 +71,22 @@ const Pending = ({navigation}) => {
     //once set the app will navigate to appropriate dashboard
     const nav = async(c)=>{
         updateCourses(c)
-        if (user.is_staff){
-            return navigation.navigate("TutorDashboard")
-        } else{
-            return navigation.navigate("StudentDashboard")
+        try{
+            let m = messages
+            let c = courses 
+            let u = user
+        }catch{
+           await courses
+           await messages
+           await user
+        }finally{
+            if (user.is_staff){
+                return navigation.navigate("TutorDashboard")
+            } else{
+                return navigation.navigate("StudentDashboard")
+            }
         }
+
     }
 
     //shows spinner as pending

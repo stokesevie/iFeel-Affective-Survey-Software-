@@ -40,16 +40,18 @@ const StudentDashboard = ({route, navigation}) => {
                 <NotificationsSurvey user ={user} courses = {courses}/>
                 <NotificationsAlert user={user}/>
                 <NotificationsMessage user ={user} messages = {messages}/>
-
+                
                 
            </ContentJustified>
         </View>
     )}else{
-        return (<ActivityIndicator visible={true} color='black' style={{flex: 1,
-            justifyContent: 'center',
-            textAlign: 'center',
-            paddingTop: 30,
-            padding: 8,}}/>)
+        return(
+            <ActivityIndicator visible={loading} color='black' style={{flex: 1,
+                justifyContent: 'center',
+                textAlign: 'center',
+                paddingTop: 30,
+                padding: 8,}}/>
+        )
     }
 };
 

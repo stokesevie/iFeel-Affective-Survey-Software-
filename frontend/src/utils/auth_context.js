@@ -20,26 +20,34 @@ export const AuthProvider = ({ children }) => {
   );
   const [loading, setLoading] = useState(true);
 
-
+  const [url,setUrl] = useState('')
   
 
+  useEffect(()=>{
+    if (url==''){
+      up()
+    }
+  },[url])
 
-
-  var url = `http://127.0.0.1:8000`
   const up =async ()=>{
-    
+   
+   let u = u = `http://127.0.0.1:8000`
     try{
-    let response = await fetch(url+'/up/', {
+    let response = await fetch(u+'/up/', {
       method:'GET',
       headers:{
           'Content-Type':'application/json'
       },
-  }).catch(error=>{throw error})
+  }).catch(error=>{
+    alert(error)
+    throw error})
 }catch{
-  url = `http://app-production-1e3f.up.railway.app`
+   u = `http://app-production-1e3f.up.railway.app`
+  
 }
-
+  setUrl(u)
   }
+
 
   let updateToken = async ()=> {
 
@@ -68,7 +76,6 @@ export const AuthProvider = ({ children }) => {
 
 
   const loginUser = async (username, password,navigation) => {
-   
     const response = await fetch(url+`/api/token/`, {
       method: "POST",
       headers: {
