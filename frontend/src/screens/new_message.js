@@ -35,7 +35,7 @@ const SendNew = ({route, navigation}) => {
         date += '+00:00'
         if (lab){
             data = {
-                "related_lab": lab,
+                "related_lab": lab.lab_id,
                 "sender_id": user.user_id, 
                 "receiver_id": receiver_id,
                 "message_content": message,
@@ -60,8 +60,12 @@ const SendNew = ({route, navigation}) => {
                 body: JSON.stringify(data),
             }).catch(console.error)
 
-            let r = response.statusText
-            await r
+          
+            if (await response.ok==true){
+                setLoading(false)
+            }else{
+                Alert.alert("Couldn't send message")
+            }
             setLoading(false)
             
         

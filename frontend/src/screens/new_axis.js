@@ -132,7 +132,7 @@ const NewAxis = ({route,navigation})=>{
             <AxisEditSubText>Type to edit parts of the axis{`\n`}</AxisEditSubText></CenterText>
 
             <AxisEditSubText>Positive axis title:</AxisEditSubText>
-            <TextInput icon={'create-outline'}  placeholder='Positive axis title' placeholderTextColor={Theme.fifth} value = {posAxis} onChangeText= {text => setPosAxis(text)}></TextInput>
+            <TextInput icon={'create-outline'}  placeholder='Positive axis title' placeholderTextColor={Theme.fifth} value = {posAxis} onChangeText= {text => setPosAxis(text)} clearTextOnFocus={true} autoFocus={true}></TextInput>
             <AxisEditSubText>Negative axis title:</AxisEditSubText>
             <TextInput icon={'create-outline'} placeholder='Negative axis title' placeholderTextColor={Theme.fifth} value = {negAxis} onChangeText= {text => setNegAxis(text)}></TextInput>
             <BubbleText>These zones are marked on a scale of 1-10. 1 is closest to positive axis title, 10 is closest to negative axis title. {`\n`}</BubbleText>
@@ -151,7 +151,7 @@ const NewAxis = ({route,navigation})=>{
                 Type to create the axis{`\n`}</AxisEditSubText></CenterText>
 
                 <AxisEditSubText>Positive axis title:</AxisEditSubText>
-                <TextInput icon={'create-outline'}  placeholder='Positive axis title' placeholderTextColor={Theme.fifth} value = {posAxis} onChangeText= {text => setPosAxis(text)}></TextInput>
+                <TextInput icon={'create-outline'}  placeholder='Positive axis title' placeholderTextColor={Theme.fifth} value = {posAxis} onChangeText= {text => setPosAxis(text)} clearTextOnFocus={true} autoFocus={true}></TextInput>
                 <AxisEditSubText>Negative axis title:</AxisEditSubText>
                 <TextInput icon={'create-outline'} placeholder='Negative axis title' placeholderTextColor={Theme.fifth} value = {negAxis} onChangeText= {text => setNegAxis(text)}></TextInput>
                 <BubbleText>These zones are marked on a scale of 1-10. 1 is closest to positive axis title, 10 is closest to negative axis title. {`\n`}</BubbleText>

@@ -12,17 +12,17 @@ This screen will present the labs the user has completed surveys or not for
 */
 
 const Course = ({route, navigation}) => {
-    const { course } = route.params
-    const courseDetail = course.courseDetail
+    const { course,tutor } = route.params
     const [ labs, setLabs] = useState([])
     const [ pending, setPending] = useState([])
     const {user} = useContext(AuthContext)
     const [loading, setLoading] = useState(true)
     const {url} = useContext(AuthContext)
     const access = JSON.parse(localStorage.getItem("authTokens"))['access']
+
     useEffect(()=>{fetchLabs()},[])
     const fetchLabs = async ()=>{
-        const labUrl = url+`/labs/${courseDetail.id}`
+        const labUrl = url+`/labs/${course.id}`
         response = await fetch(labUrl, {
             method : 'GET',
             headers :{
@@ -38,7 +38,7 @@ const Course = ({route, navigation}) => {
          
         let p =[]
         for (let i in labs[0]){
-            const survey_exist = url+`/survey/${labs[0][i].lab_id}/${user.user_id}/`
+            const survey_exist = url+`/survey_student/${labs[0][i].lab_id}/${user.user_id}/`
             const exist_response = await fetch(survey_exist, {
             method : 'GET',
             headers :{
@@ -49,6 +49,7 @@ const Course = ({route, navigation}) => {
         let r = await exist_response.json().catch(error=>{
 
         })
+
         try{
         if (r.completed){
 
@@ -68,7 +69,7 @@ const Course = ({route, navigation}) => {
         return (
         <View>
             <ContentJustifiedBack>
-                <PageTitle>{courseDetail.title} Labs:</PageTitle>  
+                <PageTitle>{course.title} Labs:</PageTitle>  
                 <FlatList
                 data = {labs[0]}
                 renderItem ={({item})=>{
@@ -83,6 +84,7 @@ const Course = ({route, navigation}) => {
                     pending={p}
                     lab = {item}
                     navigation = {navigation}
+                    tutor = {tutor}
                      />)
                 }
                 }

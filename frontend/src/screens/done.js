@@ -12,12 +12,11 @@ score to the average */
 
 
 const Done = ({route, navigation}) => {
-    const { lab,response,questions,survey } = route.params
+    const { lab,response,questions,survey,tutorDetail } = route.params
     const {user,url} = useContext(AuthContext)
     const [stats, setStats] = useState([])
     const [loading, setLoading] = useState(true)
-    const [tutor, setTutor] = useState(false);
-    const [tutorDetail, setTutorDetail] = useState()
+    const [tutor, setTutor] = useState(false)
     const [student, setStudent] = useState(false)
     const [studentStats, setStudentStats] = useState([])
     const [allStats,setAllStats] = useState([])
@@ -89,7 +88,6 @@ const Done = ({route, navigation}) => {
         if (!surveyPosted){
             setCompleted()
         }
-        getTutor()
         setLoading(false)
 
 
@@ -269,7 +267,7 @@ const Done = ({route, navigation}) => {
                 Linking.openURL(lab.lab.help)
             }}><StyledButtonText> Online resources </StyledButtonText></StyledButton>
             <StyledButton title = "Message" onPress={()=>{
-                return navigation.navigate("SendNew", {'receiver_id':tutorDetail.tutor_username,'lab':lab.lab.lab_id,'tutor_name':tutorDetail.tutor_name, 'course':lab.lab.course_id})
+                return navigation.navigate("SendNew", {'receiver_id':tutorDetail.tutor_id,'lab':lab.lab.lab_id,'tutor_name':tutorDetail.tutor_name, 'course':lab.lab.course_id})
             }}><StyledButtonText> Message Tutor </StyledButtonText></StyledButton>
             </>                 
         }else{
@@ -320,21 +318,6 @@ const Done = ({route, navigation}) => {
         }
        } 
 
-
-    const getTutor = async ()=>{
-        const tutorTeachingUrl = url+`/student_teaching/${lab.lab.lab_id}/`
-        const tutorResponse = await fetch(tutorTeachingUrl, {
-            method : 'GET',
-            headers :{
-                'Authorization' :`Bearer ${access}`, 
-                'Content-Type' : 'application/json',
-              },
-        })
-        let body = await tutorResponse.json().catch(error=>{})
-        setTutorDetail(body[0])
-    
-    
-    }
 
 
     

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useContext } from 'react';
 import { Text,FlatList,View } from 'react-native';
-import { BubbleText, ContentJustifiedBack, PageTitle, StyledButton, StyledButtonText, SubTitle, ResponseText, DoneTextBold, TutorStudentFeedback } from '../components/styles';
+import { BubbleText, ContentJustifiedBack, PageTitle, StyledButton, StyledButtonText, SubTitle, ResponseText, DoneTextBold, TutorStudentFeedback, CenterText } from '../components/styles';
 import AuthContext from '../utils/auth_context';
 import { Linking } from 'react-native';
 
@@ -10,7 +10,7 @@ This screen allows a user to complete a survey or to see past responses
 */
 
 const Survey = ({route, navigation}) => {
-    const { lab,completed } = route.params
+    const { lab,completed,tutorDetail } = route.params
     const {user,url} = useContext(AuthContext)
     const [questions, setQuestions] = useState([])
     const [survey, setSurvey] = useState([])
@@ -21,17 +21,17 @@ const Survey = ({route, navigation}) => {
     const [tutorStats,setTutorStats] = useState([])
     const [student,setStudent] = useState(false)
     const [tutor,setTutor] = useState(false)
-    const [tutorDetail,setTutorDetail] = useState('')
+    const [doesntExist, setDoesntExist] = useState(false)
 
     const access = JSON.parse(localStorage.getItem("authTokens"))['access']
+
 
 //only update the value of 'count' when component is first mounted
 
 
-
     const fetchSurvey = ( async ()=>{
         
-        const surveyUrl = url+`/survey/${lab.lab_id}/`
+        const surveyUrl = url+`/survey/${lab.lab_id}/${tutorDetail.tutor_id}/`
         const survey_response = await fetch(surveyUrl, {
             method : 'GET',
             headers :{
@@ -49,9 +49,9 @@ const Survey = ({route, navigation}) => {
                 
                 
         }})
-        .catch(error=>{})
+        .catch(error=>{setDoesntExist(true)})
         
-        const survey_exist = url+`/survey/${lab.lab_number}/${user.user_id}/`
+        const survey_exist = url+`/survey_student/${lab.lab_number}/${user.user_id}/`
         const exist_response = await fetch(survey_exist, {
             method : 'GET',
             headers :{
@@ -102,7 +102,6 @@ const Survey = ({route, navigation}) => {
             let t = await tutor_response.json()
             tutorStats[0] = t
             buildStatsStudent(p)
-            getTutor()
             
      
         
@@ -155,23 +154,7 @@ const Survey = ({route, navigation}) => {
     }
 }
 
-//fetches the tutor student teaching instance for this student and lab
 
-const getTutor = async ()=>{
-    const tutorTeachingUrl = url+`/student_teaching/${lab.lab_id}/`
-    const tutorResponse = await fetch(tutorTeachingUrl, {
-        method : 'GET',
-        headers :{
-            'Authorization' :`Bearer ${access}`, 
-            'Content-Type' : 'application/json',
-          },
-    })
-    let body = await tutorResponse.json().catch(error=>{})
-    setTutorDetail(body[0])
-    setLoading(false)
-
-
-}
 
 useEffect(()=>{
     if (!loading){
@@ -183,6 +166,7 @@ useEffect(()=>{
     useEffect(()=>{
         if (completed){
             getResponses().catch(error=>{})
+            setLoading(false)
 
         }else{
         fetchSurvey()
@@ -248,11 +232,24 @@ useEffect(()=>{
                 Linking.openURL(lab.lab.help)
             }}><StyledButtonText> Online resources </StyledButtonText></StyledButton>
             <StyledButton title = "Message" onPress={()=>{
-                return navigation.navigate("SendNew", {'receiver_id':tutorDetail.tutor_username,'lab':lab.lab_id, 'tutor_name':tutorDetail.tutor_name, 'course':lab.course_id})
+                return navigation.navigate("SendNew", {'receiver_id':tutorDetail.tutor_id,'lab':lab.lab_id, 'tutor_name':tutorDetail.tutor_name, 'course':lab.course_id})
             }}><StyledButtonText> Message Tutor </StyledButtonText></StyledButton>
                 </ContentJustifiedBack>
         )
     }else{
+    if (doesntExist){
+        return (
+            <ContentJustifiedBack>
+                <PageTitle>Affective Survey for lab {lab.lab_number}</PageTitle>
+                <SubTitle>{lab.title}</SubTitle>
+                    <CenterText>
+                    <BubbleText>This survey does not exist yet. Your tutor will make it available soon.</BubbleText>
+        
+                    </CenterText>
+            </ContentJustifiedBack>
+    )
+
+    }
     if (!loading){
         return (
                 <ContentJustifiedBack>
@@ -260,7 +257,7 @@ useEffect(()=>{
                     <SubTitle>{lab.title}</SubTitle>
 
                     <StyledButton title = "Start" onPress = {()=>(
-                        navigation.navigate("SurveyLab", {labDetail: {lab}, question :1, questions:{questions}, response:[],survey:{survey}})
+                        navigation.navigate("SurveyLab", {labDetail: {lab}, question :1, questions:{questions}, response:[],survey:{survey},tutorDetail:tutorDetail})
                     )}><StyledButtonText>Start Survey</StyledButtonText></StyledButton>
               
                 </ContentJustifiedBack>

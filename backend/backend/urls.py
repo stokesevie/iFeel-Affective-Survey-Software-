@@ -39,10 +39,10 @@ urlpatterns = [
     path('courseDetail/<str:id>', views.CourseDetail.as_view()),
     path('labs/<str:course_id>', views.LabDetail.as_view()),
     path('recent_message/<int:receiver_id>', views.RecentMessage.as_view()),
-    path('survey/<int:lab_id>/', views.FindSurvey.as_view()),
+    path('survey/<int:lab_id>/<int:tutor_teaching_id>/', views.FindSurvey.as_view()),
     path('post_survey/', views.FindSurvey.as_view()),
     path('survey/', views.FindStudentSurvey.as_view()),
-    path('survey/<int:lab_id>/<int:student_id>/', views.FindStudentSurvey.as_view()),
+    path('survey_student/<int:lab_id>/<int:student_id>/', views.FindStudentSurvey.as_view()),
     path('question/<int:question_id>/', views.LabQuestions.as_view()),
     path('question/', views.LabQuestions.as_view()),
     path('student_lab/<int:student_id>/<int:lab_id>/', views.FindStudentLabRisk.as_view()),
@@ -56,7 +56,6 @@ urlpatterns = [
     path('average/<int:student_id>/', views.AxisAverage.as_view()),
     path('average_lab/<int:student_id>/<int:lab_id>/', views.AxisAverage.as_view()),
     path('tutor_teaching/<int:user_id>/', views.FindTutorTeaching.as_view()),
-    path('student_teaching/<int:lab_id>/', views.FindTutorStudent.as_view()),
     path('students/<int:pk>/', views.StudentDetail.as_view()),
 ]
 

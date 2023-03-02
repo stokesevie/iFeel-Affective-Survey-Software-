@@ -1,7 +1,7 @@
 import React, { useState, useEffect,useContext } from 'react'
 import { StyleSheet, Text, View,FlatList} from 'react-native'
 import AuthContext from '../utils/auth_context';
-
+import { Alert } from 'react-native';
 
 import { BubbleText, BubbleTextBold, CenterText, ContentJustifiedBack, CourseDetail, PageTitle, AxisListButton, SubTitle, StickToBottom, StyledButtonEdit, StyledButtonText } from '../components/styles';
 import { NavigationContainer } from '@react-navigation/native';
@@ -20,30 +20,18 @@ const QuestionsEdit = ({route,navigation}) => {
     const [questionsSet,setQuestionsSet] = useState([])
     const [postReady,setPostReady] = useState(false)
     const [questionIDs,setQuestionIDs] = useState([])
-    const [refresh,setRefresh] = useState(false)
-    
 
     const access = JSON.parse(localStorage.getItem("authTokens"))['access']
-
-   
-
     useEffect(()=>{
         try{
             if(route.params.refresh && !loading){
-                setQuestions([])
                 setLoading(true)
+                setQuestions([])
             }
         }catch{
     
         }
-    },[route.params.refresh])
-
-    useEffect(()=>{
-        if (refresh){
-            setLoading(true)
-        }
-
-    },[refresh])
+    },[noLab])
 
 
     useEffect(()=>{
@@ -59,7 +47,6 @@ const QuestionsEdit = ({route,navigation}) => {
                 setQuestionIDs(current=>[...current,route.params.questionID])
                 setQuestionsSet(current=>[...current,route.params.questionNumber])
             }
-
   
 
 
@@ -80,7 +67,7 @@ const QuestionsEdit = ({route,navigation}) => {
 
 
     const getSurvey = async ()=>{
-        const surveyUrl = url+`/survey/${lab.lab_id}/`
+        const surveyUrl = url+`/survey/${lab.lab.lab_id}/${lab.tutor_teaching_id}/`
         let response = await fetch(surveyUrl, {
             method : 'GET',
             headers :{
@@ -112,13 +99,13 @@ const QuestionsEdit = ({route,navigation}) => {
         }
     },[loading])
 
-
     const onPressPost = async ()=>{
        let post = {
             'question_1':questionIDs[0],
             'question_2':questionIDs[1],
             'question_3':questionIDs[2],
-            'lab_id': lab.lab_id,
+            'lab_id': lab.lab.lab_id,
+            'tutor_teaching_id':lab.lab.tutor_teaching_id
         }
         const surveyUrl = url+`/post_survey/`
         let response = await fetch(surveyUrl, {
@@ -131,7 +118,8 @@ const QuestionsEdit = ({route,navigation}) => {
               body: JSON.stringify(post)
         })
         let q = await response.json().catch(error=>{})
-        navigation.navigate("TutorCourses")
+        Alert.alert("Lab survey has been set")
+        navigation.navigate("TutorDashboard")
         SetNoLab(false)
         
         
@@ -183,22 +171,22 @@ const QuestionsEdit = ({route,navigation}) => {
 
     
     if (!loading){
+
         if (!noLab){
         return (
                 <ContentJustifiedBack>
                     <PageTitle>Make Survey Changes:</PageTitle>  
-                    <SubTitle>{course}: Lab {lab.lab_title} (lab {lab.lab_number})</SubTitle>
+                    <SubTitle>{course}: Lab {lab.lab.lab_title} (lab {lab.lab.lab_number})</SubTitle>
                     <SubTitle>Select question to change:</SubTitle>
                     <FlatList
                     data = {[0,1,2]}
                     renderItem={({item})=>{
                         let question = questions[item][0]
-                        let r= false;
+                        let r = false;
                         try{ r = route.params.refresh}catch{}
                         return (<AxisListButton onPress={()=>{
                             navigation.navigate("QuestionEdit",{question: question,course: course, questionNumber :item+1, lab:lab,refresh:r})
-                            setRefresh(true)
-                            }}><CenterText><BubbleTextBold>Question {item+1}{`\n`}</BubbleTextBold>
+                            setLoading(true)}}><CenterText><BubbleTextBold>Question {item+1}{`\n`}</BubbleTextBold>
                         <CourseDetail>Axis currently selected:{`\n`}</CourseDetail>
                         <CourseDetail>x: </CourseDetail><BubbleText>{question.x.neg} - {question.x.pos}{`\n`}</BubbleText>
                         <CourseDetail>y: </CourseDetail><BubbleText>{question.y.neg} - {question.y.pos}</BubbleText>
@@ -210,7 +198,7 @@ const QuestionsEdit = ({route,navigation}) => {
 
         return (<ContentJustifiedBack>
         <PageTitle>Make Survey:</PageTitle>  
-        <SubTitle>{course}: Lab {lab.lab_title} (lab {lab.lab_number})</SubTitle>
+        <SubTitle>{course}: Lab {lab.lab.lab_title} (lab {lab.lab.lab_number})</SubTitle>
         <FlatList
             data = {[1,2,3]}
             renderItem={({item})=>{

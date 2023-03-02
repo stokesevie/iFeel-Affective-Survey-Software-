@@ -144,6 +144,7 @@ class MessageDetail(APIView):
     def post(self,request):
         date = str(datetime.now())
         date = date.split('.',1)[0]+'Z'
+        print(request.data)
         serializer = MessageSerializer(data = request.data)
         serializer.sent_at = date
         if serializer.is_valid():
@@ -186,8 +187,13 @@ class StudentEnrollFind(APIView):
         for courses in student_enroll:
             json={'id': courses.id,
             'student_id': courses.student_id.username.id,
-            'course_id': courses.course_id.id,
+            'course_id': courses.tutor_teaching_id.course_id.id,
+            'tutor':{
+                'tutor_id': courses.tutor_teaching_id.tutor_id.username.id,
+                'tutor_name': courses.tutor_teaching_id.tutor_id.username.first_name + " "+ courses.tutor_teaching_id.tutor_id.username.last_name,
+          
             }
+          }
             enroll.append(json)
         return enroll
 
@@ -241,16 +247,26 @@ class LabDetail(APIView):
 
 class FindSurvey(APIView):
     permission_classes= (IsAuthenticated,)
-    def get_object(self, lab_id):
-        try:
-            return survey.objects.get(lab_id=lab_id)
+    def survey_serialize(self,data):
+        return{
+            'lab_id' : data.lab_id.lab_id,
+            'course_id': data.tutor_teaching_id.course_id.id,
+            'tutor_id': data.tutor_teaching_id.tutor_id.username.id,
+            'tutor_teaching_id': data.tutor_teaching_id.id,
+            'question_1':data.question_1.id,
+            'question_2':data.question_2.id,
+            'question_3':data.question_3.id,
+        }
+    def get_object(self,tutor_teaching_id, lab_id):
+        try: 
+            return survey.objects.get(lab_id=lab_id, tutor_teaching_id = tutor_teaching_id)
         except survey.DoesNotExist:
             raise status.HTTP_400_BAD_REQUEST
 
-    def get(self, request, lab_id, format=None):
-        snippet = self.get_object(lab_id=lab_id)
-        serializer = surveySerializer(snippet)
-        return Response(serializer.data)
+    def get(self, request,tutor_teaching_id, lab_id, format=None):
+        snippet = self.get_object(lab_id=lab_id, tutor_teaching_id=tutor_teaching_id)
+        serializer = self.survey_serialize(snippet)
+        return Response(serializer)
 
     def post(self, request, format=None):
         serializer = surveySerializer(data=request.data)
@@ -549,51 +565,36 @@ class FindAxisLabel(APIView):
 
 class FindTutorTeaching(APIView):
     permission_classes= (IsAuthenticated,)
-    def ser(self, data):
+    def ser(self, data,user_id,tutor_teach):
         rs = []
         for r in data:
             rs.append({
-                "tutor_user_id": r.tutor_id.username.id,
-                "course_id": r.lab_id.course_id.id,
-                "course_title": r.lab_id.course_id.title,
+                "tutor_user_id": User.objects.get(id=user_id).id,
+                "tutor_teaching_id": tutor_teach,
+                "course_id": r.course_id.id,
+                "course_title": r.course_id.title,
                 'lab':{
-                "lab_date" :r.lab_id.date,
-                "lab_id": r.lab_id.lab_id,
-                "lab_title": r.lab_id.title,
-                "lab_number" : r.lab_id.lab_number,
-                "help": r.lab_id.help}
+                "lab_date" :r.date,
+                "lab_id": r.lab_id,
+                "lab_title": r.title,
+                "lab_number" : r.lab_number,
+                "help": r.help}
                 })
         return rs
-    def get_objects(self,user_id,request):
+    def get_objects(self,tutor_id,request):
         try:
-            return tutor_teaching.objects.filter(user_id=user_id).order_by('-lab_id__date')
+            r = []
+            courses = tutor_teaching.objects.filter(tutor_id_id=tutor_id)
+            for c in courses:
+                tutor_teach = c.id
+                l =lab.objects.filter(course_id = c.course_id.id).order_by('-date')
+                r.append(self.ser(l,tutor_id,tutor_teach))
+            return r
         except tutor_teaching.DoesNotExist:
             return status.HTTP_400_BAD_REQUEST
 
     def get(self, request,user_id,format=None):
         snippet = self.get_objects(user_id,request)
-        serializer = self.ser(snippet)
-        return Response(serializer)
-
-class FindTutorStudent(APIView):
-    permission_classes= (IsAuthenticated,)
-    def ser(self, data):
-        rs = []
-        for r in data:
-            rs.append({
-                "tutor_username": r.tutor_id.tutor_id.username.id,
-                "tutor_name": r.tutor_id.tutor_id.username.first_name +' '+r.tutor_id.tutor_id.username.last_name,
-                "course_id": r.lab_id.course_id.id,
-                "student_id":r.student_id.username.id})
-        return rs
-    def get_objects(self,lab_id):
-        try:
-            return student_lab.objects.filter(lab_id=lab_id)
-        except student_lab.DoesNotExist:
-            return status.HTTP_400_BAD_REQUEST
-
-    def get(self,student_id,lab_id,format=None):
-        snippet = self.get_objects(lab_id)
-        serializer = self.ser(snippet)
-        return Response(serializer)
+        #serializer = self.ser(snippet,user_id)
+        return Response(snippet)
 

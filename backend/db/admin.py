@@ -16,10 +16,8 @@ class studentAdmin(admin.ModelAdmin):
     list_display=('username', 'level')
 
 class student_enrollAdmin(admin.ModelAdmin):
-    list_display = ('student_id', 'course_id')
+    list_display = ('student_id', 'tutor_teaching_id')
 
-class student_labAdmin(admin.ModelAdmin):
-    list_display = ('student_id', 'lab_id','tutor_id')
 
 class labAdmin(admin.ModelAdmin):
     list_display = ('course_id', 'lab_id', 'date','help','title','lab_number')
@@ -47,14 +45,13 @@ class axis_averageAdmin(admin.ModelAdmin):
     list_display = ('axis_id', 'lab_id','student_id', 'above', 'point','date')
 
 class tutor_teachingAdmin(admin.ModelAdmin):
-    list_display = ('tutor_id','user_id','lab_id')
+    list_display = ('tutor_id','course_id')
 
 admin.site.register(student, studentAdmin)
 admin.site.register(course, courseAdmin)
 admin.site.register(tutor, tutorAdmin)
 admin.site.register(db, dbAdmin)
 admin.site.register(student_enroll,student_enrollAdmin)
-admin.site.register(student_lab,student_labAdmin)
 admin.site.register(lab, labAdmin)
 admin.site.register(axis_labels,axis_labelsAdmin)
 admin.site.register(student_lab_risk,student_lab_riskAdmin)

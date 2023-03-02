@@ -10,68 +10,31 @@ import { ContentJustified, PageTitle,BubbleTextBold, StyledListButton, CenterTex
 This screen allows the tutor to see which courses they teach
 */
 const TutorCourses = ({navigation}) => { 
-    const { user,url } = useContext(AuthContext);
+    const { user,url,courses } = useContext(AuthContext);
     const access = JSON.parse(localStorage.getItem("authTokens"))['access']
     const [labs,setLabs] = useState()
 
-    const [loading,setloading] = useState(true)
-
-    const fetchTeaching = async ()=>{
-
-        const teaching = url+`/tutor_teaching/${user.user_id}/`
-            let response = await fetch(teaching, {
-                method : 'GET',
-                headers : {
-                    'Authorization': `Bearer ${access}`,
-                    'Content-Type' : 'application/json',
-                    'Accept':'application/json',
-                },
-            }).catch(console.error)
-            let api_r = await response.json()
-            setLabs(api_r)          
-            
-    }
-
-
-    useEffect(()=>{
-        fetchTeaching().catch(console.error)
-        
-    },[loading])
-
     const uniqueCourses = ()=>{
-        let c = []
-        
-        for (let l in labs){
-            let found = false
-            for (let i in c){
-                if (labs[l].course_title== c[i]){
-                    found = true
-                }
-            }
-            if (!found){
-                c.push(labs[l].course_title)
-            }
+        let u = []
+        for (let c in courses){
+            let name = courses[c][0].course_title
+            let labs = courses[c]
+            u.push([name,labs])
         }
-        return c
+        return u
     }
 
-   if (labs){
-    let courses = uniqueCourses()
+   if (courses){
+    let unique = uniqueCourses()
     return (
         <View>
             <ContentJustified>
                 <PageTitle>{user.first_name}, you are teaching the following courses:</PageTitle>  
                 <FlatList
-                data={courses}
+                data={unique}
                 renderItem ={({item})=>{
-                    let relatedLabs = []
-                    for(let l in labs){
-                        if (labs[l].course_title == item){
-                            relatedLabs.push(labs[l])
-                        }
-                    }
                     return (<>
-                    <StyledListButton onPress = {()=>{navigation.navigate("TutorCourse", {labs: relatedLabs,course: item})}}><CenterText><CourseDetail>{relatedLabs[0].course_id}{`\n`}</CourseDetail><CourseTitle>{item}</CourseTitle></CenterText></StyledListButton>
+                    <StyledListButton onPress = {()=>{navigation.navigate("TutorCourse", {labs: item[1],course: item[0]})}}><CenterText><CourseDetail>{item[1][0].course_id}{`\n`}</CourseDetail><CourseTitle>{item[0]}</CourseTitle></CenterText></StyledListButton>
                     </>)
                 
                 }}

@@ -4,7 +4,7 @@ import AuthContext from '../utils/auth_context';
 
 
 import { BubbleText, BubbleTextBold, CenterText, ContentJustifiedBack, PageTitle, StyledBubble, StyledButton, StyledButtonText, StyledButtonTutor, StyledListButton, SubTitle } from '../components/styles';
-import StyledLabTutor from '../components/StyledLabTutor';
+
 
 const TutorLab = ({route,navigation}) => { 
     const { url } = useContext(AuthContext);
@@ -13,7 +13,6 @@ const TutorLab = ({route,navigation}) => {
     const {lab} = route.params.lab
     const course = route.params.course
     const access = JSON.parse(localStorage.getItem("authTokens"))['access']
-
 
 
     const fetchStudentRisks = async ()=>{
@@ -64,11 +63,12 @@ const TutorLab = ({route,navigation}) => {
 
     if (!loading){
         let students = uniqueStudents()
+
         return (
             <View>
                 <ContentJustifiedBack>
                     <PageTitle>{lab.lab_title}</PageTitle>  
-                    <StyledButtonTutor onPress={()=>{navigation.navigate("QuestionsEdit",{lab: lab, course: course})}}><CenterText><StyledButtonText>Press here to make changes to this lab survey</StyledButtonText></CenterText></StyledButtonTutor>
+                    <StyledButtonTutor onPress={()=>{navigation.navigate("QuestionsEdit",{lab: route.params.lab, course: course})}}><CenterText><StyledButtonText>Press here to make changes to this lab survey</StyledButtonText></CenterText></StyledButtonTutor>
                     <SubTitle>Students responses</SubTitle>
                     <NoStudents s={students}/>
                     <FlatList

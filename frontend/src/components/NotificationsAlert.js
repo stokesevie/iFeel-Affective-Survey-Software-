@@ -61,8 +61,11 @@ export function NotificationsAlert(props) {
   }
 
   useEffect(()=>{
-    fetchRecent()
-  })
+    if (loading){
+      fetchRecent()
+    }
+    
+  },[loading])
 
   if (risksFetched){
     fetchAxisLabel(risks[0])
@@ -86,7 +89,10 @@ export function NotificationsAlert(props) {
     }else if (r.warning){
       zone = "WARNING"
     }
+
+  
     
+
     return (
       <StyledBubbleLarge>
         

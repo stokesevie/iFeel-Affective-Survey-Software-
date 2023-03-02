@@ -10,7 +10,7 @@ This is the grid used for the survey
 */ 
 
 const SurveyLab = ({route, navigation}) => {
-    const { labDetail, question, questions,response,survey } = route.params
+    const { labDetail, question, questions,response,survey,tutorDetail } = route.params
     const lab = labDetail.lab
     const q = questions.questions[question-1][0]
     const [colour, setColour] = useState(-1)
@@ -22,7 +22,8 @@ const SurveyLab = ({route, navigation}) => {
                 lab : {lab},
                 response :response,
                 questions: questions,
-                survey:survey
+                survey:survey,
+                tutorDetail:tutorDetail
             })
         }else{
             setPressed(false)
@@ -32,7 +33,8 @@ const SurveyLab = ({route, navigation}) => {
                 question :question+1,
                 questions : questions,
                 response:response,
-                survey:survey
+                survey:survey,
+                tutorDetail:tutorDetail,
                 
             })
         }
@@ -48,7 +50,8 @@ const SurveyLab = ({route, navigation}) => {
                     question :question-1,
                     questions : questions,
                     response:response.splice(-1),
-                    survey:survey
+                    survey:survey,
+                    tutorDetail:tutorDetail,
                 })
             }else{
                 navigation.navigate("SurveyLab", {
@@ -56,7 +59,8 @@ const SurveyLab = ({route, navigation}) => {
                     question :question-1,
                     questions : questions,
                     response:response,
-                    survey:survey
+                    survey:survey,
+                    tutorDetail:tutorDetail,
                 })
             }
         }

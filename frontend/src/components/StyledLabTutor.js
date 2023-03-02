@@ -3,6 +3,7 @@ import { CourseDetail, StyledListButton, CourseTitle } from './styles';
 
 export default function StyledLabTutor(props){
     const {course,lab, navigation } = props
+
         return(
             <StyledListButton onPress= {
                 ()=>{

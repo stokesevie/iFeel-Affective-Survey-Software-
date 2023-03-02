@@ -29,21 +29,6 @@ const User = ({route, navigation}) => {
 
     },[loading])
 
-    const updateUserLastLogin = async ()=>{
-        let d = {"last_login" : date}
-        let url = url+`/users/${user.user_id}/`
-        const update = await fetch(url, {
-            method: "PUT",
-            headers: {
-              "Authorization": `Bearer ${access}`,
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify(d)
-          });
-        let r = update.status
-        
-    }
-    
     const StudentDetails = async ()=>{
         const studentUrl = url+`/students/${user.user_id}/`
         const student_response = await fetch(studentUrl, {
@@ -69,7 +54,6 @@ const User = ({route, navigation}) => {
                 <SubTitle>Log out?</SubTitle>
                 
                 <StyledButton onPress={()=>{
-                    updateUserLastLogin()
                     setAuthTokens(null)
                     setUser(null)
                     localStorage.clear()
@@ -85,7 +69,6 @@ const User = ({route, navigation}) => {
                     <SubTitle>Log out?</SubTitle>
                     
                     <StyledButton onPress={()=>{
-                        updateUserLastLogin()
                         setAuthTokens(null)
                         setUser(null)
                         localStorage.clear()

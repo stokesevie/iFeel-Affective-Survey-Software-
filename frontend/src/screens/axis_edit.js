@@ -77,7 +77,7 @@ const EditAxis = ({route,navigation})=>{
                 <AxisEditSubText>Type to edit parts of the axis{`\n`}</AxisEditSubText></CenterText>
     
                 <AxisEditSubText>Positive axis title:</AxisEditSubText>
-                <TextInput icon={'create-outline'}  placeholder={pos} placeholderTextColor={Theme.text_darker} onChangeText= {text => setPosAxis(text)}></TextInput>
+                <TextInput icon={'create-outline'}  placeholder={pos} placeholderTextColor={Theme.text_darker} onChangeText= {text => setPosAxis(text)} clearTextOnFocus={true} autoFocus={true}></TextInput>
                 <AxisEditSubText>Negative axis title:</AxisEditSubText>
                 <TextInput icon={'create-outline'} placeholder={neg} placeholderTextColor={Theme.text_darker} onChangeText= {text => setNegAxis(text)}></TextInput>
                 <BubbleText>These zones are marked on a scale of 1-10. 1 is closest to positive axis title, {pos} in this case, 10 is closest to negative axis or {neg} in this case.{`\n`}</BubbleText>

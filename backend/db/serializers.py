@@ -79,7 +79,7 @@ class labSerializer(serializers.ModelSerializer):
 class surveySerializer(serializers.ModelSerializer):
     class Meta:
         model = survey
-        fields = ['id','question_1','question_2','question_3','lab_id'] 
+        fields = ['id','question_1','question_2','question_3','lab_id','tutor_teaching_id'] 
 
 class student_lab_riskSerializer(serializers.ModelSerializer):
     class Meta:
