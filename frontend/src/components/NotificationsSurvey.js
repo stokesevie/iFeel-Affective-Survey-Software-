@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { NotificationTitle,StyledNotification,NotificationText,Arrow ,BubbleContent,Theme,StyledBubble, BubbleText, BubbleTextBold, Center} from './styles'
 import {Ionicons} from '@expo/vector-icons';
-
 import AuthContext from "../utils/auth_context";
 
 export function NotificationsSurvey(props){
@@ -73,6 +72,8 @@ export function NotificationsSurvey(props){
     fetchLabs()
 
   })
+
+
 
   if (!loading){
     return(

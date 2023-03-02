@@ -1,7 +1,6 @@
 
 import { createContext, useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
-import { useNavigation } from "@react-navigation/native";
 
 const AuthContext = createContext();
 
@@ -31,7 +30,8 @@ export const AuthProvider = ({ children }) => {
 
   const up =async ()=>{
    
-   let u = u = `http://127.0.0.1:8000`
+   
+   let u = `http://app-production-1e3f.up.railway.app`
     try{
     let response = await fetch(u+'/up/', {
       method:'GET',
@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
     alert(error)
     throw error})
 }catch{
-   u = `http://app-production-1e3f.up.railway.app`
+  u = `http://127.0.0.1:8000`
   
 }
   setUrl(u)

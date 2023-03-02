@@ -4,6 +4,7 @@ import {Ionicons} from '@expo/vector-icons';
 import { Text } from "react-native";
 import AuthContext from "../utils/auth_context";
 
+import * as Notifications from 'expo-notifications';
 
 
 export function NotificationsMessage(props){
@@ -102,6 +103,27 @@ export function NotificationsMessage(props){
       return (<Text style={{color:Theme.primary, fontWeight:'bold'}}> This is a message from your tutor.</Text>)
     }
   }
+
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+    }),
+  });  
+
+  useEffect(()=>{
+    if (newMessages>0){ 
+      Notifications.scheduleNotificationAsync({
+      content: {
+        title: 'New Message',
+        body: `${newMessages} new messages`,
+      },
+      trigger: null,
+    });}
+  },newMessages)
+
+
 
   if (!loading){
   return(

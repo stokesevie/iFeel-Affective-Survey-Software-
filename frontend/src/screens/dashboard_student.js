@@ -6,13 +6,17 @@ import { NotificationsSurvey } from '../components/NotificationsSurvey'
 import { NotificationsAlert } from '../components/NotificationsAlert'
 import { NotificationsMessage } from '../components/NotificationsMessage'
 import { ActivityIndicator } from 'react-native';
+import * as Notifications from 'expo-notifications';
 /*
 This screen will present the dashboard and most relevant information to the student
 */
 
+
 const StudentDashboard = ({route, navigation}) => {
+
     const { user,courses,messages } = useContext(AuthContext)
     const [loading, setLoading] =useState(true)
+
 
     useEffect(()=>{
         if (loading){
