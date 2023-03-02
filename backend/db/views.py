@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from rest_framework_simplejwt.views import TokenObtainPairView
 from datetime import datetime
 from django.utils.dateparse import parse_datetime
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import permissions
 
 
 
@@ -20,7 +20,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
 class UserList(APIView):
-    permission_classes=[IsAuthenticated]
+    permission_classes=[permissions.IsAuthenticated]
 
     def get(self, request, format=None):
         snippets = User.objects.all()
@@ -84,7 +84,7 @@ class FindUser(APIView):
     """
     Retrieve, update or delete a snippet instance.
     """
-    permission_classes= (IsAuthenticated,)
+    permission_classes= (permissions.IsAuthenticated,)
     def get_object(self, username):
         try:
             return User.objects.get(username=username)
@@ -98,7 +98,7 @@ class FindUser(APIView):
 
 
 class MessageDetail(APIView):
-    permission_classes= (IsAuthenticated,)
+    permission_classes= (permissions.IsAuthenticated,)
     def serialize_message(self,messages):
             msg =[]
             for message in messages:
@@ -156,7 +156,7 @@ class MessageDetail(APIView):
 
 
 class RecentMessage(APIView):
-    permission_classes= (IsAuthenticated,)
+    permission_classes= (permissions.IsAuthenticated,)
     def serialize_message(self,messages):
             msg =[]
             for message in messages:
@@ -181,7 +181,7 @@ class RecentMessage(APIView):
 
 
 class StudentEnrollFind(APIView):
-    permission_classes= (IsAuthenticated,)
+    permission_classes= (permissions.IsAuthenticated,)
     def serialize_student_enroll(self,student_enroll):
         enroll =[]
         for courses in student_enroll:
@@ -208,7 +208,7 @@ class StudentEnrollFind(APIView):
 
 
 class CourseDetail(APIView):
-    permission_classes= (IsAuthenticated,)
+    permission_classes= (permissions.IsAuthenticated,)
     def get_object(self, id):
         try:
             return course.objects.get(id=id)
@@ -221,7 +221,7 @@ class CourseDetail(APIView):
         return Response(serializer.data)
 
 class LabDetail(APIView):
-    permission_classes= (IsAuthenticated,)
+    permission_classes= (permissions.IsAuthenticated,)
     def serialize_labs(self,labs):
         lab_list =[]
         for lab in labs:
@@ -246,7 +246,7 @@ class LabDetail(APIView):
 
 
 class FindSurvey(APIView):
-    permission_classes= (IsAuthenticated,)
+    permission_classes= (permissions.IsAuthenticated,)
     def survey_serialize(self,data):
         return{
             'lab_id' : data.lab_id.lab_id,
@@ -278,7 +278,7 @@ class FindSurvey(APIView):
 
 
 class FindStudentSurvey(APIView):
-    permission_classes= (IsAuthenticated,)
+    permission_classes= (permissions.IsAuthenticated,)
     def student_survey_serialize(self,data):
         return {
             'lab_id': data.lab_id.lab_id,
@@ -308,7 +308,7 @@ class FindStudentSurvey(APIView):
 
 
 class AxisAverage(APIView):
-    permission_classes= (IsAuthenticated,)
+    permission_classes= (permissions.IsAuthenticated,)
     def ser(self,data):
         return {
             'id':data.id,
@@ -379,7 +379,7 @@ class AxisAverage(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class LabQuestions(APIView):
-    permission_classes= (IsAuthenticated,)
+    permission_classes= (permissions.IsAuthenticated,)
     def serialize_questions(self,questions):
         question_list =[]
         for question in questions:
@@ -428,7 +428,7 @@ class LabQuestions(APIView):
 
 
 class FindStudentLabRisk(APIView):
-    permission_classes= (IsAuthenticated,)
+    permission_classes= (permissions.IsAuthenticated,)
     def ser(self,data):
         rs = []
         for r in data:
@@ -465,7 +465,7 @@ class FindStudentLabRisk(APIView):
 
 
 class LabRisksByStudent(APIView):
-    permission_classes= (IsAuthenticated,)
+    permission_classes= (permissions.IsAuthenticated,)
     def serialize_risks(self,risks):
         risk_list =[]
         for r in risks:
@@ -500,7 +500,7 @@ class LabRisksByStudent(APIView):
 
 
 class LabRisksByLab(APIView):
-    permission_classes= (IsAuthenticated,)
+    permission_classes= (permissions.IsAuthenticated,)
     def serialize_risks(self,risks):
         risk_list =[]
         for r in risks:
@@ -536,7 +536,7 @@ class LabRisksByLab(APIView):
 
 
 class FindAxisLabel(APIView):
-    permission_classes= (IsAuthenticated,)
+    permission_classes= (permissions.IsAuthenticated,)
     def get_object(self, axis_id):
         try:
             return axis_labels.objects.get(id= axis_id)
@@ -564,7 +564,7 @@ class FindAxisLabel(APIView):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class FindTutorTeaching(APIView):
-    permission_classes= (IsAuthenticated,)
+    permission_classes= (permissions.IsAuthenticated,)
     def ser(self, data,user_id,tutor_teach):
         rs = []
         for r in data:
@@ -598,3 +598,8 @@ class FindTutorTeaching(APIView):
         #serializer = self.ser(snippet,user_id)
         return Response(snippet)
 
+
+class CheckUp(APIView):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    def get(self,request,format=None):
+        return Response(status=status.HTTP_302_FOUND)

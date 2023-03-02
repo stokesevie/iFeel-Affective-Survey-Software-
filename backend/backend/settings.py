@@ -70,7 +70,7 @@ REST_FRAMEWORK = {
 }
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://backend-production-94f0.up.railway.app'
+    "http://app-production-1e3f.up.railway.app"
 ]
 
 SIMPLE_JWT = {

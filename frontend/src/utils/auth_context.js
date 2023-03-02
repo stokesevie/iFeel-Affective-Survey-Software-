@@ -19,11 +19,31 @@ export const AuthProvider = ({ children }) => {
       : null
   );
   const [loading, setLoading] = useState(true);
-  const url = `http://127.0.0.1:8000`
+
+
+  
+
+
+
+  var url = `http://127.0.0.1:8000`
+  const up =async ()=>{
+    
+    try{
+    let response = await fetch(url+'/up/', {
+      method:'GET',
+      headers:{
+          'Content-Type':'application/json'
+      },
+  }).catch(error=>{throw error})
+}catch{
+  url = `http://app-production-1e3f.up.railway.app`
+}
+
+  }
 
   let updateToken = async ()=> {
 
-    let response = await fetch('http://127.0.0.1:8000/api/token/refresh/', {
+    let response = await fetch(url+`/api/token/refresh/`, {
         method:'POST',
         headers:{
             'Content-Type':'application/json'
@@ -49,7 +69,7 @@ export const AuthProvider = ({ children }) => {
 
   const loginUser = async (username, password,navigation) => {
    
-    const response = await fetch("http://127.0.0.1:8000/api/token/", {
+    const response = await fetch(url+`/api/token/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -108,7 +128,8 @@ export const AuthProvider = ({ children }) => {
     updateCourses,
     messages,
     courses,
-    url
+    url,
+    up
   };
 
   useEffect(() => {
