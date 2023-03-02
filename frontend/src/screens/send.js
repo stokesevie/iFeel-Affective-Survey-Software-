@@ -15,6 +15,7 @@ const Send = ({route, navigation}) => {
     const pastMessage =route.params.message.item
     const [loading, setLoading] = useState(true)
     const [message, setMessage] = useState([])
+    const access = JSON.parse(localStorage.getItem("authTokens"))['access']
 
     let dt = (pastMessage.sent_at).split(" ")
     let d = dt[0].split("-")
@@ -41,6 +42,7 @@ const Send = ({route, navigation}) => {
             let response = await fetch(sendUrl, {
                 method : 'POST',
                 headers :{
+                    'Authorization' :`Bearer ${access}`, 
                     'Content-Type' : 'application/json',
                 },
                 body: JSON.stringify(data),
@@ -53,16 +55,19 @@ const Send = ({route, navigation}) => {
         
     };
 
+    useEffect(()=>{
+        if (!loading){
+        Alert.alert('Message sent!')
+        return navigation.navigate("Messages")
+        }
+    },[loading])
+
     const Related = ()=>{
         if (pastMessage.related_lab){
             return (<RelatedLab>Related to {pastMessage.related_lab_title}({pastMessage.related_lab_course_title}) </RelatedLab>)
         }
     }
 
-    if (!loading){
-        Alert.alert('Message to '+ pastMessage.sender_f_name, 'Message sent!')
-        return navigation.navigate("Messages")
-    }else{
         return(
             <ContentJustified>
                  <MessageObject>
@@ -87,6 +92,6 @@ const Send = ({route, navigation}) => {
               
             </ContentJustified>
     )
-    }
+    
 };
 export default Send;
