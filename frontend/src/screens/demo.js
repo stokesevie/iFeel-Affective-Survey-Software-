@@ -4,6 +4,11 @@ import { XYGrid, XMin, YMin, XYGridText, YTextMin, Grid, YText, SurveyQuestion, 
 
 import { ContentJustified, PageTitle, StyledButton } from '../components/styles';
 
+/*
+This screen shows a demo of a created axis to the tutor
+*/
+
+
 const Demo = ({route, navigation}) => {
     const { question,lab,questionNumber } = route.params
     const [colour, setColour] = useState(-1)

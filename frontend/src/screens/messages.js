@@ -5,6 +5,10 @@ import AuthContext from '../utils/auth_context';
 import { ContentJustified, PageTitle } from '../components/styles';
 import   StyledMessage   from '../components/StyledMessage';
 
+/*
+This screen shows the messages the user has received
+*/
+
 const Messages = ({navigation}) => {
     const { messages } = useContext(AuthContext);
 

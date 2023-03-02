@@ -5,8 +5,12 @@ import AuthContext from '../utils/auth_context';
 
 import { ContentJustified, PageTitle,BubbleTextBold, StyledListButton, CenterText, CourseDetail, CourseTitle } from '../components/styles';
 
+
+/*
+This screen allows the tutor to see which courses they teach
+*/
 const TutorCourses = ({navigation}) => { 
-    const { user } = useContext(AuthContext);
+    const { user,url } = useContext(AuthContext);
     const access = JSON.parse(localStorage.getItem("authTokens"))['access']
     const [labs,setLabs] = useState()
 
@@ -14,7 +18,7 @@ const TutorCourses = ({navigation}) => {
 
     const fetchTeaching = async ()=>{
 
-        const teaching = `http://127.0.0.1:8000/tutor_teaching/`+ user.user_id+`/`
+        const teaching = url+`/tutor_teaching/${user.user_id}/`
             let response = await fetch(teaching, {
                 method : 'GET',
                 headers : {

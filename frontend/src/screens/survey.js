@@ -5,9 +5,13 @@ import { BubbleText, ContentJustifiedBack, PageTitle, StyledButton, StyledButton
 import AuthContext from '../utils/auth_context';
 import { Linking } from 'react-native';
 
+/*
+This screen allows a user to complete a survey or to see past responses
+*/
+
 const Survey = ({route, navigation}) => {
     const { lab,completed } = route.params
-    const {user} = useContext(AuthContext)
+    const {user,url} = useContext(AuthContext)
     const [questions, setQuestions] = useState([])
     const [survey, setSurvey] = useState([])
     const [fetched,setFetched] = useState(false)
@@ -27,7 +31,7 @@ const Survey = ({route, navigation}) => {
 
     const fetchSurvey = ( async ()=>{
         
-        const surveyUrl = `http://127.0.0.1:8000/survey/`+ lab.lab_id+`/`
+        const surveyUrl = url+`/survey/${lab.lab_id}/`
         const survey_response = await fetch(surveyUrl, {
             method : 'GET',
             headers :{
@@ -47,7 +51,7 @@ const Survey = ({route, navigation}) => {
         }})
         .catch(error=>{})
         
-        const survey_exist = `http://127.0.0.1:8000/survey/`+ lab.lab_number+`/`+user.user_id+`/`
+        const survey_exist = url+`/survey/${lab.lab_number}/${user.user_id}/`
         const exist_response = await fetch(survey_exist, {
             method : 'GET',
             headers :{
@@ -63,7 +67,7 @@ const Survey = ({route, navigation}) => {
     })
 
     const fetchQuestion = (async (question)=>{
-        const questionUrl = `http://127.0.0.1:8000/question/`+ question +`/`
+        const questionUrl = url+`/question/${question}/`
         const question_response = await fetch(questionUrl, {
             method : 'GET',
             headers :{
@@ -76,7 +80,7 @@ const Survey = ({route, navigation}) => {
     })
 
     const getResponses = async ()=>{
-            const emotionalUrl = `http://127.0.0.1:8000/average_lab/`+user.user_id +`/`+ lab.lab_id+`/`
+            const emotionalUrl = url+`/average_lab/${user.user_id}/${lab.lab_id}/`
                 const emotional_response = await fetch(emotionalUrl, {
                     method : 'GET',
                     headers :{
@@ -87,7 +91,7 @@ const Survey = ({route, navigation}) => {
             let p = await emotional_response.json()
             results[0] = p
 
-            const tutorUrl = `http://127.0.0.1:8000/student_lab/`+user.user_id +`/`+ lab.lab_id+`/`
+            const tutorUrl = url+`/student_lab/${user.user_id}/${lab.lab_id}/`
             const tutor_response = await fetch(tutorUrl, {
                 method : 'GET',
                 headers :{
@@ -151,8 +155,10 @@ const Survey = ({route, navigation}) => {
     }
 }
 
+//fetches the tutor student teaching instance for this student and lab
+
 const getTutor = async ()=>{
-    const tutorTeachingUrl = `http://127.0.0.1:8000/student_teaching/`+lab.lab_id+`/`
+    const tutorTeachingUrl = url+`/student_teaching/${lab.lab_id}/`
     const tutorResponse = await fetch(tutorTeachingUrl, {
         method : 'GET',
         headers :{

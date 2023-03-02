@@ -3,6 +3,9 @@ import { StyleSheet, Text, View,FlatList} from 'react-native'
 import { BubbleText, BubbleTextBold, ContentJustified, PageTitle, StyledButton, StyledButtonText, StyledListButton, SubTitle } from '../components/styles';
 import AuthContext from '../utils/auth_context';
 
+/*
+This screen shows all student risks
+*/
 const StudentRisk = ({route,navigation})=>{
     const relatedRisks = route.params.relatedRisks
 

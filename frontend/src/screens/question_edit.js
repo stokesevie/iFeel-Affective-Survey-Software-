@@ -2,6 +2,9 @@ import React from "react";
 import { StyledButton,BubbleTextBold, ContentJustifiedBack, PageTitle, StyledBubble, SubTitle, BubbleText, CenterText, StyledButtonEdit, StyledButtonText, StickToBottom } from "../components/styles";
 import { View } from "react-native";
 
+/*
+This screen allows the tutor to see the specific axis selected for surveys
+*/
 
 const QuestionEdit = ({route,navigation})=>{
     const question = route.params.question

@@ -7,6 +7,10 @@ import StyledLab from '../components/StyledLab';
 import { ContentJustifiedBack, PageTitle } from '../components/styles';
 import AuthContext from '../utils/auth_context';
 
+/*
+This screen will present the labs the user has completed surveys or not for
+*/
+
 const Course = ({route, navigation}) => {
     const { course } = route.params
     const courseDetail = course.courseDetail
@@ -14,12 +18,11 @@ const Course = ({route, navigation}) => {
     const [ pending, setPending] = useState([])
     const {user} = useContext(AuthContext)
     const [loading, setLoading] = useState(true)
-    const {authTokens} = useContext(AuthContext)
+    const {url} = useContext(AuthContext)
     const access = JSON.parse(localStorage.getItem("authTokens"))['access']
     useEffect(()=>{fetchLabs()},[])
-
     const fetchLabs = async ()=>{
-        const labUrl = `http://127.0.0.1:8000/labs/`+ courseDetail.id
+        const labUrl = url+`/labs/${courseDetail.id}`
         response = await fetch(labUrl, {
             method : 'GET',
             headers :{
@@ -35,7 +38,7 @@ const Course = ({route, navigation}) => {
          
         let p =[]
         for (let i in labs[0]){
-            const survey_exist = `http://127.0.0.1:8000/survey/`+ labs[0][i].lab_id+`/`+user.user_id+`/`
+            const survey_exist = url+`/survey/${labs[0][i].lab_id}/${user.user_id}/`
             const exist_response = await fetch(survey_exist, {
             method : 'GET',
             headers :{

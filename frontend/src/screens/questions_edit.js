@@ -6,9 +6,12 @@ import AuthContext from '../utils/auth_context';
 import { BubbleText, BubbleTextBold, CenterText, ContentJustifiedBack, CourseDetail, PageTitle, AxisListButton, SubTitle, StickToBottom, StyledButtonEdit, StyledButtonText } from '../components/styles';
 import { NavigationContainer } from '@react-navigation/native';
 
+/*
+This screen allows the tutor to see questions for an affective survey
+*/
 
 const QuestionsEdit = ({route,navigation}) => { 
-    const { user } = useContext(AuthContext);
+    const { url } = useContext(AuthContext);
     const  lab  = route.params.lab
     const  course  = route.params.course
     const [questions, setQuestions] = useState([])
@@ -77,7 +80,7 @@ const QuestionsEdit = ({route,navigation}) => {
 
 
     const getSurvey = async ()=>{
-        const surveyUrl = `http://127.0.0.1:8000/survey/`+lab.lab_id +`/`
+        const surveyUrl = url+`/survey/${lab.lab_id}/`
         let response = await fetch(surveyUrl, {
             method : 'GET',
             headers :{
@@ -117,7 +120,7 @@ const QuestionsEdit = ({route,navigation}) => {
             'question_3':questionIDs[2],
             'lab_id': lab.lab_id,
         }
-        const surveyUrl = `http://127.0.0.1:8000/post_survey/`
+        const surveyUrl = url+`/post_survey/`
         let response = await fetch(surveyUrl, {
             method : 'POST',
             headers :{
@@ -135,7 +138,7 @@ const QuestionsEdit = ({route,navigation}) => {
 
     }
     const getQuestion = async(question_id)=>{
-        const questionsUrl = `http://127.0.0.1:8000/question/`+question_id +`/`
+        const questionsUrl = url+`/question/${question_id}/`
         let response = await fetch(questionsUrl, {
             method : 'GET',
             headers :{

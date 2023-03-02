@@ -6,6 +6,11 @@ import AuthContext from '../utils/auth_context';
 import { ContentJustifiedBack, PageTitle } from '../components/styles';
 import StyledLabTutor from '../components/StyledLabTutor';
 
+
+/*
+This screen shows details about labs a tutor teaches
+*/
+
 const TutorCourse = ({route,navigation}) => { 
     const { user } = useContext(AuthContext);
     const {labs,course} = route.params

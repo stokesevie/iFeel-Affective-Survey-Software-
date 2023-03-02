@@ -6,8 +6,12 @@ import moment from 'moment/moment';
 import { ContentJustified, PageTitle, StyledButton,StyledButtonText, StyledTextInputParagraph, MessageObject,MessageContent,MessageSender,MessageTime,Theme, SubTitle } from '../components/styles';
 import AuthContext from '../utils/auth_context';
 
+
+/*
+This screen allows the user to send a new message
+*/
 const SendNew = ({route, navigation}) => {
-    const { user } = useContext(AuthContext)
+    const { user,url } = useContext(AuthContext)
     const receiver_id = route.params.receiver_id
     const [loading, setLoading] = useState(true)
     const [message, setMessage] = useState([])
@@ -46,7 +50,7 @@ const SendNew = ({route, navigation}) => {
             }
         }
 
-            const sendUrl = `http://127.0.0.1:8000/messages/`
+            const sendUrl = url+`/messages/`
             let response = await fetch(sendUrl, {
                 method : 'POST',
                 headers :{

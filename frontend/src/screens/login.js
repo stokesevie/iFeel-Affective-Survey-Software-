@@ -8,6 +8,10 @@ import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '../components/styles';
 
 
+/*
+This screen allows the user to login
+*/
+
 const Login = ({route,navigation}) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');

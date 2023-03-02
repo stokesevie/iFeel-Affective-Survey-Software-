@@ -6,9 +6,13 @@ import { NotificationsSurvey } from '../components/NotificationsSurvey'
 import { NotificationsAlert } from '../components/NotificationsAlert'
 import { NotificationsMessage } from '../components/NotificationsMessage'
 
+/*
+This screen will present the dashboard and most relevant information to the student
+*/
+
 const StudentDashboard = ({route, navigation}) => {
     const { user,courses,messages } = useContext(AuthContext)
-
+    
     return (
         <View>
             <ContentJustified>

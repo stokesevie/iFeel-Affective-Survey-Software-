@@ -105,6 +105,7 @@ const CreateTabsStudent =()=> {
 }
 
  function CreateTabsTutor(){
+    
     return(
         <NavBar.Navigator screenOptions={{
             tabBarActiveTintColor: colours.secondary,
@@ -155,10 +156,8 @@ function App() {
                                     <Stack.Screen name= "QuestionsEdit" component={QuestionsEdit} options={{ title:'' ,headerTransparent: true, headerTintColor:colours.primary }}/>
                                     <Stack.Screen name= "QuestionEdit" component={QuestionEdit} options={{ title:'' ,headerTransparent: true, headerTintColor:colours.primary }}/>
                                     <Stack.Screen name= "EditAxis" component={EditAxis} options={{ title:'' ,headerTransparent: true, headerTintColor:colours.primary }}/>
-
                                     <Stack.Screen name= "NewAxis" component={NewAxis} options={{ title:'' ,headerTransparent: true, headerTintColor:colours.primary }}/>
                                     <Stack.Screen name= "Demo" component={Demo} options={{ title:'' ,headerTransparent: true, headerTintColor:colours.primary }}/>
-
                             </Stack.Navigator>
                     </NavigationContainer>
                 </AuthProvider>

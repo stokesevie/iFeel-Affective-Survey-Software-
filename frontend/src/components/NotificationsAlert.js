@@ -11,11 +11,11 @@ export function NotificationsAlert(props) {
   const [risksFetched,setRisksFetched] = useState(false)
   const [emotional, setEmotional] = useState([])
   const [emotionalFetched,setEmotionalFetched] = useState(false)
-  const {authTokens} = useContext(AuthContext)
+  const {url} = useContext(AuthContext)
   const access = JSON.parse(localStorage.getItem("authTokens"))['access']
 
   const fetchRecent = async ()=>{
-    const recentUrl = `http://127.0.0.1:8000/student_lab_risks/`+user.user_id+`/`
+    const recentUrl = url +`/student_lab_risks/${user.user_id}/`
         const recent_response = await fetch(recentUrl, {
             method : 'GET',
             headers :{
@@ -30,7 +30,7 @@ export function NotificationsAlert(props) {
   }
 
   const fetchStudentAverage = async ()=>{
-    const recentUrl = `http://127.0.0.1:8000/average/`+user.user_id+`/`
+    const recentUrl = url+`/average/${user.user_id}/`
         const recent_response = await fetch(recentUrl, {
             method : 'GET',
             headers :{
@@ -47,7 +47,7 @@ export function NotificationsAlert(props) {
   const fetchAxisLabel = async (axis)=>{
     let a = axis[0].axis_id
 
-    const labelsUrl = `http://127.0.0.1:8000/axis_labels/`+a+`/`
+    const labelsUrl = url+`/axis_labels/${a}/`
         const labels_response = await fetch(labelsUrl, {
             method : 'GET',
             headers :{

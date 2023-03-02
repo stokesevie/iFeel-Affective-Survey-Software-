@@ -2,13 +2,17 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {View,Text} from 'react-native'
 
-import { BubbleText, DoneTextBold, ContentJustified, PageTitle, StyledBubbleLarge, StyledButton,StyledButtonText, SubTitle } from '../components/styles';
+import { BubbleText, DoneTextBold, ContentJustified, PageTitle, StyledBubbleLarge, StyledButton,StyledButtonText, SubTitle, BubbleTextBold, CenterText } from '../components/styles';
 import AuthContext from '../utils/auth_context';
 import moment from '../node_modules/moment'
 
+
+/*
+This screen allows the user to log out and displays the student with their level
+*/
 const User = ({route, navigation}) => {
     const access = JSON.parse(localStorage.getItem("authTokens"))['access']
-    const {user,setAuthTokens,setUser} = useContext(AuthContext)
+    const {user,setAuthTokens,setUser,url} = useContext(AuthContext)
     const [student, setStudent] = useState()
     const [loading,setloading] = useState(true)
     var date = moment()
@@ -27,7 +31,7 @@ const User = ({route, navigation}) => {
 
     const updateUserLastLogin = async ()=>{
         let d = {"last_login" : date}
-        let url = `http://127.0.0.1:8000/users/${user.user_id}/`
+        let url = url+`/users/${user.user_id}/`
         const update = await fetch(url, {
             method: "PUT",
             headers: {
@@ -41,7 +45,7 @@ const User = ({route, navigation}) => {
     }
     
     const StudentDetails = async ()=>{
-        const studentUrl = `http://127.0.0.1:8000/students/`+user.user_id +`/`
+        const studentUrl = url+`/students/${user.user_id}/`
         const student_response = await fetch(studentUrl, {
             method : 'GET',
             headers :{
@@ -58,8 +62,10 @@ const User = ({route, navigation}) => {
         return (
         <View>
             <ContentJustified>
-                <PageTitle>User Home</PageTitle>  
-                <SubTitle>{user.first_name} {user.last_name} {`\n`}Level: {student.level}</SubTitle>
+                <PageTitle>Student Home</PageTitle>  
+                <CenterText>
+                <BubbleTextBold>{user.first_name} {user.last_name} {`\n`}Level: {student.level}{`\n`}</BubbleTextBold>
+                </CenterText>
                 <SubTitle>Log out?</SubTitle>
                 
                 <StyledButton onPress={()=>{
@@ -75,7 +81,7 @@ const User = ({route, navigation}) => {
         return (
             <View>
                 <ContentJustified>
-                    <PageTitle>User Home</PageTitle> 
+                    <PageTitle>Tutor Profile</PageTitle> 
                     <SubTitle>Log out?</SubTitle>
                     
                     <StyledButton onPress={()=>{

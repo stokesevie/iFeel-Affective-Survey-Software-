@@ -2,7 +2,14 @@ import React,{useState} from "react";
 import {  ContentJustifiedBack, PageTitle, Right, BubbleText,Left,Theme, StyledTextInput, AxisEditSubText, StyledButtonText, StyledDoneButton, TutorStudentFeedback, AxisEditButton, CenterText } from "../components/styles";
 import { Ionicons } from '@expo/vector-icons';
 import { View,Text } from "react-native";
-import { useEffect } from "react";
+import { useContext } from "react";
+import AuthContext from '../utils/auth_context';
+
+
+/*
+This screen allows the tutor to edit an axis
+*/
+
 const EditAxis = ({route,navigation})=>{
     const {question,course,questionNumber,lab,axis} = route.params
     let risk = ''+question[axis].risk
@@ -15,7 +22,7 @@ const EditAxis = ({route,navigation})=>{
     const [negAxis,setNegAxis]= useState('')
     const [riskZone,setRiskZone]= useState('')
     const [warningZone,setWarningZone]= useState('')
-
+    const {url} = useContext(AuthContext)
 
     const access = JSON.parse(localStorage.getItem("authTokens"))['access']
 
@@ -49,7 +56,7 @@ const EditAxis = ({route,navigation})=>{
 
     const putChange = async (change)=>{
      
-        const axisUrl = `http://127.0.0.1:8000/axis_labels/`+question[axis].id+`/`
+        const axisUrl = url+`/axis_labels/${question[axis].id}/`
         const update = await fetch(axisUrl, {
             method: "PUT",
             headers: {
