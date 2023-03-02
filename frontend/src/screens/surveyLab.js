@@ -4,6 +4,11 @@ import { XYGrid, XMin, YMin, XYGridText, YTextMin, Grid, YText, SurveyQuestion, 
 
 import { ContentJustified, PageTitle, StyledButton } from '../components/styles';
 
+
+/*
+This is the grid used for the survey
+*/ 
+
 const SurveyLab = ({route, navigation}) => {
     const { labDetail, question, questions,response,survey } = route.params
     const lab = labDetail.lab

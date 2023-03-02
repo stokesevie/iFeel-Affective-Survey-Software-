@@ -17,6 +17,7 @@ const Done = ({route, navigation}) => {
     const [stats, setStats] = useState([])
     const [loading, setLoading] = useState(true)
     const [tutor, setTutor] = useState(false);
+    const [tutorDetail, setTutorDetail] = useState()
     const [student, setStudent] = useState(false)
     const [studentStats, setStudentStats] = useState([])
     const [allStats,setAllStats] = useState([])
@@ -88,6 +89,7 @@ const Done = ({route, navigation}) => {
         if (!surveyPosted){
             setCompleted()
         }
+        getTutor()
         setLoading(false)
 
 
@@ -166,6 +168,7 @@ const Done = ({route, navigation}) => {
         return [[good],[bad]]
     }
 
+    //this compares the students responses with the responses of that of the average student
     const buildStatsStudent = (li)=>{
         let str=[];
         for (let i = 0;i<6;i++){
@@ -256,6 +259,8 @@ const Done = ({route, navigation}) => {
 }
 
 
+    //this shows help if the student found the lab difficult
+
     const ShowHelp = () =>{
         if (JSON.stringify(stats[0][1][0])!="[]"){
             return <>
@@ -264,7 +269,7 @@ const Done = ({route, navigation}) => {
                 Linking.openURL(lab.lab.help)
             }}><StyledButtonText> Online resources </StyledButtonText></StyledButton>
             <StyledButton title = "Message" onPress={()=>{
-                return navigation.navigate("SendNew", {'receiver_id':'24440303s','lab':lab.lab.course_id})
+                return navigation.navigate("SendNew", {'receiver_id':tutorDetail.tutor_username,'lab':lab.lab.lab_id,'tutor_name':tutorDetail.tutor_name, 'course':lab.lab.course_id})
             }}><StyledButtonText> Message Tutor </StyledButtonText></StyledButton>
             </>                 
         }else{
@@ -314,7 +319,27 @@ const Done = ({route, navigation}) => {
             return (<><FlatList ListHeaderComponent={()=><DoneTextBold>Affective Student Average Comparison</DoneTextBold>} data = {studentStats[0]} renderItem={item=><ResponseText>{'\n'}{item.item}</ResponseText>}/></>)
         }
        } 
+
+
+    const getTutor = async ()=>{
+        const tutorTeachingUrl = url+`/student_teaching/${lab.lab.lab_id}/`
+        const tutorResponse = await fetch(tutorTeachingUrl, {
+            method : 'GET',
+            headers :{
+                'Authorization' :`Bearer ${access}`, 
+                'Content-Type' : 'application/json',
+              },
+        })
+        let body = await tutorResponse.json().catch(error=>{})
+        setTutorDetail(body[0])
+    
+    
+    }
+
+
+    
     if (!loading){
+ 
         return (
             <View>
                 <ContentJustified>

@@ -6,6 +6,10 @@ import moment from 'moment/moment';
 import { ContentJustified, PageTitle, StyledButton,StyledButtonText, StyledTextInputParagraph, MessageObject,MessageContent,MessageSender,MessageTime,Theme, SubTitle } from '../components/styles';
 import AuthContext from '../utils/auth_context';
 
+
+/*
+This screen allows the user to send a new message
+*/
 const SendNew = ({route, navigation}) => {
     const { user,url } = useContext(AuthContext)
     const receiver_id = route.params.receiver_id

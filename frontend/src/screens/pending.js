@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Image,ImageBackground,View} from 'react-native'
 
-import { ContentJustified, PageTitle } from '../components/styles';
 import { useContext } from 'react';
 import AuthContext from '../utils/auth_context';
 import { ActivityIndicator } from 'react-native';
 
+/* This screen takes the user logged in and finds related messages and courses before rendering the dashboard */
 
 const Pending = ({navigation}) => {
     const { user,updateMessages, updateCourses,url} = useContext(AuthContext);
    
-
+    // This function will get messages from the database sent to the user
     const getMessages = async()=>{
     const access = JSON.parse(localStorage.getItem("authTokens"))['access']
       const messageUrl = url+`/message/${user.user_id}/`   
@@ -25,6 +25,7 @@ const Pending = ({navigation}) => {
         let m = message_response.json().then(messages => updateAuthM(messages)).catch(console.error)
     }
 
+    // This function wil get courses from the database that the user is enrolled in
     const getCourses = async()=>{
         const access = JSON.parse(localStorage.getItem("authTokens"))['access']
         let coursesUrl;
@@ -45,6 +46,7 @@ const Pending = ({navigation}) => {
     }
 
 
+    //If the screen attempts to find the messages/courses without the user being set, the user will be returned to login
     useEffect(()=>{
         try{
             if (user.user_id){
@@ -66,6 +68,7 @@ const Pending = ({navigation}) => {
         updateMessages(m)
     }
 
+    //once set the app will navigate to appropriate dashboard
     const nav = async(c)=>{
         updateCourses(c)
         if (user.is_staff){
@@ -75,7 +78,7 @@ const Pending = ({navigation}) => {
         }
     }
 
-    
+    //shows spinner as pending
     return (
             <ImageBackground source={require('../assets/splash.png')} resizeMode="cover" style={{flex:1}}>
             <ActivityIndicator visible={true} color='white' style={{flex: 1,

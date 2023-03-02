@@ -7,6 +7,10 @@ import StyledLab from '../components/StyledLab';
 import { ContentJustifiedBack, PageTitle } from '../components/styles';
 import AuthContext from '../utils/auth_context';
 
+/*
+This screen will present the labs the user has completed surveys or not for
+*/
+
 const Course = ({route, navigation}) => {
     const { course } = route.params
     const courseDetail = course.courseDetail
@@ -17,7 +21,6 @@ const Course = ({route, navigation}) => {
     const {url} = useContext(AuthContext)
     const access = JSON.parse(localStorage.getItem("authTokens"))['access']
     useEffect(()=>{fetchLabs()},[])
-
     const fetchLabs = async ()=>{
         const labUrl = url+`/labs/${courseDetail.id}`
         response = await fetch(labUrl, {

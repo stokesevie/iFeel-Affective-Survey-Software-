@@ -5,6 +5,10 @@ import { View,Text } from "react-native";
 import { useEffect } from "react";
 import AuthContext from "../utils/auth_context";
 
+
+/*
+This screen allows the tutor to create a new
+*/
 const NewAxis = ({route,navigation})=>{
     const  lab  = route.params.lab
     const  course  = route.params.course

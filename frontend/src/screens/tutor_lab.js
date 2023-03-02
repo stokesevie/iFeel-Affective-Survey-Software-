@@ -56,8 +56,8 @@ const TutorLab = ({route,navigation}) => {
         return students
     }
 
-    const NoStudents = ({students})=>{
-        if (students==[]){
+    const NoStudents = (students)=>{
+        if (JSON.stringify(students.s)=="[]"){
             return (<CenterText><BubbleText>No students have taken this survey</BubbleText></CenterText>)
         }
     }

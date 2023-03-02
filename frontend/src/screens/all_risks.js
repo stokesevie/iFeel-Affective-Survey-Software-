@@ -3,6 +3,10 @@ import { Text ,FlatList} from "react-native";
 import { useEffect, useState,useContext } from "react";
 import AuthContext from '../utils/auth_context';
 
+/*
+This screen will show the tutor all risks
+*/
+
 const AllRisks = ({route,navigation})=>{
 
     const access = JSON.parse(localStorage.getItem("authTokens"))['access']

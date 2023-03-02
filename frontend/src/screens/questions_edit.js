@@ -6,6 +6,9 @@ import AuthContext from '../utils/auth_context';
 import { BubbleText, BubbleTextBold, CenterText, ContentJustifiedBack, CourseDetail, PageTitle, AxisListButton, SubTitle, StickToBottom, StyledButtonEdit, StyledButtonText } from '../components/styles';
 import { NavigationContainer } from '@react-navigation/native';
 
+/*
+This screen allows the tutor to see questions for an affective survey
+*/
 
 const QuestionsEdit = ({route,navigation}) => { 
     const { url } = useContext(AuthContext);

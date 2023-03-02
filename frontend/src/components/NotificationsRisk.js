@@ -47,15 +47,9 @@ const risk = (r)=>{
     return
 }
 
-
-
-    if (!loading){
-        let i = 0
-        return(
-            <StyledBubbleLarge>
-            <Center><Ionicons name="alert-circle-outline" size={35} color={Theme.secondary}></Ionicons></Center>
-            <CenterText><BubbleTextBold>Responses to {courses[0].course_title}</BubbleTextBold></CenterText>
-            <FlatList
+const IfNoResponses = ()=>{
+    if (JSON.stringify(risks)!="[]"){
+        <FlatList
             data={risks}
             renderItem ={({item})=>{
                 if (risk(item) && i<2){
@@ -69,7 +63,22 @@ const risk = (r)=>{
 
             
             }}
-            /></StyledBubbleLarge>
+            />
+    }else{
+        return (<CenterText><BubbleText>{`\n`}No students have responded to this survey yet</BubbleText></CenterText>)
+    }
+}
+
+
+    if (!loading){
+        let i = 0
+        return(
+            <StyledBubbleLarge>
+            <Center><Ionicons name="alert-circle-outline" size={35} color={Theme.secondary}></Ionicons></Center>
+            <CenterText><BubbleTextBold>Responses to {courses[0].course_title}{`\n`} </BubbleTextBold>
+            <BubbleText>{courses[0].lab.lab_title} (lab {courses[0].lab.lab_number})</BubbleText></CenterText>
+            <IfNoResponses></IfNoResponses>
+            </StyledBubbleLarge>
         )
     }
 

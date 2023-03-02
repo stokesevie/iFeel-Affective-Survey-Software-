@@ -5,6 +5,10 @@ import AuthContext from '../utils/auth_context';
 
 import { ContentJustified, PageTitle,BubbleTextBold, StyledListButton, CenterText, CourseDetail, CourseTitle } from '../components/styles';
 
+
+/*
+This screen allows the tutor to see which courses they teach
+*/
 const TutorCourses = ({navigation}) => { 
     const { user,url } = useContext(AuthContext);
     const access = JSON.parse(localStorage.getItem("authTokens"))['access']

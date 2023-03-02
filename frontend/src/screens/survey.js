@@ -5,6 +5,10 @@ import { BubbleText, ContentJustifiedBack, PageTitle, StyledButton, StyledButton
 import AuthContext from '../utils/auth_context';
 import { Linking } from 'react-native';
 
+/*
+This screen allows a user to complete a survey or to see past responses
+*/
+
 const Survey = ({route, navigation}) => {
     const { lab,completed } = route.params
     const {user,url} = useContext(AuthContext)

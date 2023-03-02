@@ -4,6 +4,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { View,Text } from "react-native";
 import { useContext } from "react";
 import AuthContext from '../utils/auth_context';
+
+
+/*
+This screen allows the tutor to edit an axis
+*/
+
 const EditAxis = ({route,navigation})=>{
     const {question,course,questionNumber,lab,axis} = route.params
     let risk = ''+question[axis].risk

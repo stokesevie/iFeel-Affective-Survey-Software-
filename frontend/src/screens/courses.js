@@ -6,6 +6,9 @@ import StyledCourse from '../components/StyledCourse';
 
 import { ContentJustified, PageTitle } from '../components/styles';
 
+/*
+This screen will present the list of courses the student is enrolled in
+*/
 const Courses = ({navigation}) => { 
     const { user,courses } = useContext(AuthContext);
 

@@ -2,10 +2,14 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {View,Text} from 'react-native'
 
-import { BubbleText, DoneTextBold, ContentJustified, PageTitle, StyledBubbleLarge, StyledButton,StyledButtonText, SubTitle } from '../components/styles';
+import { BubbleText, DoneTextBold, ContentJustified, PageTitle, StyledBubbleLarge, StyledButton,StyledButtonText, SubTitle, BubbleTextBold, CenterText } from '../components/styles';
 import AuthContext from '../utils/auth_context';
 import moment from '../node_modules/moment'
 
+
+/*
+This screen allows the user to log out and displays the student with their level
+*/
 const User = ({route, navigation}) => {
     const access = JSON.parse(localStorage.getItem("authTokens"))['access']
     const {user,setAuthTokens,setUser,url} = useContext(AuthContext)
@@ -59,7 +63,9 @@ const User = ({route, navigation}) => {
         <View>
             <ContentJustified>
                 <PageTitle>Student Home</PageTitle>  
-                <SubTitle>{user.first_name} {user.last_name} {`\n`}Level: {student.level}</SubTitle>
+                <CenterText>
+                <BubbleTextBold>{user.first_name} {user.last_name} {`\n`}Level: {student.level}{`\n`}</BubbleTextBold>
+                </CenterText>
                 <SubTitle>Log out?</SubTitle>
                 
                 <StyledButton onPress={()=>{
