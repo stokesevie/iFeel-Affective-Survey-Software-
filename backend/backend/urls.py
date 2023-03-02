@@ -56,6 +56,7 @@ urlpatterns = [
     path('average/<int:student_id>/', views.AxisAverage.as_view()),
     path('average_lab/<int:student_id>/<int:lab_id>/', views.AxisAverage.as_view()),
     path('tutor_teaching/<int:user_id>/', views.FindTutorTeaching.as_view()),
+    path('student_teaching/<int:lab_id>/', views.FindTutorStudent.as_view()),
     path('students/<int:pk>/', views.StudentDetail.as_view()),
 ]
 

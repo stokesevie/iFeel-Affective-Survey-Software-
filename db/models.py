@@ -36,7 +36,12 @@ class course(models.Model):
 
 class student_enroll(models.Model):
     student_id = models.ForeignKey("student", on_delete=models.CASCADE)
-    lab_id = models.ForeignKey("course", on_delete=models.CASCADE)
+    course_id = models.ForeignKey("course", on_delete=models.CASCADE)
+
+class student_lab(models.Model):
+    student_id = models.ForeignKey("student", on_delete=models.CASCADE)
+    lab_id = models.ForeignKey("lab", on_delete=models.CASCADE)
+    tutor_id = models.ForeignKey("tutor_teaching", on_delete=models.CASCADE)
     
 class lab(models.Model):
     course_id = models.ForeignKey("course", on_delete=models.CASCADE)
