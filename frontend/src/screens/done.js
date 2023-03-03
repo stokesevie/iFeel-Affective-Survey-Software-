@@ -114,7 +114,6 @@ const Done = ({route, navigation}) => {
         let survey_id = survey.survey[0].id
         let lab_id = lab.lab.lab_id
         let student_id = user.user_id
-
         let p ={
             'survey_id': survey_id,
             'lab_id': lab_id,
@@ -180,6 +179,9 @@ const Done = ({route, navigation}) => {
             }else{
                 AxisAverage(id,r,true)
             }
+        }
+        if (JSON.stringify(str)=="[]"){
+            str.push("You were above average in all questions.")
         }
         setPosted(true)
         studentStats[0] = str

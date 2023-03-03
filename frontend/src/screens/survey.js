@@ -41,6 +41,7 @@ const Survey = ({route, navigation}) => {
         })
         let body = await survey_response.json()
         .then(async (data) =>{
+            alert(JSON.stringify(data))
             survey[0]=data
             for (let i = 1; i < 4; i++){
                 let question = await fetchQuestion(data["question_" + i.toString()])

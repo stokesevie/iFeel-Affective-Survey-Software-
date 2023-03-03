@@ -30,7 +30,8 @@ export function NotificationsAlert(props) {
   }
 
   const fetchStudentAverage = async ()=>{
-    const recentUrl = url+`/average/${user.user_id}/`
+    let lab = risks[0][0].lab_id
+    const recentUrl = url+`/average_lab/${user.user_id}/${lab}/`
         const recent_response = await fetch(recentUrl, {
             method : 'GET',
             headers :{
@@ -38,8 +39,9 @@ export function NotificationsAlert(props) {
               'Content-Type' : 'application/json',
             },
         })
+
         let p = await recent_response.json()
-        emotional[0]= p
+        emotional[0]= p[0]
         setEmotionalFetched(true)
 
   }
@@ -73,6 +75,7 @@ export function NotificationsAlert(props) {
 
   const ShowEmotional = ()=>{
     let r = emotional[0]
+    
     if (r.above){
       return(<BubbleText>You recorded a <BubbleTextBold>Above Average </BubbleTextBold>emotional response to this lab. You found it more <BubbleTextBold>{r.axis_pos}</BubbleTextBold> than other students.</BubbleText>)
    

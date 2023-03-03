@@ -29,9 +29,9 @@ export const AuthProvider = ({ children }) => {
   },[url])
 
   const up =async ()=>{
+    let u = `http://127.0.0.1:8000`
    
    
-   let u = `http://app-production-1e3f.up.railway.app`
     try{
     let response = await fetch(u+'/up/', {
       method:'GET',
@@ -42,8 +42,8 @@ export const AuthProvider = ({ children }) => {
     alert(error)
     throw error})
 }catch{
-  u = `http://127.0.0.1:8000`
   
+ u = `http://app-production-1e3f.up.railway.app`
 }
   setUrl(u)
   }
