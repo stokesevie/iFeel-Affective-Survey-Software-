@@ -17,7 +17,9 @@ from rest_framework import permissions
 # Create your views here.
 
 class MyTokenObtainPairView(TokenObtainPairView):
-    serializer_class = MyTokenObtainPairSerializer
+        serializer_class = MyTokenObtainPairSerializer
+
+
 
 class UserList(APIView):
     permission_classes=[permissions.IsAuthenticated]
@@ -604,3 +606,6 @@ class CheckUp(APIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     def get(self,request,format=None):
         return Response(status=status.HTTP_302_FOUND)
+
+
+

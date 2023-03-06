@@ -2,6 +2,7 @@ import React, { useEffect,useState,useContext } from "react";
 import { Center ,CenterText,Theme, StyledBubbleLarge, BubbleText, BubbleTextBold} from './styles'
 import {Ionicons} from '@expo/vector-icons';
 import AuthContext from "../utils/auth_context";
+import { ActivityIndicator } from "react-native";
 
 export function NotificationsAlert(props) {
   const user = props.user
@@ -95,7 +96,6 @@ export function NotificationsAlert(props) {
 
   
     
-
     return (
       <StyledBubbleLarge>
         
@@ -104,7 +104,17 @@ export function NotificationsAlert(props) {
       <BubbleText>You are in the <BubbleTextBold>{zone}</BubbleTextBold> zone for this lab. You found it more <BubbleTextBold>{label[0].neg_title}</BubbleTextBold> than the tutor expected.</BubbleText>
       <ShowEmotional/>
       </StyledBubbleLarge>
-  );
+    );
+  }else{
+    return(
+      <StyledBubbleLarge>
+      <ActivityIndicator visible={loading} color='black' style={{flex: 1,
+          justifyContent: 'center',
+          textAlign: 'center',
+          paddingTop: 30,
+          padding: 8,}}/>
+          </StyledBubbleLarge>
+    )
   }
 
 

@@ -1,6 +1,7 @@
 
 import { createContext, useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
+import { Alert } from "react-native";
 
 const AuthContext = createContext();
 
@@ -39,7 +40,6 @@ export const AuthProvider = ({ children }) => {
           'Content-Type':'application/json'
       },
   }).catch(error=>{
-    alert(error)
     throw error})
 }catch{
   
@@ -97,7 +97,7 @@ export const AuthProvider = ({ children }) => {
         updateToken()
       }
     } else {
-      alert("Something went wrong!");
+      Alert.alert("Couldn't log in","User matching these credentials does not exist")
     }
 
     //error messages here

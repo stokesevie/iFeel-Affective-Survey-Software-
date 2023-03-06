@@ -3,6 +3,8 @@ import {Theme,Center, StyledBubble, BubbleText, BubbleTextBold} from './styles'
 import {Ionicons} from '@expo/vector-icons';
 import { Text } from "react-native";
 import AuthContext from "../utils/auth_context";
+import { ActivityIndicator } from "react-native";
+
 
 import * as Notifications from 'expo-notifications';
 
@@ -135,6 +137,14 @@ export function NotificationsMessage(props){
   
         
   )
+  }else{
+    return(      <StyledBubble>
+      <ActivityIndicator visible={loading} color='black' style={{flex: 1,
+          justifyContent: 'center',
+          textAlign: 'center',
+          paddingTop: 30,
+          padding: 8,}}/>
+          </StyledBubble>)
   }
 
 
