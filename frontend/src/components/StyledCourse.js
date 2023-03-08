@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import { Button } from 'react-bootstrap';
 import { Text,View } from 'react-native';
-import { CourseDetail, StyledListButton, CourseTitle } from './styles';
+import { CourseDetail, StyledListButton, CourseTitle, StyledListButtonC } from './styles';
 import { useState,useEffect } from 'react';
 import AuthContext from '../utils/auth_context';
 import { ActivityIndicator } from 'react-native';
@@ -35,19 +35,33 @@ export default function StyledCourse(props){
         fetchCourseDetail()
     },[])
 
-
     if (fetched){
         let tutor = course.tutor
-        return(
-            <StyledListButton onPress= {
-                ()=>{
-                    navigation.navigate("Course",{ course:  courseDetail, tutor :tutor})
-                }
-            }>
-                <CourseDetail>{course.course_id}</CourseDetail>
-                <CourseTitle>{courseDetail.title}</CourseTitle>
-            </StyledListButton>
-                )
+        if (!course.flag){
+            return(
+                <StyledListButton onPress= {
+                    ()=>{
+                        navigation.navigate("Course",{ course:  courseDetail, tutor :tutor,courseDetail:course})
+                    }
+                }>
+                    <CourseDetail>{course.course_id}</CourseDetail>
+                    <CourseTitle>{courseDetail.title}</CourseTitle>
+                </StyledListButton>
+                    )
+        }else{
+            return(
+                <StyledListButtonC onPress= {
+                    ()=>{
+                        navigation.navigate("Course",{ course:  courseDetail, tutor :tutor, courseDetail:course})
+                    }
+                }>
+                    <CourseDetail>{course.course_id}</CourseDetail>
+                    <CourseTitle>{courseDetail.title}</CourseTitle>
+                    <CourseDetail> Flagged by {tutor.tutor_name}</CourseDetail>
+                </StyledListButtonC>
+                    )
+        }
+       
     }else{
         return(<StyledListButton>
             <ActivityIndicator visible={fetched} color='black' style={{flex: 1,

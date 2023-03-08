@@ -29,14 +29,24 @@ const Send = ({route, navigation}) => {
         }
       }
 
+
     const handleSend = async () => {
         let date = moment()
         .format('YYYY-MM-DD HH:mm:ss');
         date += '+00:00'
-        let data = {
+        let data;
+        if (pastMessage.related_lab){
+            data = {
             "sender_id": user.user_id, 
             "receiver_id": pastMessage.s_id,
-            "message_content": message 
+            "message_content": message,
+            "related_lab":pastMessage.related_lab
+        }}else{
+            data = {
+                "sender_id": user.user_id, 
+                "receiver_id": pastMessage.s_id,
+                "message_content": message 
+            }
         }
             const sendUrl = url+`/messages/`
             let response = await fetch(sendUrl, {

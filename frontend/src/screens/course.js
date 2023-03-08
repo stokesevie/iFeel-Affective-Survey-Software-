@@ -5,7 +5,7 @@ import { FlatList } from 'react-native';
 import StyledLab from '../components/StyledLab';
 import { ActivityIndicator } from 'react-native';
 
-import { ContentJustifiedBack, PageTitle } from '../components/styles';
+import { BubbleText, BubbleTextBold, ContentJustifiedBack, PageTitle } from '../components/styles';
 import AuthContext from '../utils/auth_context';
 
 /*
@@ -13,7 +13,7 @@ This screen will present the labs the user has completed surveys or not for
 */
 
 const Course = ({route, navigation}) => {
-    const { course,tutor } = route.params
+    const { course,courseDetail,tutor } = route.params
     const [ labs, setLabs] = useState([])
     const [ pending, setPending] = useState([])
     const {user} = useContext(AuthContext)
@@ -65,13 +65,22 @@ const Course = ({route, navigation}) => {
         setPending(p)
         setLoading(false)
     }
+
+    const Flagged = ()=>{
+        if (courseDetail.flag){
+            return <BubbleText>You have been <BubbleTextBold>flagged</BubbleTextBold> in this course by tutor {courseDetail.tutor.tutor_name}. Tap a lab to see details of your affective state that
+            may have caused concern.</BubbleText>
+        }
+    }
     
     if(!loading){
+       
         return (
-        <View>
             <ContentJustifiedBack>
                 <PageTitle>{course.title} Labs:</PageTitle>  
-                <FlatList
+                <Flagged/>
+                <BubbleTextBold>Labs highlighed red you have not completed surveys for yet</BubbleTextBold>
+                <FlatList style={{flex:1}}
                 data = {labs[0]}
                 renderItem ={({item})=>{
                     let p=true
@@ -86,12 +95,12 @@ const Course = ({route, navigation}) => {
                     lab = {item}
                     navigation = {navigation}
                     tutor = {tutor}
+                    courseDetail = {courseDetail}
                      />)
                 }
                 }
                 />
             </ContentJustifiedBack>
-        </View>
     )}else{
 
         return (<ActivityIndicator visible={loading} color='black' style={{flex: 1,

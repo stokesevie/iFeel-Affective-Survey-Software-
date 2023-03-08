@@ -8,14 +8,6 @@ from rest_framework import status
 
 User = get_user_model()
 
-class dbSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = db
-        fields = ('fname', 'sname', 'email', 'password', 'staff')
-
-
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -54,7 +46,7 @@ class TutorSerializer(serializers.ModelSerializer):
 class student_enrollSerializer(serializers.ModelSerializer):
     class Meta:
         model = student_enroll
-        fields = ['student_id', 'lab_id'] 
+        fields = ['student_id', 'tutor_teaching_id','flag'] 
 
 class questionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -94,12 +86,12 @@ class surveySerializer(serializers.ModelSerializer):
 class student_lab_riskSerializer(serializers.ModelSerializer):
     class Meta:
         model = student_lab_risk
-        fields = ['student_id','lab_id', 'axis_id','date','risk', 'warning','avg']
+        fields = ['student_id','lab_id', 'axis_id','date','risk', 'warning']
 
 class axis_labelsSerializer(serializers.ModelSerializer):
     class Meta:
         model = axis_labels
-        fields = ['id','pos_title','neg_title','risk','warn','avg']
+        fields = ['id','pos_title','neg_title','risk','warn']
 
 class student_surveySerializer(serializers.ModelSerializer):
     class Meta:

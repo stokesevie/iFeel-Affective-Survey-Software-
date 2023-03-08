@@ -40,7 +40,7 @@ const NewAxis = ({route,navigation})=>{
 
     const postAxis = async ()=>{
         try{
-            if (parseInt(riskZone)<parseInt(warningZone)){
+            if (parseInt(riskZone)>parseInt(warningZone)){
 
             }else{
                 throw(error)

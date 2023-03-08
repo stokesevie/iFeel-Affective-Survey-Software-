@@ -27,6 +27,38 @@ const SendNew = ({route, navigation}) => {
 
     const lab = isLab()
 
+    const handleFlagSend = async ()=>{
+        let data;
+        let date = moment()
+        .format('YYYY-MM-DD HH:mm:ss');
+        date += '+00:00'
+
+            data = {
+                "sender_id": user.user_id, 
+                "receiver_id": receiver_id,
+                "message_content": `FLAGGED in ${route.params.course}: `+message,
+                "sent_at": date,
+            }
+
+            const sendUrl = url+`/messages/`
+            let response = await fetch(sendUrl, {
+                method : 'POST',
+                headers :{
+                    'Authorization': `Bearer ${access}`,
+                    'Content-Type' : 'application/json',
+                },
+                body: JSON.stringify(data),
+            }).catch(console.error)
+
+          
+            if (await response.ok==true){
+                setLoading(false)
+            }else{
+                Alert.alert("Couldn't send message")
+            }
+            setLoading(false)
+    }
+
     const handleSend = async () => {
         let data;
         let lab = isLab()
@@ -95,6 +127,26 @@ const SendNew = ({route, navigation}) => {
           
         </ContentJustified>
         )
+    }else if (user.is_staff){
+        let n =""
+        if (route.params.otherName){
+            n = "to " +route.params.otherName
+        }
+        return(
+            <ContentJustified>
+                <SubTitle> Message {n} for flag in course {route.params.course}</SubTitle>
+                <StyledTextInputParagraph
+                    editable
+                    multiline
+                    value={message}
+                    onChangeText={(val) => setMessage(val)}>
+                        
+                </StyledTextInputParagraph>
+                <StyledButton onPress = {handleFlagSend}><StyledButtonText>Send</StyledButtonText></StyledButton>
+
+              
+            </ContentJustified>
+    )
     }else{
         let t= 'tutor'
         if (route.params.tutor_name){

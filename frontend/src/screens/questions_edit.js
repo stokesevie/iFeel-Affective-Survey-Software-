@@ -22,6 +22,7 @@ const QuestionsEdit = ({route,navigation}) => {
     const [questionIDs,setQuestionIDs] = useState([])
 
     const access = JSON.parse(localStorage.getItem("authTokens"))['access']
+
     useEffect(()=>{
         try{
             if(route.params.refresh && !loading){
@@ -104,13 +105,22 @@ const QuestionsEdit = ({route,navigation}) => {
         }
     },[loading])
 
-    const onPressPost = async ()=>{
-       let post = {
+    const onPressPost = async (d)=>{
+        let post;
+        if (d){
+            //this is going to make a default survey
+            post = {
+                'lab_id': lab.lab.lab_id,
+                'tutor_teaching_id':lab.tutor_teaching_id
+            }
+        }else{
+            post = {
             'question_1':questionIDs[0],
             'question_2':questionIDs[1],
             'question_3':questionIDs[2],
             'lab_id': lab.lab.lab_id,
-            'tutor_teaching_id':lab.lab.tutor_teaching_id
+            'tutor_teaching_id':lab.tutor_teaching_id
+        }
         }
         const surveyUrl = url+`/post_survey/`
         let response = await fetch(surveyUrl, {
@@ -164,7 +174,7 @@ const QuestionsEdit = ({route,navigation}) => {
 
     const PostSurvey = ()=>{
         if (postReady){
-            return( <StyledButtonEdit onPress={onPressPost}><StyledButtonText>Create Survey</StyledButtonText></StyledButtonEdit>
+            return( <StyledButtonEdit onPress={()=>{onPressPost(false)}}><StyledButtonText>Create Survey</StyledButtonText></StyledButtonEdit>
             )
         }
         else{
@@ -213,6 +223,7 @@ const QuestionsEdit = ({route,navigation}) => {
             }}
         />
         <PostSurvey/>
+        <StyledButtonEdit onPress={()=>{onPressPost(true)}}><StyledButtonText>Use default affective questions</StyledButtonText></StyledButtonEdit>
         </ContentJustifiedBack>)
     }
     }else{

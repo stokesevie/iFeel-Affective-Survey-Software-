@@ -146,7 +146,6 @@ class MessageDetail(APIView):
     def post(self,request):
         date = str(datetime.now())
         date = date.split('.',1)[0]+'Z'
-        print(request.data)
         serializer = MessageSerializer(data = request.data)
         serializer.sent_at = date
         if serializer.is_valid():
@@ -190,6 +189,7 @@ class StudentEnrollFind(APIView):
             json={'id': courses.id,
             'student_id': courses.student_id.username.id,
             'course_id': courses.tutor_teaching_id.course_id.id,
+            'flag': courses.flag,
             'tutor':{
                 'tutor_id': courses.tutor_teaching_id.tutor_id.username.id,
                 'tutor_name': courses.tutor_teaching_id.tutor_id.username.first_name + " "+ courses.tutor_teaching_id.tutor_id.username.last_name,
@@ -207,6 +207,14 @@ class StudentEnrollFind(APIView):
 
     def get(self, request, student_id, format=None):
         return Response(self.serialize_student_enroll(student_enroll.objects.filter(student_id=student_id)))
+        
+    def put(self,request,student_id,tutor_teaching_id):
+        snippet = student_enroll.objects.get(student_id=student_id,tutor_teaching_id=tutor_teaching_id)
+        serializer = student_enrollSerializer(instance=snippet,data=request.data,partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class CourseDetail(APIView):
@@ -392,15 +400,13 @@ class LabQuestions(APIView):
             'pos': question.x.pos_title,
             'neg': question.x.neg_title,
             'risk':question.x.risk,
-            'warn':question.x.warn,
-            'ave':question.x.avg},
+            'warn':question.x.warn},
             'y':
             {'id': question.y.id,
             'pos': question.y.pos_title,
             'neg': question.y.neg_title,
             'risk':question.y.risk,
-            'warn':question.y.warn,
-            'ave':question.y.avg},
+            'warn':question.y.warn},
             }
             question_list.append(json)
         return question_list
@@ -443,7 +449,6 @@ class FindStudentLabRisk(APIView):
             "date": r.date,
             "risk": r.risk,
             "warning": r.warning,
-            "avg": r.avg
             })
         return rs
 
@@ -452,11 +457,31 @@ class FindStudentLabRisk(APIView):
             return student_lab_risk.objects.filter(student_id=student_id,lab_id=lab_id)
         except student_lab_risk.DoesNotExist:
             raise status.HTTP_400_BAD_REQUEST
+    
+    def get_count(self,student_id,tutor_teaching_id):
+        c = student_enroll.objects.get(student_id= student_id,tutor_teaching_id=tutor_teaching_id).tutor_teaching_id.course_id.id
+        labs = lab.objects.filter(course_id = c)
+        risks = 0
+        warnings = 0
+        for l in labs:
+            risks += student_lab_risk.objects.filter(lab_id = l.lab_id,risk= True).count()
+            warnings += student_lab_risk.objects.filter(lab_id = l.lab_id,warning= True).count()
+        if (risks>40):
+            return True
+        elif (warnings>45):
+            return True
+        elif (risks>20 and warnings>20):
+            return True
+        return False
 
-    def get(self, request, student_id, lab_id, format=None):
-        snippet = self.get_object(student_id=student_id,lab_id=lab_id)
-        serializer = self.ser(snippet)
-        return Response(serializer)
+    def get(self, request, student_id, lab_id=0,tutor_teaching_id=0,count="", format=None):
+        if count=="":
+            snippet = self.get_object(student_id=student_id,lab_id=lab_id)
+            serializer = self.ser(snippet)
+            return Response(serializer)
+        else:
+            return Response(self.get_count(student_id=student_id,tutor_teaching_id=tutor_teaching_id))
+
     
     def post(self, request,format=None):
         serializer = student_lab_riskSerializer(data=request.data)
@@ -485,7 +510,6 @@ class LabRisksByStudent(APIView):
             'date': r.date,
             'risk': r.risk,
             'warning': r.warning,
-            'avg' : r.avg
             }
             risk_list.append(json)
         return risk_list
@@ -504,7 +528,7 @@ class LabRisksByStudent(APIView):
 
 class LabRisksByLab(APIView):
     permission_classes= (permissions.IsAuthenticated,)
-    def serialize_risks(self,risks):
+    def serialize_risks(self,risks,tutor_teaching_id=0):
         risk_list =[]
         for r in risks:
             json={
@@ -521,15 +545,21 @@ class LabRisksByLab(APIView):
             'date': r.date,
             'risk': r.risk,
             'warning': r.warning,
-            'avg' : r.avg
             }
+            if tutor_teaching_id!=0:
+                e = student_enroll.objects.get(student_id=r.student_id.username.id,tutor_teaching_id=tutor_teaching_id).flag
+                json['flag'] = e
             risk_list.append(json)
         return risk_list
 
-    def get(self,request,lab_id):
+    def get(self,request,lab_id,tutor_teaching_id=0):
         snippet = self.get_labs(lab_id=lab_id)
-        serializer = self.serialize_risks(snippet)
+        if tutor_teaching_id!= 0:
+             serializer = self.serialize_risks(snippet,tutor_teaching_id)
+        else:
+            serializer = self.serialize_risks(snippet)
         return Response(serializer)
+
     
     def get_labs(self,lab_id):
         try:

@@ -9,10 +9,10 @@ import { ActivityIndicator } from 'react-native';
 
 const Pending = ({navigation}) => {
     const { user,updateMessages, updateCourses,url} = useContext(AuthContext);
-   
+    const access = JSON.parse(localStorage.getItem("authTokens"))['access']
     // This function will get messages from the database sent to the user
     const getMessages = async()=>{
-    const access = JSON.parse(localStorage.getItem("authTokens"))['access']
+
       const messageUrl = url+`/message/${user.user_id}/`   
         const message_response = await fetch(messageUrl, {
             method : 'GET',
@@ -27,7 +27,6 @@ const Pending = ({navigation}) => {
 
     // This function wil get courses from the database that the user is enrolled in
     const getCourses = async()=>{
-        const access = JSON.parse(localStorage.getItem("authTokens"))['access']
         let coursesUrl;
         if (user.is_staff){
             coursesUrl= url+`/tutor_teaching/${user.user_id}/`
@@ -41,7 +40,6 @@ const Pending = ({navigation}) => {
                 'Content-Type' : 'application/json',
             },
         })
-        
         let c = await course_response.json().then(course=>nav(course)).catch(console.error)
     }
 
