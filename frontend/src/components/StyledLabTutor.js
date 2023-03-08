@@ -12,6 +12,7 @@ export default function StyledLabTutor(props){
             }>  
                 <CourseDetail>{course}</CourseDetail>
                 <CourseTitle>{lab.lab.lab_title}</CourseTitle>
+                <CourseDetail>{lab.lab.lab_date}</CourseDetail>
             </StyledListButton>
                 )
     }

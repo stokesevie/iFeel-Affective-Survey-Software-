@@ -12,7 +12,6 @@ This screen shows details about labs a tutor teaches
 */
 
 const TutorCourse = ({route,navigation}) => { 
-    const { user } = useContext(AuthContext);
     const {labs,course} = route.params
     return (
         <View>
@@ -21,7 +20,6 @@ const TutorCourse = ({route,navigation}) => {
                 <FlatList
                 data={labs}
                 renderItem ={({item})=>{
-
                     return (<StyledLabTutor lab = {item} course = {course} navigation = {navigation}></StyledLabTutor>)
                 
                 }}

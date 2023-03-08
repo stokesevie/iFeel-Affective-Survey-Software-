@@ -11,13 +11,13 @@ const TutorLab = ({route,navigation}) => {
     const { url } = useContext(AuthContext);
     const [loading, setLoading] = useState(true)
     const [risks,setRisks] = useState([])
+    const labDetail = route.params.lab
     const {lab} = route.params.lab
     const course = route.params.course
     const access = JSON.parse(localStorage.getItem("authTokens"))['access']
-
-
+    
     const fetchStudentRisks = async ()=>{
-        const lab_risk = url+`/student_lab_risks/lab/${lab.lab_id}/`
+        const lab_risk = url+`/student_lab_risks/lab/${lab.lab_id}/${labDetail.tutor_teaching_id}/`
             let response = await fetch(lab_risk, {
                 method : 'GET',
                 headers :{
@@ -62,6 +62,14 @@ const TutorLab = ({route,navigation}) => {
         }
     }
 
+
+    const AddFlag = (flag)=>{
+        if (flag.flag){
+            return (<Text style={{color:'red'}}> FLAGGED </Text>)
+        }
+    }
+
+
     if (!loading){
         let students = uniqueStudents()
 
@@ -88,24 +96,21 @@ const TutorLab = ({route,navigation}) => {
                             }
                         }
                         }
+
                         let worstRisk = relatedRisks[0]
+                        let headerText = worstRisk.student_first_name + ' ' + worstRisk.student_last_name
                          if (worstRisk.risk){
-                            return (<StyledListButton onPress ={()=>{navigation.navigate("StudentRisk",{relatedRisks: relatedRisks})}}>
-                                <BubbleText><BubbleTextBold>{worstRisk.student_first_name} {worstRisk.student_last_name}{`\n`}
-                               </BubbleTextBold>
+                            return (<StyledListButton onPress ={()=>{navigation.navigate("StudentRisk",{relatedRisks: relatedRisks,teaching_id :labDetail.tutor_teaching_id,labDetail:labDetail})}}>
+                                <BubbleText><BubbleTextBold>{headerText}<AddFlag flag={worstRisk.flag}/>{`\n`}</BubbleTextBold>
                                 <BubbleTextBold><Text style ={{color:'red'}}>RISK</Text></BubbleTextBold> on {worstRisk.axis_neg} axis</BubbleText>
                                 <BubbleText><BubbleTextBold>{countRisks}</BubbleTextBold> other risks and <BubbleTextBold>{countWarnings}</BubbleTextBold> warnings</BubbleText>
                                 </StyledListButton>)
                         }else if (worstRisk.warning){
-                            return (<StyledListButton onPress ={()=>{navigation.navigate("StudentRisk",{relatedRisks: relatedRisks})}}>
-                                <BubbleText>{worstRisk.student_first_name} {worstRisk.student_last_name}</BubbleText>
-                                <BubbleTextBold><Text style ={{color:'#e69a11'}}>WARNING</Text></BubbleTextBold>
-                                </StyledListButton>)
-                      
-                        }else if (worstRisk.avg){
-                            return (<StyledListButton onPress ={()=>{navigation.navigate("StudentRisk",{relatedRisks: relatedRisks})}}>
-                                <BubbleText>{worstRisk.student_first_name} {worstRisk.student_last_name}</BubbleText>
-                                <BubbleTextBold><Text style ={{color:'#e69a11'}}>WARNING</Text></BubbleTextBold>
+                            return (<StyledListButton onPress ={()=>{navigation.navigate("StudentRisk",{relatedRisks: relatedRisks,teaching_id :labDetail.tutor_teaching_id,labDetail:labDetail})}}>
+                                    <BubbleText><BubbleTextBold>{headerText}<AddFlag flag={worstRisk.flag}/>{`\n`}
+                               </BubbleTextBold>
+                                <BubbleTextBold><Text style ={{color:'#e69a11'}}>WARNING</Text></BubbleTextBold> on {worstRisk.axis_neg} axis</BubbleText>
+                                <BubbleText><BubbleTextBold>{countWarnings}</BubbleTextBold> other warnings</BubbleText>
                                 </StyledListButton>)
                       
                         }

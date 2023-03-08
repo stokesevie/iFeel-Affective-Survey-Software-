@@ -7,12 +7,10 @@ export default function SurveyResponseText(props){
     const axis = props.props[1]
 
     const RatingColour = ()=>{
-        let colours = {"GOOD": '#33a244', "AVERAGE":'#340068', "WARNING": '#e69a11', "RISK": '#d33c19'}
+        let colours = {"GOOD": '#33a244', "WARNING": '#e69a11', "RISK": '#d33c19'}
         if (rating=="GOOD"){
             return <Text style={{fontWeight:'bold', color: colours["GOOD"]}}>{rating}</Text>
-        } else if (rating =="AVERAGE"){
-            return <Text style={{fontWeight:'bold', color: colours["AVERAGE"]}}>{rating}</Text>
-        } else if (rating=="WARNING"){
+        }  else if (rating=="WARNING"){
             return <Text style={{fontWeight:'bold', color: colours["WARNING"]}}>{rating}</Text>
         } else {
             return <Text style={{fontWeight:'bold', color: colours["RISK"]}}>{rating}</Text>

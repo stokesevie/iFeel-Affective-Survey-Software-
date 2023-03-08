@@ -1,8 +1,6 @@
 from django.contrib import admin
 from .models import *
 
-class dbAdmin(admin.ModelAdmin):
-    pass
 
 # Register your models here.
 
@@ -16,7 +14,7 @@ class studentAdmin(admin.ModelAdmin):
     list_display=('username', 'level')
 
 class student_enrollAdmin(admin.ModelAdmin):
-    list_display = ('student_id', 'tutor_teaching_id')
+    list_display = ('student_id', 'tutor_teaching_id','flag')
 
 
 class labAdmin(admin.ModelAdmin):
@@ -25,9 +23,9 @@ class labAdmin(admin.ModelAdmin):
 class axisAdmin(admin.ModelAdmin):
     list_display = ('x_id', 'y_id', 'x','y')
 class axis_labelsAdmin(admin.ModelAdmin):
-    list_display = ('pos_title', 'neg_title', 'risk', 'warn', 'avg')
+    list_display = ('pos_title', 'neg_title', 'risk', 'warn')
 class student_lab_riskAdmin(admin.ModelAdmin):
-    list_display = ('student_id', 'lab_id', 'axis_id', 'date', 'risk', 'warning', 'avg')
+    list_display = ('student_id', 'lab_id', 'axis_id', 'date', 'risk', 'warning')
 class messageAdmin(admin.ModelAdmin):
     list_display=('sender_id', 'receiver_id', 'sent_at', 'message_content')
 class surveyAdmin(admin.ModelAdmin):
@@ -50,7 +48,6 @@ class tutor_teachingAdmin(admin.ModelAdmin):
 admin.site.register(student, studentAdmin)
 admin.site.register(course, courseAdmin)
 admin.site.register(tutor, tutorAdmin)
-admin.site.register(db, dbAdmin)
 admin.site.register(student_enroll,student_enrollAdmin)
 admin.site.register(lab, labAdmin)
 admin.site.register(axis_labels,axis_labelsAdmin)

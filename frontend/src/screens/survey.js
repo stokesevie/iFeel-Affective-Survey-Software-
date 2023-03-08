@@ -11,7 +11,7 @@ This screen allows a user to complete a survey or to see past responses
 */
 
 const Survey = ({route, navigation}) => {
-    const { lab,completed,tutorDetail } = route.params
+    const { lab,completed,tutorDetail,courseDetail } = route.params
     const {user,url} = useContext(AuthContext)
     const [questions, setQuestions] = useState([])
     const [survey, setSurvey] = useState([])
@@ -116,18 +116,14 @@ const Survey = ({route, navigation}) => {
                 return "RISK"
             }else if (i.warning){
                 return "WARNING"
-            }else if (i.avg){
-                return "AVERAGE"
             }else{
                 return
             }
         }        
         const RatingColour = ()=>{
-            let colours = {"GOOD": '#33a244', "AVERAGE":'#340068', "WARNING": '#e69a11', "RISK": '#d33c19'}
+            let colours = {"GOOD": '#33a244', "WARNING": '#e69a11', "RISK": '#d33c19'}
             if (rating=="GOOD"){
                 return <Text style={{fontWeight:'bold', color: colours["GOOD"]}}>{rating}</Text>
-            } else if (rating =="AVERAGE"){
-                return <Text style={{fontWeight:'bold', color: colours["AVERAGE"]}}>{rating}</Text>
             } else if (rating=="WARNING"){
                 return <Text style={{fontWeight:'bold', color: colours["WARNING"]}}>{rating}</Text>
             } else {
@@ -203,7 +199,7 @@ useEffect(()=>{
         if (tutor){
             return (<><ShowFlatList text = "Tutor Feedback" data = {tutorStats[0]}/></>)    
         } else if (student){
-            return (<><FlatList ListHeaderComponent={()=><DoneTextBold>Affective Student Average Comparison</DoneTextBold>} data = {studentStats[0]} renderItem={item=><ResponseText>{'\n'}{item.item}</ResponseText>}/></>)
+            return (<><DoneTextBold>Affective Student Average Comparison</DoneTextBold><FlatList data = {studentStats[0]} renderItem={item=><ResponseText>{'\n'}{item.item}</ResponseText>}/></>)
         }
        } 
     
@@ -258,7 +254,7 @@ useEffect(()=>{
                     <SubTitle>{lab.title}</SubTitle>
 
                     <StyledButton title = "Start" onPress = {()=>(
-                        navigation.navigate("SurveyLab", {labDetail: {lab}, question :1, questions:{questions}, response:[],survey:{survey},tutorDetail:tutorDetail})
+                        navigation.navigate("SurveyLab", {labDetail: {lab}, question :1, questions:{questions}, response:[],survey:{survey},tutorDetail:tutorDetail,courseDetail:courseDetail})
                     )}><StyledButtonText>Start Survey</StyledButtonText></StyledButton>
               
                 </ContentJustifiedBack>

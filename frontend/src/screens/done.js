@@ -5,14 +5,14 @@ import { DoneTextBold, ContentJustified, PageTitle, StyledButton, StyledDoneButt
 import SurveyResponseText from '../components/SurveyResponseText';
 import AuthContext from '../utils/auth_context';
 import moment from '../node_modules/moment'
-
+import { Alert } from 'react-native';
 /* This is the end screen for the survey. This will show the performance of the student in relation to the zones laid out by 
 the backend of the database. This will then use these marks to offer the student to message their tutor. It will also add the current 
 score to the average */
 
 
 const Done = ({route, navigation}) => {
-    const { lab,response,questions,survey,tutorDetail } = route.params
+    const { lab,response,questions,survey,tutorDetail,courseDetail } = route.params
     const {user,url} = useContext(AuthContext)
     const [stats, setStats] = useState([])
     const [loading, setLoading] = useState(true)
@@ -30,18 +30,15 @@ const Done = ({route, navigation}) => {
        navigation.navigate("StudentDashboard")
     }
 
-    const decide = (a,risk,warning,average)=> {
+    const decide = (a,risk,warning)=> {
         if (a>=risk){
             return "RISK"
         }else if (a<risk){
             if (a>=warning){
                 return "WARNING"
             }else if (a<warning){
-                if (a>=average){
-                    return "AVERAGE"
-                }else if (a<average){
                     return "GOOD"
-                }
+                
             }
         }
     }
@@ -73,13 +70,14 @@ const Done = ({route, navigation}) => {
     }
 
     useEffect(()=>{
+        if (loading){
         let responses = []
         for (let i = 0; i<3;i++){
             let q = questions.questions[i][0]
             let r = response[i]
             let adjust_r = 10-r[0]
-            let x = decide(adjust_r,q.x.risk,q.x.warn,q.x.ave)
-            let y = decide(r[1],q.y.risk,q.y.warn,q.y.ave)
+            let x = decide(adjust_r,q.x.risk,q.x.warn)
+            let y = decide(r[1],q.y.risk,q.y.warn)
             responses.push([q,x,y])
         }
         stats[0] = buildStatsTutor(responses)
@@ -88,12 +86,40 @@ const Done = ({route, navigation}) => {
         if (!surveyPosted){
             setCompleted()
         }
+        setFlagged()
         setLoading(false)
+        }
 
+    },[loading])
 
-        
+    const setFlagged = async ()=>{
+        const flagUrl = url+`/student_lab_risk/${user.user_id}/${courseDetail.id}/count/`
+        const flag_response = await fetch(flagUrl, {
+            method : 'GET',
+            headers :{
+                'Authorization': `Bearer ${access}`,
+                'Content-Type' : 'application/json',
+                'Accept':'application/json',
+              },
+        }).catch(console.error)
+        let flagged = await flag_response.json()
 
-    },[])
+        if (flagged){
+            let put = {'flag': 'true'}
+            const changeFlagUrl = url+`/course/${user.user_id}/${courseDetail.id}/`
+            const putChange = await fetch(changeFlagUrl, {
+            method : 'PUT',
+            headers :{
+                'Authorization': `Bearer ${access}`,
+                'Content-Type' : 'application/json',
+                'Accept':'application/json',
+              },
+            body: JSON.stringify(put)
+        }).catch(console.error)
+        Alert.alert("Warning","You have been automatically flagged")
+        }
+
+    }
 
 
     const GetAxisAverage = async ()=>{
@@ -214,14 +240,11 @@ const Done = ({route, navigation}) => {
             'axis_id':a,
             'date':d,
             'risk':false,
-            'warning':false,
-            'avg':false
+            'warning':false
         }
 
         if (axis =="x"){
-            if (r[1] == "AVERAGE"){
-                p.avg = true
-            }else if(r[1] == "WARNING"){
+            if(r[1] == "WARNING"){
                 p.warning = true
             }else if (r[1] == "RISK"){
                 p.risk = true
@@ -229,9 +252,7 @@ const Done = ({route, navigation}) => {
                 return
             }
         }else{
-            if (r[2] == "AVERAGE"){
-                p.avg = true
-            }else if(r[2] == "WARNING"){
+           if(r[2] == "WARNING"){
                 p.warning = true
             }else if (r[2] == "RISK"){
                 p.risk = true
@@ -316,7 +337,7 @@ const Done = ({route, navigation}) => {
         if (tutor){
             return (<><ShowFlatList text = "Tutor Feedback" data = {allStats}/></>)    
         } else if (student){
-            return (<><FlatList ListHeaderComponent={()=><DoneTextBold>Affective Student Average Comparison</DoneTextBold>} data = {studentStats[0]} renderItem={item=><ResponseText>{'\n'}{item.item}</ResponseText>}/></>)
+            return (<><DoneTextBold>Affective Student Average Comparison</DoneTextBold><FlatList data = {studentStats[0]} renderItem={item=><ResponseText>{'\n'}{item.item}</ResponseText>}/></>)
         }
        } 
 
@@ -326,7 +347,6 @@ const Done = ({route, navigation}) => {
     if (!loading){
  
         return (
-            <View>
                 <ContentJustified>
                     <PageTitle>Survey Completed</PageTitle>  
                     <SubTitle>You completed survey for lab {lab.lab.lab_number} for {lab.lab.course_id}. In this survey your response showed:  </SubTitle>
@@ -345,7 +365,6 @@ const Done = ({route, navigation}) => {
                         <ShowHelp/>
                         <StyledDoneButton title = "Home" onPress={onPress}><StyledButtonText> Return Home </StyledButtonText></StyledDoneButton>
                 </ContentJustified>
-            </View>
         )
     }
 

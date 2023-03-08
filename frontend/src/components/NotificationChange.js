@@ -7,17 +7,15 @@ import AuthContext from "../utils/auth_context";
 export function NotificationChange(props){
   const user = props.user
   const courses = props.courses
-  const [surveys, setSurveys] = useState([])
-  const access = JSON.parse(localStorage.getItem("authTokens"))['access']
 
   let c = courses[0][0]
     return(
     <StyledBubble>
           <Center><Ionicons name="terminal-outline" size={35} color={Theme.secondary}></Ionicons></Center>
-          <BubbleTextBold>Would you like to make changes to {c.course_title} surveys?</BubbleTextBold>
-         <BubbleText>Most recently published lab:
+          <BubbleTextBold>Would you like to edit {c.course_title} surveys?</BubbleTextBold>
+         <BubbleText>Most recent lab:
           <BubbleTextBold> Lab {c.lab.lab_number}</BubbleTextBold>
-          <BubbleText> survey, titled {c.lab.lab_title}</BubbleText>.
+          <BubbleText> titled {c.lab.lab_title}</BubbleText>.
           </BubbleText>
 
 
