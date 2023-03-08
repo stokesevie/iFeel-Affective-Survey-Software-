@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { NotificationTitle,StyledNotification,NotificationText,Arrow ,BubbleContent,Theme,StyledBubble, BubbleText, BubbleTextBold, Center} from './styles'
 import {Ionicons} from '@expo/vector-icons';
-
 import AuthContext from "../utils/auth_context";
+import { ActivityIndicator } from "react-native";
 
 export function NotificationsSurvey(props){
   const user = props.user
@@ -70,9 +70,14 @@ export function NotificationsSurvey(props){
 
 
   useEffect(()=>{
-    fetchLabs()
+    if(loading){
+      fetchLabs()
+    }
 
-  })
+
+  },[loading])
+
+
 
   if (!loading){
     return(
@@ -90,7 +95,18 @@ export function NotificationsSurvey(props){
   </StyledBubble>
     )
     
-  }
+  }else{
+    return(
+      <StyledBubble>
+        <ActivityIndicator visible={loading} color='black' style={{flex: 1,
+            justifyContent: 'center',
+            textAlign: 'center',
+            paddingTop: 30,
+            padding: 8,}}/>
+            </StyledBubble>
+
+    )
+}
   
  
 

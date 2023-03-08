@@ -6,17 +6,23 @@ import { NotificationsSurvey } from '../components/NotificationsSurvey'
 import { NotificationsAlert } from '../components/NotificationsAlert'
 import { NotificationsMessage } from '../components/NotificationsMessage'
 import { ActivityIndicator } from 'react-native';
+import { Alert } from 'react-native';
 /*
 This screen will present the dashboard and most relevant information to the student
 */
 
+
 const StudentDashboard = ({route, navigation}) => {
+
     const { user,courses,messages } = useContext(AuthContext)
     const [loading, setLoading] =useState(true)
+
 
     useEffect(()=>{
         if (loading){
             checkCourses()
+            checkExist()
+            setLoading(false)
         }
     },[loading])
 
@@ -24,14 +30,20 @@ const StudentDashboard = ({route, navigation}) => {
         try {
             let c = courses
             let u = user
-            setLoading(false)
+            
         }catch{
-            alert("Issue with loading in student courses")
+            Alert.alert("Issue with loading in student courses")
         }
     }
     
-    if (!loading){
 
+    const checkExist=()=>{
+        if (JSON.stringify(courses)=="[]"){
+            Alert.alert("No courses found","You are not registered for any courses, contact a tutor if this is a mistake")
+        }
+    }
+    
+if (!loading){
     return (
         <View>
             <ContentJustified>
@@ -40,11 +52,10 @@ const StudentDashboard = ({route, navigation}) => {
                 <NotificationsSurvey user ={user} courses = {courses}/>
                 <NotificationsAlert user={user}/>
                 <NotificationsMessage user ={user} messages = {messages}/>
-                
-                
            </ContentJustified>
         </View>
-    )}else{
+    )
+}else{
         return(
             <ActivityIndicator visible={loading} color='black' style={{flex: 1,
                 justifyContent: 'center',

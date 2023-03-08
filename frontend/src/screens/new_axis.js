@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { View,Text } from "react-native";
 import { useEffect } from "react";
 import AuthContext from "../utils/auth_context";
+import { Alert } from "react-native";
 
 
 /*
@@ -38,6 +39,16 @@ const NewAxis = ({route,navigation})=>{
    
 
     const postAxis = async ()=>{
+        try{
+            if (parseInt(riskZone)<parseInt(warningZone)){
+
+            }else{
+                throw(error)
+            }
+        }catch{
+            Alert.alert("Zones must be a number from 1-10, with warning zone being less than risk zone.")
+            return
+        }
         let a = {
             'pos_title':posAxis,
             'neg_title':negAxis,

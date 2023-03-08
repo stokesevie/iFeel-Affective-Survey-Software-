@@ -4,7 +4,7 @@ import AuthContext from '../utils/auth_context';
 import { Alert } from 'react-native';
 
 import { BubbleText, BubbleTextBold, CenterText, ContentJustifiedBack, CourseDetail, PageTitle, AxisListButton, SubTitle, StickToBottom, StyledButtonEdit, StyledButtonText } from '../components/styles';
-import { NavigationContainer } from '@react-navigation/native';
+import { ActivityIndicator } from 'react-native';
 
 /*
 This screen allows the tutor to see questions for an affective survey
@@ -33,6 +33,11 @@ const QuestionsEdit = ({route,navigation}) => {
         }
     },[noLab])
 
+    useEffect(()=>{
+        if (route.params.refresh){
+            setLoading(true)
+        }
+    },[route.params.refresh])
 
     useEffect(()=>{
         if (route.params.questionSet){
@@ -210,6 +215,14 @@ const QuestionsEdit = ({route,navigation}) => {
         <PostSurvey/>
         </ContentJustifiedBack>)
     }
+    }else{
+        return(<ContentJustifiedBack>
+            <ActivityIndicator visible={loading} color='black' style={{flex: 1,
+                justifyContent: 'center',
+                textAlign: 'center',
+                paddingTop: 30,
+                padding: 8,}}/>
+        </ContentJustifiedBack>)
     }
    
 };

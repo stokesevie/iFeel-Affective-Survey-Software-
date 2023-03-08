@@ -2,6 +2,7 @@ import React, { useEffect,useState,useContext } from "react";
 import { Center ,CenterText,Theme, StyledBubbleLarge, BubbleText, BubbleTextBold} from './styles'
 import {Ionicons} from '@expo/vector-icons';
 import AuthContext from "../utils/auth_context";
+import { ActivityIndicator } from "react-native";
 
 export function NotificationsAlert(props) {
   const user = props.user
@@ -30,7 +31,8 @@ export function NotificationsAlert(props) {
   }
 
   const fetchStudentAverage = async ()=>{
-    const recentUrl = url+`/average/${user.user_id}/`
+    let lab = risks[0][0].lab_id
+    const recentUrl = url+`/average_lab/${user.user_id}/${lab}/`
         const recent_response = await fetch(recentUrl, {
             method : 'GET',
             headers :{
@@ -38,8 +40,9 @@ export function NotificationsAlert(props) {
               'Content-Type' : 'application/json',
             },
         })
+
         let p = await recent_response.json()
-        emotional[0]= p
+        emotional[0]= p[0]
         setEmotionalFetched(true)
 
   }
@@ -73,6 +76,7 @@ export function NotificationsAlert(props) {
 
   const ShowEmotional = ()=>{
     let r = emotional[0]
+    
     if (r.above){
       return(<BubbleText>You recorded a <BubbleTextBold>Above Average </BubbleTextBold>emotional response to this lab. You found it more <BubbleTextBold>{r.axis_pos}</BubbleTextBold> than other students.</BubbleText>)
    
@@ -92,7 +96,6 @@ export function NotificationsAlert(props) {
 
   
     
-
     return (
       <StyledBubbleLarge>
         
@@ -101,7 +104,17 @@ export function NotificationsAlert(props) {
       <BubbleText>You are in the <BubbleTextBold>{zone}</BubbleTextBold> zone for this lab. You found it more <BubbleTextBold>{label[0].neg_title}</BubbleTextBold> than the tutor expected.</BubbleText>
       <ShowEmotional/>
       </StyledBubbleLarge>
-  );
+    );
+  }else{
+    return(
+      <StyledBubbleLarge>
+      <ActivityIndicator visible={loading} color='black' style={{flex: 1,
+          justifyContent: 'center',
+          textAlign: 'center',
+          paddingTop: 30,
+          padding: 8,}}/>
+          </StyledBubbleLarge>
+    )
   }
 
 

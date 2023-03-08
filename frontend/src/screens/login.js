@@ -6,7 +6,7 @@ import { ContentJustified, PageTitle, StyledInputLabel, StyledTextInput,StyledBu
 import { Formik } from "formik";
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '../components/styles';
-
+import { Alert } from "react-native";
 
 /*
 This screen allows the user to login
@@ -15,8 +15,8 @@ This screen allows the user to login
 const Login = ({route,navigation}) => {
     const {up}= useContext(AuthContext)
     const [loading,setLoading] = useState(true)
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
     const { loginUser,user,userInfo } = useContext(AuthContext);
   
     useEffect(()=>{
@@ -28,8 +28,14 @@ const Login = ({route,navigation}) => {
 
     const handleSubmit = async e => {
         e.preventDefault();
-        loginUser(username, password,navigation).then(setPassword()).then(setUsername()); 
-    };
+        if (password==""||username==""){
+          Alert.alert("Log in incomplete","Please enter username AND password")
+          setUsername("")
+          setPassword("")
+        }else{
+          loginUser(username, password,navigation).then(setPassword()).then(setUsername()); 
+        }
+        };
 
 
     return (

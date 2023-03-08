@@ -3,6 +3,9 @@ from .models import *
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.models import update_last_login
+from rest_framework.response import Response
+from rest_framework import status
+
 User = get_user_model()
 
 class dbSerializer(serializers.ModelSerializer):
@@ -63,16 +66,21 @@ class questionSerializer(serializers.ModelSerializer):
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
-        token = super().get_token(user)
-        # Add custom claims
-        token['username'] = user.username
-        token['is_staff']= user.is_staff
-        token['email']= user.email
-        token['first_name']= user.first_name
-        token['last_name'] = user.last_name
-        token['last_login']= str(user.last_login)
-        update_last_login(None, user)   
-        return token
+        try:
+            token = super().get_token(user)
+            # Add custom claims
+            token['username'] = user.username
+            token['is_staff']= user.is_staff
+            token['email']= user.email
+            token['first_name']= user.first_name
+            token['last_name'] = user.last_name
+            token['last_login']= str(user.last_login)
+            update_last_login(None, user)   
+            return token
+        except:
+            return Response(status= status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+
 
 class labSerializer(serializers.ModelSerializer):
     class Meta:

@@ -4,6 +4,7 @@ import { Text,FlatList,View } from 'react-native';
 import { BubbleText, ContentJustifiedBack, PageTitle, StyledButton, StyledButtonText, SubTitle, ResponseText, DoneTextBold, TutorStudentFeedback, CenterText } from '../components/styles';
 import AuthContext from '../utils/auth_context';
 import { Linking } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 
 /*
 This screen allows a user to complete a survey or to see past responses
@@ -229,7 +230,7 @@ useEffect(()=>{
                     )}><StyledButtonText>Go Home</StyledButtonText></StyledButton>
             <DoneTextBold>Want help with this lab?</DoneTextBold>
             <StyledButton title = "Help" onPress={()=>{
-                Linking.openURL(lab.lab.help)
+                Linking.openURL(lab.help)
             }}><StyledButtonText> Online resources </StyledButtonText></StyledButton>
             <StyledButton title = "Message" onPress={()=>{
                 return navigation.navigate("SendNew", {'receiver_id':tutorDetail.tutor_id,'lab':lab.lab_id, 'tutor_name':tutorDetail.tutor_name, 'course':lab.course_id})
@@ -263,6 +264,13 @@ useEffect(()=>{
                 </ContentJustifiedBack>
         )
 
+    }else{
+        return (<ContentJustifiedBack><ActivityIndicator visible={loading} color='black' style={{flex: 1,
+            justifyContent: 'center',
+            textAlign: 'center',
+            paddingTop: 30,
+            padding: 8,}}/>
+            </ContentJustifiedBack>)
     }
 }
    

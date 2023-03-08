@@ -3,7 +3,10 @@ import {Theme,Center, StyledBubble, BubbleText, BubbleTextBold} from './styles'
 import {Ionicons} from '@expo/vector-icons';
 import { Text } from "react-native";
 import AuthContext from "../utils/auth_context";
+import { ActivityIndicator } from "react-native";
 
+
+import * as Notifications from 'expo-notifications';
 
 
 export function NotificationsMessage(props){
@@ -84,10 +87,13 @@ export function NotificationsMessage(props){
 
 
   useEffect(()=>{
-    setDate(formatDate(user.last_login))
-    checkRecent()
-    setLoading(false)
-  },[])
+    if (loading){
+      setDate(formatDate(user.last_login))
+      checkRecent()
+      setLoading(false)
+    }
+    
+  },[loading])
 
   const CorrectParse=()=>{
     if (newMessages>1 | newMessages<1){
@@ -103,7 +109,34 @@ export function NotificationsMessage(props){
     }
   }
 
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+    }),
+  });  
+
+  useEffect(()=>{
+    if (newMessages>0){ 
+      Notifications.scheduleNotificationAsync({
+      content: {
+        title: 'New Message',
+        body: `${newMessages} new messages`,
+      },
+      trigger: null,
+    });}
+  },newMessages)
+
+
+
   if (!loading){
+    let n='';
+    try{
+      n = messages[0].sender_f_name
+    }catch{
+      setLoading(true)
+    }
   return(
     <StyledBubble>
           <Center><Ionicons name="mail-unread-outline" size={35} color={Theme.secondary}></Ionicons></Center>
@@ -113,6 +146,14 @@ export function NotificationsMessage(props){
   
         
   )
+  }else{
+    return(<StyledBubble>
+      <ActivityIndicator visible={loading} color='black' style={{flex: 1,
+          justifyContent: 'center',
+          textAlign: 'center',
+          paddingTop: 30,
+          padding: 8,}}/>
+          </StyledBubble>)
   }
 
 

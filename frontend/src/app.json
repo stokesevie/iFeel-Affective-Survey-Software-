@@ -11,6 +11,10 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "notification": {
+      "icon": "./assets/icon.png",
+      "color": "#fff"
+     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -36,4 +40,6 @@
     },
     "owner": "stokesevie"
   }
+  
 }
+

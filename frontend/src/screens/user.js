@@ -5,6 +5,7 @@ import {View,Text} from 'react-native'
 import { BubbleText, DoneTextBold, ContentJustified, PageTitle, StyledBubbleLarge, StyledButton,StyledButtonText, SubTitle, BubbleTextBold, CenterText } from '../components/styles';
 import AuthContext from '../utils/auth_context';
 import moment from '../node_modules/moment'
+import { ActivityIndicator } from 'react-native';
 
 
 /*
@@ -15,6 +16,7 @@ const User = ({route, navigation}) => {
     const {user,setAuthTokens,setUser,url} = useContext(AuthContext)
     const [student, setStudent] = useState()
     const [loading,setloading] = useState(true)
+
     var date = moment()
     .format('YYYY-MM-DD HH:mm:ss');
     date += '+00:00'
@@ -77,6 +79,14 @@ const User = ({route, navigation}) => {
                 </ContentJustified>
             </View>
         )
+    }else{
+        return (<View><ContentJustified>
+            <ActivityIndicator visible={loading} color='black' style={{flex: 1,
+            justifyContent: 'center',
+            textAlign: 'center',
+            paddingTop: 30,
+            padding: 8,}}/>
+            </ContentJustified></View>)
     }
     }
 

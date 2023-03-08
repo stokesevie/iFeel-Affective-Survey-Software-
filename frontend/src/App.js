@@ -45,21 +45,6 @@ const NavBar = createBottomTabNavigator();
 const colours = Theme;
 
 
-Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-      shouldShowAlert: true,
-      shouldPlaySound: false,
-      shouldSetBadge: false,
-    }),
-  });  
-
-Notifications.scheduleNotificationAsync({
-    content: {
-      title: 'Look at that notification',
-      body: "I'm so proud of myself!",
-    },
-    trigger: null,
-  });
 
 const registerForPushNotificationsAsync = async()=>{
     let token;
@@ -75,6 +60,7 @@ const registerForPushNotificationsAsync = async()=>{
         return;
       }
       token = (await Notifications.getExpoPushTokenAsync()).data;
+      window.localStorage.setItem('notification',JSON.stringify(token))
       //alert(token);
     } else {
     }
@@ -128,10 +114,9 @@ const CreateTabsStudent =()=> {
 }
 8
 function App() {
-    const [expoPushToken, setExpoPushToken] = useState('');
 
     useEffect(()=>{
-        registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+        registerForPushNotificationsAsync()
     })
             return (
                 <AuthProvider>

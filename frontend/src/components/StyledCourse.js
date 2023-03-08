@@ -4,6 +4,7 @@ import { Text,View } from 'react-native';
 import { CourseDetail, StyledListButton, CourseTitle } from './styles';
 import { useState,useEffect } from 'react';
 import AuthContext from '../utils/auth_context';
+import { ActivityIndicator } from 'react-native';
 
 export default function StyledCourse(props){
     const {course, navigation } = props
@@ -47,6 +48,14 @@ export default function StyledCourse(props){
                 <CourseTitle>{courseDetail.title}</CourseTitle>
             </StyledListButton>
                 )
+    }else{
+        return(<StyledListButton>
+            <ActivityIndicator visible={fetched} color='black' style={{flex: 1,
+            justifyContent: 'center',
+            textAlign: 'center',
+            paddingTop: 30,
+            padding: 8,}}/>
+        </StyledListButton>)
     }
 
 }

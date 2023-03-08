@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { View,Text } from "react-native";
 import { useContext } from "react";
 import AuthContext from '../utils/auth_context';
+import { Alert } from "react-native";
 
 
 /*
@@ -34,7 +35,12 @@ const EditAxis = ({route,navigation})=>{
         if (changes[i]!=''){
             let c;
             if (i>1){
+              try{
                 c = parseInt(changes[i])
+              }catch{
+                Alert.alert("Zones must be a number from 1-10, with warning zone being less than risk zone.")
+                return
+              }
             }else{
                 c = changes[i]
             }
