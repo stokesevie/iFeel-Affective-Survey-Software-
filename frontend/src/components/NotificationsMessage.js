@@ -87,10 +87,13 @@ export function NotificationsMessage(props){
 
 
   useEffect(()=>{
-    setDate(formatDate(user.last_login))
-    checkRecent()
-    setLoading(false)
-  },[])
+    if (loading){
+      setDate(formatDate(user.last_login))
+      checkRecent()
+      setLoading(false)
+    }
+    
+  },[loading])
 
   const CorrectParse=()=>{
     if (newMessages>1 | newMessages<1){
@@ -128,6 +131,12 @@ export function NotificationsMessage(props){
 
 
   if (!loading){
+    let n='';
+    try{
+      n = messages[0].sender_f_name
+    }catch{
+      setLoading(true)
+    }
   return(
     <StyledBubble>
           <Center><Ionicons name="mail-unread-outline" size={35} color={Theme.secondary}></Ionicons></Center>
@@ -138,7 +147,7 @@ export function NotificationsMessage(props){
         
   )
   }else{
-    return(      <StyledBubble>
+    return(<StyledBubble>
       <ActivityIndicator visible={loading} color='black' style={{flex: 1,
           justifyContent: 'center',
           textAlign: 'center',
