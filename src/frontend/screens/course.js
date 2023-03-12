@@ -74,7 +74,16 @@ const Course = ({route, navigation}) => {
     }
     
     if(!loading){
-       
+       try{
+       let l = labs[0][0].lab_id
+       }catch{
+        return(
+            <ContentJustifiedBack>
+                <PageTitle>{course.title} Labs:</PageTitle>  
+                <BubbleText>You are not yet enrolled in any labs for this course.</BubbleText>
+                </ContentJustifiedBack>
+        )
+       }
         return (
             <ContentJustifiedBack>
                 <PageTitle>{course.title} Labs:</PageTitle>  

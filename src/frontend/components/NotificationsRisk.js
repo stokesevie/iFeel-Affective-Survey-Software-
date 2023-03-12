@@ -30,12 +30,12 @@ let recent = courses[0][0]
         }else{
             
         }
-        setLoading(false)
 }
 
 useEffect(()=>{
     if (loading){
         fetchStudentRisks(recent.lab.lab_id)
+        setLoading(false)
     }
 },[loading])
 
@@ -49,8 +49,9 @@ const risk = (r)=>{
 }
 
 const IfNoResponses = ()=>{
+    let i = 0;
     if (JSON.stringify(risks)!="[]"){
-        <FlatList
+        return (<FlatList
             data={risks}
             renderItem ={({item})=>{
                 if (risk(item) && i<2){
@@ -64,7 +65,7 @@ const IfNoResponses = ()=>{
 
             
             }}
-            />
+            />)
     }else{
         return (<CenterText><BubbleText>{`\n`}No students have responded to this survey yet</BubbleText></CenterText>)
     }
@@ -72,7 +73,6 @@ const IfNoResponses = ()=>{
 
 
     if (!loading){
-        let i = 0
         return(
             <StyledBubbleLarge>
             <Center><Ionicons name="alert-circle-outline" size={35} color={Theme.secondary}></Ionicons></Center>

@@ -19,15 +19,15 @@ class tutor(models.Model):
 
 
 class course(models.Model):
-    id = models.CharField(max_length=10, primary_key=True)
-    title = models.CharField(max_length=20)
+    id = models.CharField(max_length=15, primary_key=True)
+    title = models.CharField(max_length=40)
     level = models.IntegerField()
     start_date = models.DateField()
     end_date = models.DateField()
 
 class tutor_teaching(models.Model):
     tutor_id = models.ForeignKey(tutor,on_delete=models.CASCADE)
-    course_id = models.ForeignKey(course, on_delete=models.CASCADE, default='COMPSCI408')
+    course_id = models.ForeignKey(course, on_delete=models.CASCADE)
    
 class student_enroll(models.Model):
     student_id = models.ForeignKey("student", on_delete=models.CASCADE)
@@ -38,7 +38,7 @@ class lab(models.Model):
     course_id = models.ForeignKey("course", on_delete=models.CASCADE)
     lab_id = models.AutoField(primary_key=True)
     lab_number = models.IntegerField()
-    title = models.CharField(max_length=20, default= "")
+    title = models.CharField(max_length=40, default= "")
     date = models.DateField()
     help = models.URLField(blank=True)
 

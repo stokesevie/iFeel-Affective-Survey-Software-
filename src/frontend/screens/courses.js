@@ -4,7 +4,7 @@ import AuthContext from '../utils/auth_context';
 import { FlatList } from 'react-native';
 import StyledCourse from '../components/StyledCourse';
 import { ActivityIndicator } from 'react-native';
-import { ContentJustified, PageTitle } from '../components/styles';
+import { BubbleText, ContentJustified, ContentJustifiedBack, PageTitle } from '../components/styles';
 
 /*
 This screen will present the list of courses the student is enrolled in
@@ -21,10 +21,18 @@ const Courses = ({navigation}) => {
         }
     },[loading])
 
+    try {
+        let c = courses[0]
+    }catch{
+        return(
+           <ContentJustifiedBack>
+                    <PageTitle>{user.first_name}, you are enrolled in the following courses:</PageTitle> 
+                    <BubbleText>You are not enrolled in any courses</BubbleText>
+                    </ContentJustifiedBack>
+        )
+    }
     if (!loading){
-        return (
-            <View>
-                <ContentJustified>
+        return (<ContentJustifiedBack>
                     <PageTitle>{user.first_name}, you are enrolled in the following courses:</PageTitle>  
                     
                     <FlatList
@@ -37,9 +45,7 @@ const Courses = ({navigation}) => {
                     )
                     }
                     />
-        
-                </ContentJustified>
-            </View>
+                    </ContentJustifiedBack>
         )
     }else{
         return (<ActivityIndicator visible={loading} color='black' style={{flex: 1,

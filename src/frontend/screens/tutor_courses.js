@@ -14,12 +14,18 @@ const TutorCourses = ({navigation}) => {
     const access = JSON.parse(localStorage.getItem("authTokens"))['access']
     const [labs,setLabs] = useState()
 
+    
     const uniqueCourses = ()=>{
         let u = []
+        let i;
+        try{
         for (let c in courses){
             let name = courses[c][0].course_title
             let labs = courses[c]
             u.push([name,labs])
+        }}
+        catch(error){
+            
         }
         return u
     }

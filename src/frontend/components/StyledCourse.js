@@ -1,6 +1,4 @@
 import React, {useContext} from 'react';
-import { Button } from 'react-bootstrap';
-import { Text,View } from 'react-native';
 import { CourseDetail, StyledListButton, CourseTitle, StyledListButtonC } from './styles';
 import { useState,useEffect } from 'react';
 import AuthContext from '../utils/auth_context';

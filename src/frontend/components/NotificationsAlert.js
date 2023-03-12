@@ -86,13 +86,26 @@ export function NotificationsAlert(props) {
   }
 
   if (!loading && emotionalFetched){
-    let r = risks[0][0]
+    let r;
     let zone = ""
-    if (r.risk){
-      zone = "RISK"
-    }else if (r.warning){
-      zone = "WARNING"
+    try{
+      r=risks[0][0]
+      let zone = ""
+      if (r.risk){
+        zone = "RISK"
+      }else if (r.warning){
+        zone = "WARNING"
+      }
+    }catch{
+      return (
+        <StyledBubbleLarge>
+          
+         <Center><Ionicons name="warning-outline" size={35} color={Theme.secondary}></Ionicons></Center> 
+         <CenterText><BubbleTextBold>You are not at risk in any labs</BubbleTextBold></CenterText>
+        </StyledBubbleLarge>
+      );
     }
+
 
   
     

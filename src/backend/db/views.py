@@ -191,6 +191,7 @@ class StudentEnrollFind(APIView):
             'course_id': courses.tutor_teaching_id.course_id.id,
             'flag': courses.flag,
             'tutor':{
+                'tutor_teaching': courses.tutor_teaching_id.id,
                 'tutor_id': courses.tutor_teaching_id.tutor_id.username.id,
                 'tutor_name': courses.tutor_teaching_id.tutor_id.username.first_name + " "+ courses.tutor_teaching_id.tutor_id.username.last_name,
           
@@ -466,11 +467,11 @@ class FindStudentLabRisk(APIView):
         for l in labs:
             risks += student_lab_risk.objects.filter(lab_id = l.lab_id,risk= True).count()
             warnings += student_lab_risk.objects.filter(lab_id = l.lab_id,warning= True).count()
-        if (risks>40):
+        if (risks>30):
             return True
-        elif (warnings>45):
+        elif (warnings>25):
             return True
-        elif (risks>20 and warnings>20):
+        elif ((risks>15 and warnings>10) or(risks>10 and warnings>20)):
             return True
         return False
 
