@@ -352,7 +352,10 @@ class AxisAverage(APIView):
 
     def get_object(self, lab_id,axis_id):
         try:
-            avg = axis_average.objects.filter(lab_id=lab_id,axis_id=axis_id).aggregate(Avg('point'))
+            if (axis_average.objects.filter(lab_id=lab_id,axis_id=axis_id).count()>5):
+                avg = axis_average.objects.filter(lab_id=lab_id,axis_id=axis_id).aggregate(Avg('point'))
+            else:
+                avg = 6
             return avg
         except axis_average.DoesNotExist:
             raise status.HTTP_400_BAD_REQUEST
@@ -462,17 +465,22 @@ class FindStudentLabRisk(APIView):
     def get_count(self,student_id,tutor_teaching_id):
         c = student_enroll.objects.get(student_id= student_id,tutor_teaching_id=tutor_teaching_id).tutor_teaching_id.course_id.id
         labs = lab.objects.filter(course_id = c)
+
         risks = 0
         warnings = 0
+
+        surveys_taken = 0
         for l in labs:
-            risks += student_lab_risk.objects.filter(lab_id = l.lab_id,risk= True).count()
-            warnings += student_lab_risk.objects.filter(lab_id = l.lab_id,warning= True).count()
-        if (risks>30):
-            return True
-        elif (warnings>25):
-            return True
-        elif ((risks>15 and warnings>10) or(risks>10 and warnings>20)):
-            return True
+            risks += student_lab_risk.objects.filter(lab_id = l.lab_id,risk= True,student_id=student_id).count()
+            warnings += student_lab_risk.objects.filter(lab_id = l.lab_id,warning= True,student_id=student_id).count()
+            if student_survey.objects.filter(student_id= student_id, lab_id = l).exists():
+                surveys_taken +=1
+        if surveys_taken>0:
+            maximum_risks = surveys_taken*6
+            warning_weighted = 0.7*warnings
+            r = (risks+warning_weighted)/maximum_risks*100
+            if r>70:
+                return True    
         return False
 
     def get(self, request, student_id, lab_id=0,tutor_teaching_id=0,count="", format=None):

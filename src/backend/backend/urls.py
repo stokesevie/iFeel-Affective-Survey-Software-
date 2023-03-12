@@ -19,8 +19,7 @@ from rest_framework import routers
 from db import views
 
 from rest_framework_simplejwt.views import (
-    TokenRefreshView,
-    TokenObtainPairView
+    TokenRefreshView
 )
 
 
