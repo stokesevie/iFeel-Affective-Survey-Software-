@@ -13,8 +13,8 @@ from django.utils.dateparse import parse_datetime
 from rest_framework import permissions
 
 
-
 # Create your views here.
+
 
 class MyTokenObtainPairView(TokenObtainPairView):
         serializer_class = MyTokenObtainPairSerializer
@@ -55,6 +55,7 @@ class UserDetail(APIView):
         snippet = self.get_object(pk)
         d = {'last_login': parse_datetime(request.data.get('last_login'))}
         serializer = UserSerializer(instance=snippet,data=d,partial=True)
+        
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -210,12 +211,15 @@ class StudentEnrollFind(APIView):
         return Response(self.serialize_student_enroll(student_enroll.objects.filter(student_id=student_id)))
         
     def put(self,request,student_id,tutor_teaching_id):
-        snippet = student_enroll.objects.get(student_id=student_id,tutor_teaching_id=tutor_teaching_id)
-        serializer = student_enrollSerializer(instance=snippet,data=request.data,partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+            snippet = student_enroll.objects.get(student_id=student_id,tutor_teaching_id=tutor_teaching_id)
+            serializer = student_enrollSerializer(instance=snippet,data=request.data,partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(status=status.HTTP_400_BAD_REQUEST) 
+    
+
+
 
 
 class CourseDetail(APIView):
@@ -223,7 +227,7 @@ class CourseDetail(APIView):
     def get_object(self, id):
         try:
             return course.objects.get(id=id)
-        except User.DoesNotExist:
+        except course.DoesNotExist:
             raise status.HTTP_400_BAD_REQUEST
 
     def get(self, request, id, format=None):
@@ -388,10 +392,28 @@ class AxisAverage(APIView):
 
     def post(self,request,format=None):
         serializer = axis_averageSerializer(data = request.data)
+        lab_id = request.data['lab_id']
+        axis_id = request.data['axis_id']
+        self.updateAverages(lab_id,axis_id)
+
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def updateAverages(self,lab_id,axis_id):
+        avg = axis_average.objects.filter(lab_id=lab_id,axis_id=axis_id).aggregate(Avg('point'))
+        labs = axis_average.objects.filter(lab_id=lab_id,axis_id=axis_id)
+        for l in labs:
+            if l.point<avg['point__avg']:
+                d= {'above':False}
+                serializer = axis_averageSerializer(instance=l,data=d,partial=True)
+            else:
+                d = {'above': True}
+                serializer = axis_averageSerializer(instance=l,data=d,partial=True)
+            if serializer.is_valid():
+                serializer.save()
+
 
 class LabQuestions(APIView):
     permission_classes= (permissions.IsAuthenticated,)
@@ -424,11 +446,12 @@ class LabQuestions(APIView):
     def get(self, request, question_id, format=None):
         return Response(self.serialize_questions(question.objects.filter(id=question_id)))
     def put(self,request,question_id,format=None):
-        snippet = self.get_object(question_id=question_id)
-        serializer = questionSerializer(instance=snippet,data=request.data,partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
+        if (request.user.is_staff):
+            snippet = self.get_object(question_id=question_id)
+            serializer = questionSerializer(instance=snippet,data=request.data,partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def post(self,request,format=None):
@@ -591,11 +614,12 @@ class FindAxisLabel(APIView):
         return Response(serializer.data)
     
     def put(self,request,axis_id,format=None):
-        snippet = self.get_object(axis_id = axis_id)
-        serializer = axis_labelsSerializer(instance=snippet,data=request.data,partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
+        if (request.user.is_staff):
+            snippet = self.get_object(axis_id = axis_id)
+            serializer = axis_labelsSerializer(instance=snippet,data=request.data,partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def post(self,request,format=None):
@@ -637,7 +661,6 @@ class FindTutorTeaching(APIView):
 
     def get(self, request,user_id,format=None):
         snippet = self.get_objects(user_id,request)
-        #serializer = self.ser(snippet,user_id)
         return Response(snippet)
 
 

@@ -116,7 +116,7 @@ const Done = ({route, navigation}) => {
               },
             body: JSON.stringify(put)
         }).catch(console.error)
-        Alert.alert("Warning","You have been automatically flagged")
+        Alert.alert("Warning","Automatically flagged")
         }
 
     }
@@ -229,7 +229,7 @@ const Done = ({route, navigation}) => {
             setFlagged()
         }
     },[responsesPosted])
-    
+
     const post = async (r,axis)=>{
 
         if (!responsesPosted){
