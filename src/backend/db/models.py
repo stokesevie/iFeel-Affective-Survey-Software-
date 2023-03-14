@@ -7,54 +7,69 @@ from datetime import datetime
 
 
 User = get_user_model()
-# Create your models here.
 
+# models for the database
+
+
+# defining custom field that will limit the values entered to integer field is in a defined range
+
+class IntegerRangeField(models.IntegerField):
+    def __init__(self, verbose_name=None, name=None, min_value=None, max_value=None,default=None, **kwargs):
+        self.min_value, self.max_value = min_value, max_value
+        models.IntegerField.__init__(self, verbose_name, name,default=default, **kwargs)
+    def formfield(self, **kwargs):
+        defaults = {'min_value': self.min_value, 'max_value':self.max_value}
+        defaults.update(kwargs)
+        return super(IntegerRangeField, self).formfield(**defaults)
 
 class student(models.Model):
-    username = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,primary_key=True, default='2444030s')
-    level = models.IntegerField()
+    username = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,primary_key=True)
+    level = IntegerRangeField(min_value=1,max_value=5)
 
 class tutor(models.Model):
-    username = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,primary_key=True, default='2444030s' )
-
+    username = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,primary_key=True)
 
 class course(models.Model):
     id = models.CharField(max_length=15, primary_key=True)
     title = models.CharField(max_length=40)
-    level = models.IntegerField()
+    level = IntegerRangeField(min_value=1,max_value=5)
     start_date = models.DateField()
     end_date = models.DateField()
 
 class tutor_teaching(models.Model):
     tutor_id = models.ForeignKey(tutor,on_delete=models.CASCADE)
     course_id = models.ForeignKey(course, on_delete=models.CASCADE)
-   
+
+# student enrollment in a course logs their flag
+
 class student_enroll(models.Model):
-    student_id = models.ForeignKey("student", on_delete=models.CASCADE)
+    student_id = models.ForeignKey(student, on_delete=models.CASCADE)
     tutor_teaching_id = models.ForeignKey(tutor_teaching, on_delete=models.CASCADE)
     flag = models.BooleanField(default=False)
 
+# can define website to link to if help needed with lab
+
 class lab(models.Model):
-    course_id = models.ForeignKey("course", on_delete=models.CASCADE)
+    course_id = models.ForeignKey(course, on_delete=models.CASCADE)
     lab_id = models.AutoField(primary_key=True)
-    lab_number = models.IntegerField()
+    lab_number = IntegerRangeField(min_value=1,max_value=10)
     title = models.CharField(max_length=40, default= "")
     date = models.DateField()
     help = models.URLField(blank=True)
 
-class axis_average(models.Model):
-    axis_id = models.ForeignKey("axis_labels", on_delete=models.CASCADE)
-    lab_id = models.ForeignKey("lab", on_delete=models.CASCADE)
-    student_id = models.ForeignKey(student,on_delete=models.CASCADE)
-    date = models.DateField(default='2022-02-02')
-    point = models.IntegerField()
-    above = models.BooleanField()
-
 class axis_labels(models.Model):
     pos_title = models.CharField(max_length=25)
     neg_title = models.CharField(max_length=25)
-    risk = models.IntegerField(default=9)
-    warn = models.IntegerField(default=8)
+    risk = IntegerRangeField(min_value=1,max_value=5,default=9)
+    warn = IntegerRangeField(min_value=1,max_value=5,default=9)
+
+class axis_average(models.Model):
+    axis_id = models.ForeignKey(axis_labels, on_delete=models.CASCADE)
+    lab_id = models.ForeignKey(lab, on_delete=models.CASCADE)
+    student_id = models.ForeignKey(student,on_delete=models.CASCADE)
+    date = models.DateField()
+    point = IntegerRangeField(min_value=1,max_value=10)
+    above = models.BooleanField()
 
 class student_lab_risk(models.Model):
     student_id = models.ForeignKey(student, on_delete=models.CASCADE)
@@ -64,15 +79,13 @@ class student_lab_risk(models.Model):
     risk = models.BooleanField()
     warning = models.BooleanField()
 
-
 class message(models.Model):
     date = datetime.now()
     sender_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender_id')
     receiver_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiver_id')
     sent_at = models.DateTimeField(default=date)
-    message_content = models.TextField()
-    related_lab = models.ForeignKey("lab", on_delete=models.CASCADE,blank=True, null=True)
-
+    message_content = models.CharField(max_length=160)
+    related_lab = models.ForeignKey(lab, on_delete=models.CASCADE,blank=True, null=True)
 
 class question(models.Model):
     x = models.ForeignKey(axis_labels, on_delete=models.CASCADE, related_name='x')
