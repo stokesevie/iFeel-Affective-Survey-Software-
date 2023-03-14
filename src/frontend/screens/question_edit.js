@@ -10,22 +10,12 @@ const QuestionEdit = ({route,navigation})=>{
     const question = route.params.question
     const course = route.params.course
     const questionNumber = route.params.questionNumber
-    const lab = route.params.lab
+    const lab = route.params.lab.lab
 
-        
-    const refreshRequired = ()=>{
-        try {
-            return route.params.refresh
-        }catch{
-            return false
-        }
-    }
 
     const demo = ()=>{
         navigation.navigate("Demo",{question: question,lab:lab,questionNumber:questionNumber})
     }
-
-    const refresh = refreshRequired()
 
 
     return(

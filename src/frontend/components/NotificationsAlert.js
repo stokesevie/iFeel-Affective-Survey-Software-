@@ -78,11 +78,11 @@ export function NotificationsAlert(props) {
   const ShowEmotional = ()=>{
     let r = emotional
     if (r.above){
-      return(<BubbleText>You recorded a <BubbleTextBold>Above Average </BubbleTextBold>emotional response to this lab. You found it more <BubbleTextBold>{r.axis_pos}</BubbleTextBold> than other students.</BubbleText>)
-   
-    }else{
       return(<BubbleText>You recorded a <BubbleTextBold>Below Average </BubbleTextBold>emotional response to this lab. You found it more <BubbleTextBold>{r.axis_neg}</BubbleTextBold> than other students.</BubbleText>)
-    }
+
+    }else{
+      return(<BubbleText>You recorded a <BubbleTextBold>Above Average </BubbleTextBold>emotional response to this lab. You found it more <BubbleTextBold>{r.axis_pos}</BubbleTextBold> than other students.</BubbleText>)
+       }
   }
 
   if (!loading && emotionalFetched && risksFetched){
