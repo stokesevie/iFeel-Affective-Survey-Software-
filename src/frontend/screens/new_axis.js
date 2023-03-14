@@ -41,12 +41,22 @@ const NewAxis = ({route,navigation})=>{
     const postAxis = async ()=>{
         try{
             if (parseInt(riskZone)>parseInt(warningZone)){
-
+            
             }else{
                 throw(error)
             }
         }catch{
             Alert.alert("Zones must be a number from 1-10, with warning zone being less than risk zone.")
+            return
+        }
+        try{
+            if (posAxis.length<25 && negAxis.length<25){
+
+            }else{
+                throw error
+            }
+        }catch{
+            Alert.alert("Axis titles must be shorter than 25 characters","This ensures that the axis title fits on the grid")
             return
         }
         let a = {

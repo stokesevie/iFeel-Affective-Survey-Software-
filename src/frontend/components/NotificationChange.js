@@ -7,22 +7,39 @@ import AuthContext from "../utils/auth_context";
 export function NotificationChange(props){
   const user = props.user
   const courses = props.courses
+  let c;
+  try{
+    c = courses[0][0]
+  }catch{
+    c = false
+  }
 
-  let c = courses[0][0]
-    return(
-    <StyledBubble>
-          <Center><Ionicons name="terminal-outline" size={35} color={Theme.secondary}></Ionicons></Center>
-          <BubbleTextBold>Would you like to edit {c.course_title} surveys?</BubbleTextBold>
-         <BubbleText>Most recent lab:
-          <BubbleTextBold> Lab {c.lab.lab_number}</BubbleTextBold>
-          <BubbleText> titled {c.lab.lab_title}</BubbleText>.
-          </BubbleText>
-
-
-
-   
-  </StyledBubble>
+  if (!c){
+    return (
+      <StyledBubble>
+            <Center><Ionicons name="terminal-outline" size={35} color={Theme.secondary}></Ionicons></Center>
+            <BubbleText><BubbleTextBold>You cannot edit any surveys</BubbleTextBold>
+            </BubbleText>
+  
+    </StyledBubble>
     )
+  }else{
+    return(
+      <StyledBubble>
+            <Center><Ionicons name="terminal-outline" size={35} color={Theme.secondary}></Ionicons></Center>
+            <BubbleText><BubbleTextBold>Edit {c.course_title} surveys?</BubbleTextBold>
+          Most recent lab:
+            <BubbleTextBold> Lab {c.lab.lab_number}</BubbleTextBold>
+            <BubbleText> titled {c.lab.lab_title}</BubbleText>.
+            </BubbleText>
+  
+  
+  
+     
+    </StyledBubble>
+      )
+  }
+
     
   
   

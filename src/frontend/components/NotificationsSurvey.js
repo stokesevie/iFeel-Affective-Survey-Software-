@@ -11,6 +11,7 @@ export function NotificationsSurvey(props){
   const [loading , setLoading] = useState([true])
   const {url} = useContext(AuthContext)
   const access = JSON.parse(localStorage.getItem("authTokens"))['access']
+  const [noSurveys,setNoSurveys] = useState(false)
 
   const fetchLabs = async ()=>{
     let pending = []
@@ -24,7 +25,7 @@ export function NotificationsSurvey(props){
               'Accept':'application/json',
             },
         })
-        let labs = await lab_response.json()
+        let labs = await lab_response.json().catch(error=>{setNoSurveys(true)})
         for (const x in labs){
           let l = labs[x]
           pending = await fetchTodo(pending,l)
@@ -86,7 +87,7 @@ export function NotificationsSurvey(props){
          <BubbleText>Reminder for
           <BubbleTextBold> {surveys[0][0].course_id}</BubbleTextBold>
           . You must complete 
-          <BubbleTextBold> {surveys[0][0].title} survey</BubbleTextBold>.
+          <BubbleTextBold> {surveys[0][0].title}</BubbleTextBold> survey.
           </BubbleText>
 
 
@@ -94,7 +95,19 @@ export function NotificationsSurvey(props){
    
   </StyledBubble>
     )
+    }else if (noSurveys){
+      return(
+        <StyledBubble>
+              <Center><Ionicons name="alert-circle-outline" size={35} color={Theme.secondary}></Ionicons></Center>
+              <BubbleTextBold> No surveys to complete</BubbleTextBold>
+
     
+    
+    
+       
+      </StyledBubble>
+        )
+      
   }else{
     return(
       <StyledBubble>

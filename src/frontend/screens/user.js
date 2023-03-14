@@ -46,8 +46,8 @@ const User = ({route, navigation}) => {
     }
 
     if (!user.is_staff&& !loading){
+        try{
         return (
-        <View>
             <ContentJustified>
                 <PageTitle>Student Home</PageTitle>  
                 <CenterText>
@@ -61,9 +61,26 @@ const User = ({route, navigation}) => {
                     localStorage.clear()
                     navigation.navigate("Login")
                     }}><StyledButtonText>Log out</StyledButtonText></StyledButton>
+            </ContentJustified>)
+        }catch{
+            return(
+                <ContentJustified>
+                <PageTitle>Student Home</PageTitle>  
+                <CenterText>
+                <BubbleTextBold>Issue finding details of student status, contact system administrator</BubbleTextBold>
+                </CenterText>
+                <SubTitle>Log out?</SubTitle>
+                
+                <StyledButton onPress={()=>{
+                    setAuthTokens(null)
+                    setUser(null)
+                    localStorage.clear()
+                    navigation.navigate("Login")
+                    }}><StyledButtonText>Log out</StyledButtonText></StyledButton>
             </ContentJustified>
-        </View>
-    )}else if (user.is_staff){
+            )
+        }
+    }else if (user.is_staff){
         return (
             <View>
                 <ContentJustified>
@@ -80,13 +97,12 @@ const User = ({route, navigation}) => {
             </View>
         )
     }else{
-        return (<View><ContentJustified>
+        return (
             <ActivityIndicator visible={loading} color='black' style={{flex: 1,
             justifyContent: 'center',
             textAlign: 'center',
             paddingTop: 30,
-            padding: 8,}}/>
-            </ContentJustified></View>)
+            padding: 8,}}/>)
     }
     }
 

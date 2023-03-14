@@ -1,7 +1,5 @@
 
 import styled from 'styled-components/native';
-import {View, Text, Image, TextInput, TouchableOpacity} from 'react-native';
-import Constants from 'expo-constants';
 
 export const Theme = {
     text_light:'#B0BFF7', //bubble colours
@@ -76,10 +74,9 @@ export const RelatedLab = styled.Text`
 `;
 
 export const StyledListButton = styled.TouchableOpacity`
-    padding: 1px;
+    padding: 5px;
     background-color: ${Theme.text_light};
     border-radius: 5px;
-    height: 120px;
     margin-bottom: 8px;
 `;
 
@@ -92,13 +89,12 @@ export const AxisListButton = styled.TouchableOpacity`
 `;
 
 export const StyledListButtonC = styled.TouchableOpacity`
-    padding: 1px;
+    padding: 3px;
     background-color: ${Theme.text_light};
     border-color:${Theme.primary};
     border-radius: 5px;
     border-width:5px;
-    height: 120px;
-    margin-bottom: 20px;
+    margin-bottom: 8px;
 `;
 
 export const SenderTime = styled.View`
@@ -129,7 +125,7 @@ export const ContentJustifiedBack = styled.View`
     padding-left:10px;
     padding-right:10px;
     padding-top:86px;
-    height:85.5%;
+    height:95%;
 `;
 
 
@@ -364,7 +360,7 @@ export const SurveyQuestion = styled.Text`
     padding: 10px
 `;
 
-export const StyledBubble = styled.TouchableOpacity`
+export const StyledBubble = styled.View`
     background-color: ${Theme.text_light};
     border-radius: 5px;
     height: 28%;
@@ -373,7 +369,7 @@ export const StyledBubble = styled.TouchableOpacity`
 
 `;
 
-export const StyledBubbleLarge = styled.TouchableOpacity`
+export const StyledBubbleLarge = styled.View`
     background-color: ${Theme.text_light};
     border-radius: 5px;
     height: 50%;

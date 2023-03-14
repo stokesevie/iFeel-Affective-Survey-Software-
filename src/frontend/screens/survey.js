@@ -31,8 +31,7 @@ const Survey = ({route, navigation}) => {
 
 
     const fetchSurvey = ( async ()=>{
-        
-        const surveyUrl = url+`/survey/${lab.lab_id}/${tutorDetail.tutor_id}/`
+        const surveyUrl = url+`/survey/${lab.lab_id}/${tutorDetail.tutor_teaching}/`
         const survey_response = await fetch(surveyUrl, {
             method : 'GET',
             headers :{

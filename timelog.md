@@ -86,3 +86,7 @@
 * *1 hour* sent requirements to people
 * *1 hour* started to build sign in for app
 
+
+## 8 March 2023
+* *5 hours* finished flagging functionality
+* *1 hour* fixed the project file structure

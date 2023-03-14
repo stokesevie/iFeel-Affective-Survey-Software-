@@ -16,16 +16,21 @@ const SendNew = ({route, navigation}) => {
     const [loading, setLoading] = useState(true)
     const [message, setMessage] = useState([])
     const access = JSON.parse(localStorage.getItem("authTokens"))['access']
-    
+
     const isLab = ()=>{
         try {  
-            return route.params.lab
+            if (route.params.lab){
+                if (parseInt(route.params.lab)){
+                    return route.params.lab
+                }else if (parseInt(route.params.lab.lab_id)){
+                    return route.params.lab.lab_id
+                }
+            }
         }catch{
             return null
         }
     }
 
-    const lab = isLab()
 
     const handleFlagSend = async ()=>{
         let data;
@@ -67,7 +72,7 @@ const SendNew = ({route, navigation}) => {
         date += '+00:00'
         if (lab){
             data = {
-                "related_lab": lab.lab_id,
+                "related_lab": lab,
                 "sender_id": user.user_id, 
                 "receiver_id": receiver_id,
                 "message_content": message,
@@ -111,7 +116,8 @@ const SendNew = ({route, navigation}) => {
     },[loading])
 
 
-    if (user.is_staff && lab){
+    if (user.is_staff && route.params.lab){
+        let lab = route.params.lab
         return (
             <ContentJustified>
             <SubTitle><Text style={{fontWeight:'1'}}> Message to {lab.student_name} regarding </Text>{lab.course_name}: {lab.lab_title} (lab {lab.lab_number})<Text style={{fontWeight:'1'}}> on {lab.axis_neg} axis</Text></SubTitle>

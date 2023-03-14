@@ -42,7 +42,16 @@ const EditAxis = ({route,navigation})=>{
                 return
               }
             }else{
-                c = changes[i]
+                try{
+                  if (changes[i].length<25){
+                    c = changes[i]
+                  }else{
+                      throw error
+                  }
+                }catch{
+                  Alert.alert("Axis titles must be shorter than 25 characters","This ensures that the axis title fits on the grid")
+                  return
+                }
             }
             let f = fieldTitle[i]
             

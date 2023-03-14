@@ -86,14 +86,14 @@ const Done = ({route, navigation}) => {
         if (!surveyPosted){
             setCompleted()
         }
-        setFlagged()
+
         setLoading(false)
         }
 
     },[loading])
 
     const setFlagged = async ()=>{
-        const flagUrl = url+`/student_lab_risk/${user.user_id}/${courseDetail.id}/count/`
+        const flagUrl = url+`/student_lab_risk/${user.user_id}/${tutorDetail.tutor_teaching}/count/`
         const flag_response = await fetch(flagUrl, {
             method : 'GET',
             headers :{
@@ -105,8 +105,8 @@ const Done = ({route, navigation}) => {
         let flagged = await flag_response.json()
 
         if (flagged){
-            let put = {'flag': 'true'}
-            const changeFlagUrl = url+`/course/${user.user_id}/${courseDetail.id}/`
+            let put = {'flag': 'True'}
+            const changeFlagUrl = url+`/course/${user.user_id}/${tutorDetail.tutor_teaching}/`
             const putChange = await fetch(changeFlagUrl, {
             method : 'PUT',
             headers :{
@@ -115,11 +115,15 @@ const Done = ({route, navigation}) => {
                 'Accept':'application/json',
               },
             body: JSON.stringify(put)
-        }).catch(console.error)
-        Alert.alert("Warning","You have been automatically flagged")
+        })
+        if (putChange.ok)
+            Alert.alert("Warning","You have been automatically flagged")
+
         }
 
     }
+
+
 
 
     const GetAxisAverage = async ()=>{
@@ -223,6 +227,12 @@ const Done = ({route, navigation}) => {
         }
         setResponsesPosted(true)
     }
+
+    useEffect(()=>{
+        if (responsesPosted){
+            setFlagged()
+        }
+    },[responsesPosted])
 
     const post = async (r,axis)=>{
 
