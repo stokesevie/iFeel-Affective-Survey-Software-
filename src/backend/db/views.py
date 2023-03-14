@@ -362,7 +362,7 @@ class AxisAverage(APIView):
             if (axis_average.objects.filter(lab_id=lab_id,axis_id=axis_id).count()>5):
                 avg = axis_average.objects.filter(lab_id=lab_id,axis_id=axis_id).aggregate(Avg('point'))
             else:
-                avg = 6
+                avg = {'point__avg':5}
             return avg
         except axis_average.DoesNotExist:
             raise status.HTTP_400_BAD_REQUEST
@@ -405,17 +405,18 @@ class AxisAverage(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def updateAverages(self,lab_id,axis_id):
-        avg = axis_average.objects.filter(lab_id=lab_id,axis_id=axis_id).aggregate(Avg('point'))
-        labs = axis_average.objects.filter(lab_id=lab_id,axis_id=axis_id)
-        for l in labs:
-            if l.point<avg['point__avg']:
-                d= {'above':False}
-                serializer = axis_averageSerializer(instance=l,data=d,partial=True)
-            else:
-                d = {'above': True}
-                serializer = axis_averageSerializer(instance=l,data=d,partial=True)
-            if serializer.is_valid():
-                serializer.save()
+        if (axis_average.objects.filter(lab_id=lab_id,axis_id=axis_id).count()<5):
+            avg = axis_average.objects.filter(lab_id=lab_id,axis_id=axis_id).aggregate(Avg('point'))
+            labs = axis_average.objects.filter(lab_id=lab_id,axis_id=axis_id)
+            for l in labs:
+                if l.point<avg['point__avg']:
+                    d= {'above':True}
+                    serializer = axis_averageSerializer(instance=l,data=d,partial=True)
+                else:
+                    d = {'above': False}
+                    serializer = axis_averageSerializer(instance=l,data=d,partial=True)
+                if serializer.is_valid():
+                    serializer.save()
 
 
 class LabQuestions(APIView):

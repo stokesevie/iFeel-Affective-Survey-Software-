@@ -1,7 +1,7 @@
 import React,{useState} from "react";
 import {  ContentJustifiedBack, PageTitle, Right, BubbleText,Left,Theme, StyledTextInput, AxisEditSubText, StyledButtonText, StyledDoneButton, TutorStudentFeedback, AxisEditButton, CenterText } from "../components/styles";
 import { Ionicons } from '@expo/vector-icons';
-import { View,Text } from "react-native";
+import { View,Text, ScrollView, KeyboardAvoidingView } from "react-native";
 import { useContext } from "react";
 import AuthContext from '../utils/auth_context';
 import { Alert } from "react-native";
@@ -26,7 +26,6 @@ const EditAxis = ({route,navigation})=>{
     const {url} = useContext(AuthContext)
 
     const access = JSON.parse(localStorage.getItem("authTokens"))['access']
-
 
     const updateAxis = ()=>{
        let changes = [posAxis,negAxis,riskZone,warningZone]
@@ -86,6 +85,8 @@ const EditAxis = ({route,navigation})=>{
 
     if (!loading){
         return(
+          <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column',justifyContent: 'center',}} behavior="height"   keyboardVerticalOffset={0}>
+          <ScrollView>
             <ContentJustifiedBack>
                 <PageTitle>Editing axis {axis} for question {questionNumber}</PageTitle>
                 <CenterText><AxisEditSubText>{course}: {lab.lab_title}{`\n`}</AxisEditSubText>
@@ -105,6 +106,8 @@ const EditAxis = ({route,navigation})=>{
                 <AxisEditButton onPress={createAxis}><StyledButtonText>Create new axis</StyledButtonText></AxisEditButton>
                 </View>
             </ContentJustifiedBack>
+            </ScrollView>
+            </KeyboardAvoidingView>
         )
     }
    
