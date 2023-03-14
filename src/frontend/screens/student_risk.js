@@ -19,7 +19,7 @@ const StudentRisk = ({route,navigation})=>{
 
     const flag = async()=>{
         const flagUrl = url +`/course/${relatedRisks[0].student_id}/${teaching_id}/`
-        let change = {'flag':'true'}
+        let change = {'flag':'True'}
         const update = await fetch(flagUrl, {
             method: "PUT",
             headers: {
@@ -46,8 +46,7 @@ const StudentRisk = ({route,navigation})=>{
           'Would you like to send a message with this flag?',
           [
             {text: 'Yes', onPress: () => {
-                return navigation.navigate("SendNew", {'receiver_id':relatedRisks[0].student_id,'course':labDetail.course_title, otherName: relatedRisks[0].student_first_name})
-        }},
+                return navigation.navigate("SendNew", {'receiver_id':relatedRisks[0].student_id,'course':labDetail.course_title, otherName: relatedRisks[0].student_first_name})}},
             {text: 'No', onPress: () => {
                 return navigation.navigate("TutorDashboard")}},
           ],
@@ -57,7 +56,7 @@ const StudentRisk = ({route,navigation})=>{
 
     const unFlag = async()=>{
         const flagUrl = url +`/course/${relatedRisks[0].student_id}/${teaching_id}/`
-        let change = {'flag':'false'}
+        let change = {'flag':'False'}
         const update = await fetch(flagUrl, {
             method: "PUT",
             headers: {

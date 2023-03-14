@@ -45,12 +45,12 @@ const TutorLab = ({route,navigation}) => {
         for (let r in risks){
             let found = false
             for (let i in students){
-                if ((risks[r].student_first_name +" "+risks[r].student_last_name) == students[i]){
+                if (risks[r].student_id == students[i][0]){
                     found = true
                 }
             }
             if (!found){
-                students.push(risks[r].student_first_name +" "+risks[r].student_last_name)
+                students.push([risks[r].student_id,risks[r].student_first_name +" "+risks[r].student_last_name])
             }
         }
         return students
@@ -72,9 +72,7 @@ const TutorLab = ({route,navigation}) => {
 
     if (!loading){
         let students = uniqueStudents()
-
         return (
-            <View>
                 <ContentJustifiedBack>
                     <PageTitle>{lab.lab_title}</PageTitle>  
                     <StyledButtonTutor onPress={()=>{navigation.navigate("QuestionsEdit",{lab: route.params.lab, course: course})}}><CenterText><StyledButtonText>Press here to make changes to this lab survey</StyledButtonText></CenterText></StyledButtonTutor>
@@ -87,30 +85,29 @@ const TutorLab = ({route,navigation}) => {
                         let countRisks =0
                         let countWarnings = 0
                         for(let i in risks){
-                        if ((risks[i].student_first_name + " " +risks[i].student_last_name) == item){
-                            relatedRisks.push(risks[i])
-                            if (risks[i].risk){
-                                countRisks =+ 1
-                            }else if (risks[i].warning){
-                                countWarnings =+1
+                            if ((risks[i].student_id) == item[0]){
+                                relatedRisks.push(risks[i])
+                                if (risks[i].risk){
+                                    countRisks = countRisks+ 1
+                                }else if (risks[i].warning){
+                                    countWarnings = countWarnings+1
+                                }
                             }
                         }
-                        }
-
                         let worstRisk = relatedRisks[0]
                         let headerText = worstRisk.student_first_name + ' ' + worstRisk.student_last_name
-                         if (worstRisk.risk){
+                        if (worstRisk.risk){
                             return (<StyledListButton onPress ={()=>{navigation.navigate("StudentRisk",{relatedRisks: relatedRisks,teaching_id :labDetail.tutor_teaching_id,labDetail:labDetail})}}>
                                 <BubbleText><BubbleTextBold>{headerText}<AddFlag flag={worstRisk.flag}/>{`\n`}</BubbleTextBold>
                                 <BubbleTextBold><Text style ={{color:'red'}}>RISK</Text></BubbleTextBold> on {worstRisk.axis_neg} axis</BubbleText>
-                                <BubbleText><BubbleTextBold>{countRisks}</BubbleTextBold> other risks and <BubbleTextBold>{countWarnings}</BubbleTextBold> warnings</BubbleText>
+                                <BubbleText><BubbleTextBold>{countRisks-1}</BubbleTextBold> other risks and <BubbleTextBold>{countWarnings}</BubbleTextBold> warnings</BubbleText>
                                 </StyledListButton>)
                         }else if (worstRisk.warning){
                             return (<StyledListButton onPress ={()=>{navigation.navigate("StudentRisk",{relatedRisks: relatedRisks,teaching_id :labDetail.tutor_teaching_id,labDetail:labDetail})}}>
                                     <BubbleText><BubbleTextBold>{headerText}<AddFlag flag={worstRisk.flag}/>{`\n`}
                                </BubbleTextBold>
                                 <BubbleTextBold><Text style ={{color:'#e69a11'}}>WARNING</Text></BubbleTextBold> on {worstRisk.axis_neg} axis</BubbleText>
-                                <BubbleText><BubbleTextBold>{countWarnings}</BubbleTextBold> other warnings</BubbleText>
+                                <BubbleText><BubbleTextBold>{countWarnings-1}</BubbleTextBold> other warnings</BubbleText>
                                 </StyledListButton>)
                       
                         }
@@ -120,7 +117,6 @@ const TutorLab = ({route,navigation}) => {
 
                     </FlatList>
                 </ContentJustifiedBack>
-            </View>
         )
     }else{
         return(

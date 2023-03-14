@@ -105,7 +105,7 @@ const Done = ({route, navigation}) => {
         let flagged = await flag_response.json()
 
         if (flagged){
-            let put = {'flag': 'true'}
+            let put = {'flag': 'True'}
             const changeFlagUrl = url+`/course/${user.user_id}/${tutorDetail.tutor_teaching}/`
             const putChange = await fetch(changeFlagUrl, {
             method : 'PUT',
@@ -115,11 +115,15 @@ const Done = ({route, navigation}) => {
                 'Accept':'application/json',
               },
             body: JSON.stringify(put)
-        }).catch(console.error)
-        Alert.alert("Warning","Automatically flagged")
+        })
+        if (putChange.ok)
+            Alert.alert("Warning","You have been automatically flagged")
+
         }
 
     }
+
+
 
 
     const GetAxisAverage = async ()=>{

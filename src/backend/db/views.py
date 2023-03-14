@@ -212,12 +212,15 @@ class StudentEnrollFind(APIView):
         
     def put(self,request,student_id,tutor_teaching_id):
             snippet = student_enroll.objects.get(student_id=student_id,tutor_teaching_id=tutor_teaching_id)
-            serializer = student_enrollSerializer(instance=snippet,data=request.data,partial=True)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
+            if request.data['flag']!=str(snippet.flag):
+                serializer = student_enrollSerializer(instance=snippet,data=request.data,partial=True)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(status=status.HTTP_200_OK)
             return Response(status=status.HTTP_400_BAD_REQUEST) 
-    
+
+
+        
 
 
 

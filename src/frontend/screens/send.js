@@ -3,7 +3,7 @@ import { StyleSheet, Text, View} from 'react-native'
 import { TextInput,Alert } from 'react-native';
 import moment from 'moment/moment';
 
-import { ContentJustified, PageTitle, StyledButton,StyledButtonText, StyledTextInputParagraph, MessageObject,MessageContent,MessageSender,MessageTime,Theme, RelatedLab } from '../components/styles';
+import { ContentJustified, PageTitle, StyledButton,StyledButtonText, StyledTextInputParagraph, MessageObject,MessageContent,MessageSender,MessageTime,Theme, RelatedLab, BubbleText, SubTitle } from '../components/styles';
 import AuthContext from '../utils/auth_context';
 
 
@@ -90,6 +90,7 @@ const Send = ({route, navigation}) => {
                                 <MessageSender>{pastMessage.sender_f_name} {pastMessage.sender_l_name}({pastMessage.sender_id})</MessageSender>
                         </MessageObject> 
                         <MessageContent>{pastMessage.message_content}</MessageContent>
+                        <SubTitle>Reply below</SubTitle>
                 <StyledTextInputParagraph
                     editable
                     multiline
