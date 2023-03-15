@@ -1,5 +1,5 @@
 from django.test import TestCase
-from datetime import date
+from datetime import date,datetime
 from django.contrib.auth import get_user_model
 from .models import student, tutor, course, tutor_teaching, student_enroll, lab, axis_labels, axis_average, student_lab_risk, message, question, survey, student_survey
 
@@ -37,6 +37,12 @@ class ModelTests(TestCase):
             course_id=self.course
         )
 
+        self.student_enroll = student_enroll.objects.create(
+            student_id = self.student,
+            tutor_teaching_id = self.tutor_teaching,
+            flag = True
+        )
+
         self.lab = lab.objects.create(
             course_id=self.course,
             lab_number=1,
@@ -46,7 +52,7 @@ class ModelTests(TestCase):
         )
 
         self.message = message.objects.create(
-            sent_at=date.today(), 
+            sent_at=datetime.now(),
             sender_id = self.user_student, 
             receiver_id = self.user_tutor,
             message_content = "Test message",

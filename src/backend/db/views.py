@@ -80,8 +80,7 @@ class MessageDetail(APIView):
             return Response(self.serialize_message(message.objects.filter(receiver_id=receiver_id,sender_id=sender_id).order_by('-sent_at')))
    
     def post(self,request):
-        date = str(datetime.now())
-        date = date.split('.',1)[0]+'Z'
+        date = datetime.now()
         serializer = MessageSerializer(data = request.data)
         serializer.sent_at = date
         if serializer.is_valid():
@@ -202,11 +201,10 @@ class FindSurvey(APIView):
         return Response(serializer)
 
     def post(self, request, format=None):
-        if (request.user.is_staff):
-            serializer = surveySerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        serializer = surveySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # This view finds a student's survey data or creates a new survey instancefor a student. It uses student_survey_serialize method to serialize 
@@ -391,7 +389,7 @@ class LabQuestions(APIView):
         serializer = questionSerializer(data = request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -554,19 +552,20 @@ class FindAxisLabel(APIView):
         return Response(serializer.data)
     
     def put(self,request,axis_id,format=None):
+        
         if (request.user.is_staff):
             snippet = self.get_object(axis_id = axis_id)
             serializer = axis_labelsSerializer(instance=snippet,data=request.data,partial=True)
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data)
+                return Response(serializer.data,status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def post(self,request,format=None):
         serializer = axis_labelsSerializer(data = request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 # A view to retrieve a tutor teaching object. It requires authentication for all requests. It returns the data i order of most recently taught

@@ -80,10 +80,9 @@ class student_lab_risk(models.Model):
     warning = models.BooleanField()
 
 class message(models.Model):
-    date = datetime.now()
     sender_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender_id')
     receiver_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiver_id')
-    sent_at = models.DateTimeField(default=date)
+    sent_at = models.DateTimeField()
     message_content = models.CharField(max_length=160)
     related_lab = models.ForeignKey(lab, on_delete=models.CASCADE,blank=True, null=True)
 
