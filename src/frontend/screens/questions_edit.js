@@ -26,13 +26,15 @@ const QuestionsEdit = ({route,navigation}) => {
     useEffect(()=>{
         try{
             if(route.params.refresh && !loading){
-                setLoading(true)
                 setQuestions([])
+                setQuestionsSet([])
+                setLoading(true)
+
             }
         }catch{
     
         }
-    },[noLab])
+    },[route.params.refresh])
 
     useEffect(()=>{
         if (route.params.refresh){
@@ -100,7 +102,6 @@ const QuestionsEdit = ({route,navigation}) => {
     useEffect(()=>{
         if (loading){
             getSurvey()
-
 
         }
     },[loading])
