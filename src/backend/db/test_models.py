@@ -127,7 +127,7 @@ class ModelTests(TestCase):
         self.assertEqual(self.question.x, self.axis_labels, msg = "Could not create question")
 
     def test_survey_model(self):
-        self.assertEqual(self.survey.lab_id, self.lab,, msg = "Could not create survey")
+        self.assertEqual(self.survey.lab_id, self.lab, msg = "Could not create survey")
 
     def test_student_survey_model(self):
         self.assertEqual(self.student_survey.student_id,self.student, msg = "Could not create student survey instance")
