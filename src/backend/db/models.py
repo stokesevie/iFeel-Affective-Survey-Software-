@@ -60,8 +60,8 @@ class lab(models.Model):
 class axis_labels(models.Model):
     pos_title = models.CharField(max_length=25)
     neg_title = models.CharField(max_length=25)
-    risk = IntegerRangeField(min_value=1,max_value=5,default=9)
-    warn = IntegerRangeField(min_value=1,max_value=5,default=9)
+    risk = IntegerRangeField(min_value=1,max_value=10,default=9)
+    warn = IntegerRangeField(min_value=1,max_value=10,default=8)
 
 class axis_average(models.Model):
     axis_id = models.ForeignKey(axis_labels, on_delete=models.CASCADE)

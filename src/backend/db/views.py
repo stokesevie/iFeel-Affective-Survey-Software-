@@ -16,11 +16,13 @@ from rest_framework import permissions
 # Create your views here.
 
 
-# using custom token obtain in order to get all required fields
+# This view extends the TokenObtainPairView class and uses a custom serializer to generate authentication tokens
+# for users who want to access the API. It is using custom token obtain in order to get all required fields
 class MyTokenObtainPairView(TokenObtainPairView):
         serializer_class = MyTokenObtainPairSerializer
 
-# get student details
+#  This view handles GET requests for retrieving details about a specific student. It takes a student ID as a 
+# parameter and returns the details of the corresponding student object.
 class StudentDetail(APIView):
     def get_object(self, pk):
         try:
@@ -34,7 +36,9 @@ class StudentDetail(APIView):
         serializer = StudentSerializer(snippet)
         return Response(serializer.data)
 
-
+# This view handles GET and POST requests for retrieving and creating messages. It takes a receiver ID and/or a sender
+#  ID as parameters and returns all messages sent to or a message from from the specified user to the logged in user. It 
+# also allows for the creation of new messages.
 class MessageDetail(APIView):
     permission_classes= (permissions.IsAuthenticated,)
     def serialize_message(self,messages):
@@ -86,6 +90,10 @@ class MessageDetail(APIView):
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 
 
+#This view handles GET and PUT requests for retrieving and updating student enrollment information. It takes a student ID 
+# and a tutor teaching ID as parameters and returns the enrollment details for the corresponding student-tutor pair. It also 
+# allows for the flagging of students by tutors.
+
 class StudentEnrollFind(APIView):
     permission_classes= (permissions.IsAuthenticated,)
     def serialize_student_enroll(self,student_enroll):
@@ -125,6 +133,8 @@ class StudentEnrollFind(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST) 
 
 
+#This view handles GET requests for retrieving details about a specific course. It takes a course ID as a parameter and 
+# returns the details of the corresponding course object.
 
 class CourseDetail(APIView):
     permission_classes= (permissions.IsAuthenticated,)
@@ -139,6 +149,8 @@ class CourseDetail(APIView):
         serializer = CourseSerializer(snippet)
         return Response(serializer.data)
 
+#This view handles GET requests for retrieving details about labs associated with a specific course. It takes 
+# a course ID as a parameter and returns the details of the corresponding lab objects.
 class LabDetail(APIView):
     permission_classes= (permissions.IsAuthenticated,)
     def serialize_labs(self,labs):
@@ -163,7 +175,8 @@ class LabDetail(APIView):
     def get(self, request, course_id, format=None):
         return Response(self.serialize_labs(lab.objects.filter(course_id=course_id)))
 
-
+#This view handles GET requests for retrieving survey data. It returns survey data for all 
+# students who have completed the survey.
 class FindSurvey(APIView):
     permission_classes= (permissions.IsAuthenticated,)
     def survey_serialize(self,data):
@@ -196,7 +209,9 @@ class FindSurvey(APIView):
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+# This view finds a student's survey data or creates a new survey instancefor a student. It uses student_survey_serialize method to serialize 
+# the survey data into a format that can be returned as an HTTP response. get method retrieves the survey data for a given
+# lab_id and student_id. post method creates a new survey instance for a student.
 
 class FindStudentSurvey(APIView):
     permission_classes= (permissions.IsAuthenticated,)
@@ -227,6 +242,12 @@ class FindStudentSurvey(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+# The axis average view can retreive the average response of a given axis (x,y) for a lab or student, creating a new axis instance 
+# for a lab or student, and updating the above/below average field of all instances of an axis for a given lab when 
+# the average response changes. It uses ser and ser_all methods to serialize the axis data into a format that can be returned 
+# as an HTTP response. get method retrieves the average response of a given axis (x,y) for a lab or student. post method creates 
+# a new axis instance for a lab or student, and calls updateAverages to update the above/below average field of all instances of 
+# an axis for a given lab when the average response changes.
 
 class AxisAverage(APIView):
     permission_classes= (permissions.IsAuthenticated,)
@@ -323,7 +344,8 @@ class AxisAverage(APIView):
                 if serializer.is_valid():
                     serializer.save()
 
-
+# This view retrieves all questions for a given lab. It uses serialize_questions method to serialize the question data into 
+# a format that can be returned as an HTTP response. get method retrieves all questions for a given lab.
 class LabQuestions(APIView):
     permission_classes= (permissions.IsAuthenticated,)
     def serialize_questions(self,questions):
@@ -373,6 +395,8 @@ class LabQuestions(APIView):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
+# This view is used to find the risk factor of a student in a particular lab. It has methods for getting the student's risk 
+# count and for serializing the risk data.
 
 class FindStudentLabRisk(APIView):
     permission_classes= (permissions.IsAuthenticated,)
@@ -437,6 +461,7 @@ class FindStudentLabRisk(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+#This view is used to retrieve all the risks for a particular student. It has a method for serializing the risk data.
 class LabRisksByStudent(APIView):
     permission_classes= (permissions.IsAuthenticated,)
     def serialize_risks(self,risks):
@@ -470,7 +495,7 @@ class LabRisksByStudent(APIView):
         serializer = self.serialize_risks(snippet)
         return Response(serializer)
 
-
+#This view is used to retrieve all the risks for a particular lab. It has a method for serializing the risk data.
 class LabRisksByLab(APIView):
     permission_classes= (permissions.IsAuthenticated,)
     def serialize_risks(self,risks,tutor_teaching_id=0):
@@ -513,6 +538,8 @@ class LabRisksByLab(APIView):
             raise status.HTTP_400_BAD_REQUEST
 
 
+# A view to retrieve, create or update an axis label object. It requires authentication for all requests. It defines methods to
+# get, put and post axis label objects, and uses a serializer to convert the data.
 class FindAxisLabel(APIView):
     permission_classes= (permissions.IsAuthenticated,)
     def get_object(self, axis_id):
@@ -542,6 +569,8 @@ class FindAxisLabel(APIView):
             return Response(serializer.data)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
+# A view to retrieve a tutor teaching object. It requires authentication for all requests. It returns the data i order of most recently taught
+# lab related to a course tutor teaches
 class FindTutorTeaching(APIView):
     permission_classes= (permissions.IsAuthenticated,)
     def ser(self, data,user_id,tutor_teach):
@@ -576,7 +605,8 @@ class FindTutorTeaching(APIView):
         snippet = self.get_objects(user_id,request)
         return Response(snippet)
 
-
+# A simple view that returns a 302 HTTP status code.
+# Used to check if backend can be accessed on localhost.
 class CheckUp(APIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     def get(self,request,format=None):
