@@ -10,8 +10,16 @@ const QuestionEdit = ({route,navigation})=>{
     const question = route.params.question
     const course = route.params.course
     const questionNumber = route.params.questionNumber
-    const lab = route.params.lab.lab
+    const lab = route.params.lab
 
+        
+    const refreshRequired = ()=>{
+        try {
+            return route.params.refresh
+        }catch{
+            return false
+        }
+    }
 
     const demo = ()=>{
         navigation.navigate("Demo",{question: question,lab:lab,questionNumber:questionNumber})
@@ -21,7 +29,7 @@ const QuestionEdit = ({route,navigation})=>{
     return(
         <ContentJustifiedBack>
             <PageTitle>Editing Question {questionNumber}</PageTitle>
-            <SubTitle>{course} - {lab.lab_title}(lab {lab.lab_number})</SubTitle>
+            <SubTitle>{course} - {lab.lab.lab_title}(lab {lab.lab.lab_number})</SubTitle>
             <StyledBubble>
                 <BubbleTextBold>Axis x: </BubbleTextBold>
                 <View style={{height:43}}>
