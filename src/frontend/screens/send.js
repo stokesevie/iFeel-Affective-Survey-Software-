@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { StyleSheet, Text, View} from 'react-native'
-import { TextInput,Alert } from 'react-native';
+import { Text} from 'react-native'
+import { Alert } from 'react-native';
 import moment from 'moment/moment';
 
 import { ContentJustified, PageTitle, StyledButton,StyledButtonText, StyledTextInputParagraph, MessageObject,MessageContent,MessageSender,MessageTime,Theme, RelatedLab, BubbleText, SubTitle } from '../components/styles';
