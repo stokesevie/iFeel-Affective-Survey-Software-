@@ -11,7 +11,7 @@ import * as Notifications from 'expo-notifications';
 
 export function NotificationsMessage(props){
   const user = props.user
-  const {messages} = useContext(AuthContext)
+  const messages = props.messages
   const [date,setDate]= useState([])
   const [newMessages, setNewMessages] = useState([])
   const [loading,setLoading] = useState(true)

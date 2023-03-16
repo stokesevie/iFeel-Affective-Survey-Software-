@@ -17,9 +17,8 @@ const StudentDashboard = ({route, navigation}) => {
     const { user,courses,messages } = useContext(AuthContext)
     const [loading, setLoading] =useState(true)
 
-
     useEffect(()=>{
-        if (loading){
+        if (loading && courses){
             checkCourses()
             checkExist()
             setLoading(false)

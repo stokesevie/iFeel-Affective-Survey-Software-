@@ -11,7 +11,6 @@ const Pending = ({navigation}) => {
     const { user,updateMessages, updateCourses,url} = useContext(AuthContext);
     const access = JSON.parse(localStorage.getItem("authTokens"))['access']
     // This function will get messages from the database sent to the user
-
     const getMessages = async()=>{
 
       const messageUrl = url+`/message/${user.user_id}/`   

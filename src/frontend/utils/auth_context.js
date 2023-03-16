@@ -100,7 +100,6 @@ export const AuthProvider = ({ children }) => {
       Alert.alert("Couldn't log in","User matching these credentials does not exist")
     }
 
-    //error messages here
 
   };
 
