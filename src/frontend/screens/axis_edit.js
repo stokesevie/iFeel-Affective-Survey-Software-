@@ -42,13 +42,13 @@ const EditAxis = ({route,navigation})=>{
               }
             }else{
                 try{
-                  if (changes[i].length<25){
+                  if (changes[i].length<25 && changes[i].length>0){
                     c = changes[i]
                   }else{
                       throw error
                   }
                 }catch{
-                  Alert.alert("Axis titles must be shorter than 25 characters","This ensures that the axis title fits on the grid")
+                  Alert.alert("Axis titles must be at least one character and shorter than 25 characters","This ensures that the axis title fits on the grid")
                   return
                 }
             }
@@ -68,7 +68,7 @@ const EditAxis = ({route,navigation})=>{
         navigation.navigate("NewAxis",{axis:axis,question:question,course:course,lab:lab,questionNumber:questionNumber})
     }
 
-    const putChange = async (change)=>{
+    const putChange = async (change,f)=>{
      
         const axisUrl = url+`/axis_labels/${question[axis].id}/`
         const update = await fetch(axisUrl, {
@@ -80,6 +80,10 @@ const EditAxis = ({route,navigation})=>{
             body: JSON.stringify(change)
           });
         let r = update.status
+
+        if (r!=200){
+          Alert.alert("Could not make this change","Change for field "+f)
+        }
     }
    
 
@@ -115,7 +119,7 @@ const EditAxis = ({route,navigation})=>{
     
 };
 
-const TextInput = ({zone,label, icon, ...props}) =>{
+export const TextInput = ({zone,label, icon, ...props}) =>{
     const ShowZone =()=>{
         if (zone){
             return (<Right><Text style={{fontSize: 16,

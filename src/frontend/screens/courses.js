@@ -15,22 +15,12 @@ const Courses = ({navigation}) => {
     
     useEffect(()=>{
         if (loading){
-            if (courses){
+            if (JSON.stringify(courses)!="[]"){
                 setLoading(false)
             }
         }
     },[loading])
 
-    try {
-        let c = courses[0]
-    }catch{
-        return(
-           <ContentJustifiedBack>
-                    <PageTitle>{user.first_name}, you are enrolled in the following courses:</PageTitle> 
-                    <BubbleText>You are not enrolled in any courses</BubbleText>
-                    </ContentJustifiedBack>
-        )
-    }
     if (!loading){
         return (<ContentJustifiedBack>
                     <PageTitle>{user.first_name}, you are enrolled in the following courses:</PageTitle>  
@@ -48,7 +38,7 @@ const Courses = ({navigation}) => {
                     </ContentJustifiedBack>
         )
     }else{
-        return (<ActivityIndicator visible={loading} color='black' style={{flex: 1,
+        return (<ActivityIndicator testID='loading-indicator' visible={loading} color='black' style={{flex: 1,
             justifyContent: 'center',
             textAlign: 'center',
             paddingTop: 30,

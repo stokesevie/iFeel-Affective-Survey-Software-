@@ -38,7 +38,7 @@ const Demo = ({route, navigation}) => {
             c = 'transparent'
         }
         return (
-        <Cell onPress={(c)=>{
+        <Cell testID='grid-cell'onPress={(c)=>{
             setColour([i.index])
             if (pressed){
             }else {
@@ -52,8 +52,8 @@ const Demo = ({route, navigation}) => {
         return (
             <View>
                 <ContentJustified>
-                    <PageTitle>Survey for lab {lab.lab_number}</PageTitle>
-                    <SurveyQuestion>This is question {questionNumber}/3</SurveyQuestion> 
+                    <PageTitle testID='page-title'>Survey for lab {lab.lab_number}</PageTitle>
+                    <SurveyQuestion testID='question-number'>This is question {questionNumber}/3</SurveyQuestion> 
                     <SurveyQuestion>Mark with your finger where you think on this axis matches your emotional response to this lab most effetively (if close to an axis you agree strongly)</SurveyQuestion>
 
     
@@ -75,8 +75,8 @@ const Demo = ({route, navigation}) => {
                             <XYGridText>{question.x.neg}</XYGridText>
                         </Grid>
 
-                    <StyledButton title = "next" onPress={onPressForward}><StyledButtonText> Next </StyledButtonText></StyledButton>
-                    <StyledButton title = "back" onPress={onPressBack}><StyledButtonText> Back </StyledButtonText></StyledButton>
+                    <StyledButton testID='next-button' title = "next" onPress={onPressForward}><StyledButtonText> Next </StyledButtonText></StyledButton>
+                    <StyledButton testID='back-button' title = "back" onPress={onPressBack}><StyledButtonText> Back </StyledButtonText></StyledButton>
               
                 </ContentJustified>
             </View>

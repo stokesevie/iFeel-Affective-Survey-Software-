@@ -47,6 +47,9 @@ const User = ({route, navigation}) => {
 
     if (!user.is_staff&& !loading){
         try{
+            if (student.level == undefined){
+                throw error
+            }
         return (
             <ContentJustified>
                 <PageTitle>Student Home</PageTitle>  
@@ -55,7 +58,7 @@ const User = ({route, navigation}) => {
                 </CenterText>
                 <SubTitle>Log out?</SubTitle>
                 
-                <StyledButton onPress={()=>{
+                <StyledButton testID="logout-button" onPress={()=>{
                     setAuthTokens(null)
                     setUser(null)
                     localStorage.clear()
@@ -71,7 +74,7 @@ const User = ({route, navigation}) => {
                 </CenterText>
                 <SubTitle>Log out?</SubTitle>
                 
-                <StyledButton onPress={()=>{
+                <StyledButton testID="logout-button" onPress={()=>{
                     setAuthTokens(null)
                     setUser(null)
                     localStorage.clear()
@@ -87,7 +90,7 @@ const User = ({route, navigation}) => {
                     <PageTitle>Tutor Profile</PageTitle> 
                     <SubTitle>Log out?</SubTitle>
                     
-                    <StyledButton onPress={()=>{
+                    <StyledButton testID="logout-button" onPress={()=>{
                         setAuthTokens(null)
                         setUser(null)
                         localStorage.clear()
@@ -98,7 +101,7 @@ const User = ({route, navigation}) => {
         )
     }else{
         return (
-            <ActivityIndicator visible={loading} color='black' style={{flex: 1,
+            <ActivityIndicator testID='' visible={loading} color='black' style={{flex: 1,
             justifyContent: 'center',
             textAlign: 'center',
             paddingTop: 30,

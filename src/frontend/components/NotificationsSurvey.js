@@ -81,7 +81,6 @@ export function NotificationsSurvey(props){
 
 
   if (!loading&& !noSurveys){
-    console.log(surveys)
     return(
     <StyledBubble testID="bubble-text">
           <Center><Ionicons name="alert-circle-outline" size={35} color={Theme.secondary}></Ionicons></Center>

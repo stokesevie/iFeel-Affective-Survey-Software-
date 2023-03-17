@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { FlatList, StyleSheet, Text, View} from 'react-native'
-import { XYGrid, XMin, YMin, XYGridText, YTextMin, Grid, YText, SurveyQuestion, StyledButtonText,Row,Cell } from '../components/styles';
-
+import { XYGrid, XYGridText, YTextMin, Grid, YText, SurveyQuestion, StyledButtonText,Cell } from '../components/styles';
+import { Alert } from 'react-native';
 import { ContentJustified, PageTitle, StyledButton } from '../components/styles';
 
 
@@ -15,31 +15,36 @@ const SurveyLab = ({route, navigation}) => {
     const q = questions.questions[question-1][0]
     const [colour, setColour] = useState(-1)
     const [pressed, setPressed] = useState(false)
+    const [loading,setLoading] = useState(false)
 
     const onPressForward = ()=>{
-        if (question>=3){
-            navigation.navigate("Done",{
-                lab : {lab},
-                response :response,
-                questions: questions,
-                survey:survey,
-                tutorDetail:tutorDetail,
-                courseDetail:courseDetail
-            })
-        }else{
-            setPressed(false)
-            setColour(-1)
-            navigation.navigate("SurveyLab", {
-                labDetail: {lab}, 
-                question :question+1,
-                questions : questions,
-                response:response,
-                survey:survey,
-                tutorDetail:tutorDetail,
-                courseDetail:courseDetail
-                
-            })
-        }
+        if (pressed){
+            if (question>=3){
+                navigation.navigate("Done",{
+                    lab : {lab},
+                    response :response,
+                    questions: questions,
+                    survey:survey,
+                    tutorDetail:tutorDetail,
+                    courseDetail:courseDetail
+                })
+            }else{
+                setPressed(false)
+                setColour(-1)
+                navigation.navigate("SurveyLab", {
+                    labDetail: {lab}, 
+                    question :question+1,
+                    questions : questions,
+                    response:response,
+                    survey:survey,
+                    tutorDetail:tutorDetail,
+                    courseDetail:courseDetail
+                    
+                })
+            }
+    }else{
+        Alert.alert("You must answer this question", "To move to next survey question, this question must be answered")
+    }
     }
 
     const onPressBack = ()=>{
@@ -72,15 +77,6 @@ const SurveyLab = ({route, navigation}) => {
 
 
 
-    let grid = []
-
-    for (let y = 0; y<=9;y++){
-        for (let x = 0; x<=9; x++){
-            grid.push([x,y])
-        }
-
-    }
-
     const renderGrid = (i)=>{
         let c;
         if (colour==i.index){
@@ -103,6 +99,17 @@ const SurveyLab = ({route, navigation}) => {
         </Cell>)
     }
 
+
+    if (!loading){
+
+    let grid = []
+
+    for (let y = 0; y<=9;y++){
+        for (let x = 0; x<=9; x++){
+            grid.push([x,y])
+        }
+
+    }
         return (
             <View>
                 <ContentJustified>
@@ -137,6 +144,7 @@ const SurveyLab = ({route, navigation}) => {
         )
     
 };
+}
 
 
 

@@ -18,6 +18,7 @@ const AllRisks = ({route,navigation})=>{
     useEffect(()=>{
         if (loading){
         fetchStudentRisks()
+        setLoading(false)
         }
     },[loading])
 
@@ -26,8 +27,6 @@ const AllRisks = ({route,navigation})=>{
             return (<><BubbleTextBold>{item.axis_neg}</BubbleTextBold><Text>{`\n`}This student is in <Text style={{color:'red',fontWeight:'bold'}}>risk zone</Text> as defined by tutor axis.</Text></>)
         }else if (item.warning){
             return (<><BubbleTextBold>{item.axis_neg}</BubbleTextBold><Text>{`\n`}This student is in <Text style={{color:'#e69a11',fontWeight:'bold'}}>warning zone</Text> as defined by tutor axis.</Text></>)
-        }else if(item.avg){
-            return (<><BubbleTextBold>{item.axis_pos}</BubbleTextBold><Text>{`\n`}This student is in <Text style={{fontWeight:'bold'}}>average zone</Text> as defined by tutor axis.</Text></>)
         }
     }
 
@@ -42,10 +41,12 @@ const AllRisks = ({route,navigation})=>{
         })
         let r = await recent_response.json()
         setRisks(r)
+
+
     }
 
 
-    if (risks){
+    if (risks&& !loading){
     return (<ContentJustified>
         <PageTitle>All Student Risks:</PageTitle>
         <SubTitle>{risks[0].student_name}</SubTitle>
