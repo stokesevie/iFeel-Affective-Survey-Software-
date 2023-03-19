@@ -45,11 +45,27 @@ The project is developed using a django backend and react native js frontend. Fo
 - Frontend
     - Navigate to frontend directory with 'cd frontend '
     - To set up frontend development server, run
-        - npm i 
-        - npm start
+        - 'npm i '
+        - 'npm start'
 
-## :compass: Project Layout
+## Usage
+- Once the app is running with the default data, you can log in with the following credentials 
+    - Student: `1234567s` password: `testpassword`
+    - Tutor: `1234567t` password: `testpassword`
+- See `docs/UserGuide.pdf` for a comprehensive user guide. 
+
+## Code
 
 
-
-## :scroll: License
+- [`.`](#) Root of the repository
+- [`.github/workflows`](/.github/workflows/) GitHub actions
+- [`src`](/src/) Contains source code, config files and package files for the app
+- [`src/frontend`](/src/frontend/) Contains the front end code for the app
+    - [`src/frontend/assets`](/src/frontend/assets/) Contains the assets used in the app
+    - [`src/frontend/components`](/src/frontend/components/) Contains the code for components used in the app
+    - [`src/frontend/screens`](/src/frontend/screens/) Contains the code for the screens of the app
+- [`src/backend`](/src/backend/) Contains the back end code for the app
+    - [`src/backend/assets`](/src/backend/db/) Contains the models for the data and tests
+    - [`src/backend/components`](/src/backend/backend/) Contains the url API endpoints for requests
+- [`.gitignore`](/.gitignore) The git ignore file used
+- [`timelog.md`](/timelog.md) Timelog detailing the work done on certain days
