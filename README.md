@@ -17,7 +17,7 @@
 <table>
 <tbody>
     <tr>
-        <td><b>Dependencies</b></td>
+        <td><b>Key Dependencies</b></td>
         <td>
         <a href="https://reactnative.dev/"><img alt="ReactNative" src="https://img.shields.io/badge/-React%20Native-20232A?&logo=react&style=for-the-badge"></a>
         <a href="https://expo.dev/"><img alt="Expo" src="https://img.shields.io/badge/-Expo-000000?&logo=expo&style=for-the-badge"></a>
@@ -25,8 +25,7 @@
         <a href="https://www.npmjs.com/"><img alt="npm" src="https://img.shields.io/badge/-npm-red?&logo=npm&style=for-the-badge"></a>
         <a href="https://www.django-rest-framework.org/"><img alt="rest" src="https://img.shields.io/badge/-django_rest-red?&logo=django&style=for-the-badge"></a>
         <a href="https://www.djangoproject.com/"><img alt="django" src="https://img.shields.io/badge/-django-black?&logo=django&style=for-the-badge"></a>
-         <a href="https://jestjs.io/"><img alt="jest" src="https://img.shields.io/badge/-jest-green?&logo=jest&style=for-the-badge"></a>
-         <a href="https://styled-components.com/"><img alt="styled-components" src="https://img.shields.io/badge/-styled-components-white?&logo=styled-components&style=for-the-badge"></a>
+        <a href="https://jestjs.io/"><img alt="jest" src="https://img.shields.io/badge/-jest-green?&logo=jest&style=for-the-badge"></a>
         
 
 </tbody>
