@@ -94,7 +94,7 @@ export function NotificationsMessage(props){
           checkRecent()
           setLoading(false)
     }}catch{
-
+      setLoading(true)
     }
 
       
@@ -142,7 +142,6 @@ export function NotificationsMessage(props){
         n = messages[0].sender_f_name
       }
     }catch{
-      setLoading(true)
     }
   return(
     <StyledBubble>
