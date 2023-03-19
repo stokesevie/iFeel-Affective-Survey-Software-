@@ -78,4 +78,8 @@ GitHub actions ensures that tests are run following each push to the repository.
 - To run tests for frontend after project set up
     - 'cd frontend'
     - 'npm test'
-These tests ensure that screens and components are working as expected
+These tests ensure that screens and components are working as expected, that screens are working as expected and that requests made with REST API work as expected.
+
+## Copyright
+Copyright 2023, Evie Stokes, All rights reserved.
+
