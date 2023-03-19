@@ -260,7 +260,7 @@ useEffect(()=>{
         )
 
     }else{
-        return (<ContentJustifiedBack><ActivityIndicator visible={loading} color='black' style={{flex: 1,
+        return (<ContentJustifiedBack><ActivityIndicator testID='loading-indicator' visible={loading} color='black' style={{flex: 1,
             justifyContent: 'center',
             textAlign: 'center',
             paddingTop: 30,

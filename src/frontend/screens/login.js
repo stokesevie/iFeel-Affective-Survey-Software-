@@ -12,28 +12,21 @@ import { Alert } from "react-native";
 This screen allows the user to login
 */
 
-const Login = ({route,navigation}) => {
-    const {up}= useContext(AuthContext)
+const Login = ({navigation}) => {
     const [loading,setLoading] = useState(true)
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const { loginUser,user,userInfo } = useContext(AuthContext);
-  
-    useEffect(()=>{
-      if (loading){
-        up()
-        setLoading(false)
-      }
-    },[loading])
 
-    const handleSubmit = async e => {
-        e.preventDefault();
+    const handleSubmit = async => {
         if (password==""||username==""){
           Alert.alert("Log in incomplete","Please enter username AND password")
           setUsername("")
           setPassword("")
         }else{
-          loginUser(username, password,navigation).then(setPassword()).then(setUsername()); 
+          loginUser(username, password, navigation)
+          setPassword("")
+          setUsername("") 
         }
         };
 

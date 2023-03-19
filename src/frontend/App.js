@@ -18,7 +18,7 @@ import Messages from './screens/messages'
 import Login from './screens/login'
 import Course from './screens/course';
 import Survey from './screens/survey'
-import SurveyLab from './screens/surveyLab'
+import SurveyLab from './screens/survey_lab'
 import Done from './screens/done';
 import TutorDashboard from './screens/dashboard_tutor';
 import Pending from './screens/pending';

@@ -64,8 +64,7 @@ const StudentRisk = ({route,navigation})=>{
               "Content-Type": "application/json"
             },
             body: JSON.stringify(change)
-          });
-        let r = update.status
+          }).then(data=>{let r = data.status}).catch(error=>{});
 
         return navigation.navigate("TutorDashboard")
     }

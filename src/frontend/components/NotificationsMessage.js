@@ -11,7 +11,7 @@ import * as Notifications from 'expo-notifications';
 
 export function NotificationsMessage(props){
   const user = props.user
-  const {messages} = useContext(AuthContext)
+  const messages = props.messages
   const [date,setDate]= useState([])
   const [newMessages, setNewMessages] = useState([])
   const [loading,setLoading] = useState(true)
@@ -88,11 +88,17 @@ export function NotificationsMessage(props){
 
   useEffect(()=>{
     if (loading){
-      setDate(formatDate(user.last_login))
-      checkRecent()
-      setLoading(false)
+      try{
+        if (messages[0]!=undefined){
+          setDate(formatDate(user.last_login))
+          checkRecent()
+          setLoading(false)
+    }}catch{
+
     }
-    
+
+      
+    }   
   },[loading])
 
   const CorrectParse=()=>{
@@ -129,18 +135,19 @@ export function NotificationsMessage(props){
   },newMessages)
 
 
-
   if (!loading){
     let n='';
     try{
-      n = messages[0].sender_f_name
+      if (messages[0]!=undefined){
+        n = messages[0].sender_f_name
+      }
     }catch{
       setLoading(true)
     }
   return(
     <StyledBubble>
           <Center><Ionicons name="mail-unread-outline" size={35} color={Theme.secondary}></Ionicons></Center>
-        <BubbleText>You have <BubbleTextBold>{newMessages}</BubbleTextBold> <CorrectParse></CorrectParse> since your last login ({date}). Most recent message from <BubbleTextBold>{messages[0].sender_f_name}</BubbleTextBold><CheckIfTutor/></BubbleText>
+        <BubbleText testID="message-text">You have <BubbleTextBold>{newMessages}</BubbleTextBold> <CorrectParse></CorrectParse> since your last login ({date}). Most recent message from <BubbleTextBold>{messages[0].sender_f_name}</BubbleTextBold><CheckIfTutor/></BubbleText>
 
       </StyledBubble>
   
@@ -148,7 +155,7 @@ export function NotificationsMessage(props){
   )
   }else{
     return(<StyledBubble>
-      <ActivityIndicator visible={loading} color='black' style={{flex: 1,
+      <ActivityIndicator testID="loading-indicator" visible={loading} color='black' style={{flex: 1,
           justifyContent: 'center',
           textAlign: 'center',
           paddingTop: 30,

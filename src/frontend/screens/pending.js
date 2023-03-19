@@ -4,14 +4,15 @@ import { Image,ImageBackground,View} from 'react-native'
 import { useContext } from 'react';
 import AuthContext from '../utils/auth_context';
 import { ActivityIndicator } from 'react-native';
+import { useState } from 'react';
 
 /* This screen takes the user logged in and finds related messages and courses before rendering the dashboard */
 
 const Pending = ({navigation}) => {
     const { user,updateMessages, updateCourses,url} = useContext(AuthContext);
+    const [loading, setLoading] = useState(true)
     const access = JSON.parse(localStorage.getItem("authTokens"))['access']
     // This function will get messages from the database sent to the user
-
     const getMessages = async()=>{
 
       const messageUrl = url+`/message/${user.user_id}/`   
@@ -23,7 +24,7 @@ const Pending = ({navigation}) => {
 
             },
         })
-        let m = message_response.json().then(messages => updateAuthM(messages)).catch(console.error)
+        let m = message_response.json().then(messages => updateAuthM(messages)).catch(error=>{setLoading(true)})
     }
 
     // This function wil get courses from the database that the user is enrolled in
@@ -41,27 +42,32 @@ const Pending = ({navigation}) => {
                 'Content-Type' : 'application/json',
             },
         })
-        let c = await course_response.json().then(course=>nav(course)).catch(console.error)
+        let c = await course_response.json().then(course=>nav(course)).catch(error=>{setLoading(true)})
     }
 
 
     //If the screen attempts to find the messages/courses without the user being set, the user will be returned to login
     useEffect(()=>{
-        try{
-            if (user.user_id){
-                getMessages()
-                getCourses()
-               
-            }
+       
+        if (loading){
+            try{
+                if (user.user_id){
+                    getMessages()
+                    getCourses()
+                
+                }else{
+                    throw error
+                }
 
         } catch{
+
             return navigation.navigate("Login")
-        }
+        }}
 
 
         
         
-    },[])
+    },[loading])
 
     const updateAuthM = async (m) =>{
         updateMessages(m)
@@ -81,7 +87,7 @@ const Pending = ({navigation}) => {
         }finally{
             if (user.is_staff){
                 return navigation.navigate("TutorDashboard")
-            } else{
+            } else if (!user.is_staff){
                 return navigation.navigate("StudentDashboard")
             }
         }
@@ -90,7 +96,7 @@ const Pending = ({navigation}) => {
 
     //shows spinner as pending
     return (
-            <ImageBackground source={require('../assets/splash.png')} resizeMode="cover" style={{flex:1}}>
+            <ImageBackground testID='loading-indicator' source={require('../assets/splash.png')} resizeMode="cover" style={{flex:1}}>
             <ActivityIndicator visible={true} color='white' style={{flex: 1,
     justifyContent: 'center',
     textAlign: 'center',

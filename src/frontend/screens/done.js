@@ -281,10 +281,12 @@ const Done = ({route, navigation}) => {
                     'Accept':'application/json',
                   },
                 body: JSON.stringify(p),
-            }).catch(error=>{console.log(error)})
+            }).catch(error=>{})
 
             let api_r = response.status
-            await api_r
+            if (api_r!=201){
+                //error if didnt post
+            }
 
     }
 }
