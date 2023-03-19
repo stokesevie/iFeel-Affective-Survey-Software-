@@ -10,6 +10,10 @@ beforeEach(() => {
   fetchMock.resetMocks();
 });
 
+afterEach(() => {
+  jest.clearAllMocks();
+});
+
 
 const mockAuth = {
     user :{ user_id: 1, is_staff: false },

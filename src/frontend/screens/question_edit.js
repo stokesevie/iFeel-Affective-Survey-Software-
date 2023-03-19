@@ -24,6 +24,7 @@ const QuestionEdit = ({route,navigation})=>{
     const demo = ()=>{
         navigation.navigate("Demo",{question: question,lab:lab,questionNumber:questionNumber})
     }
+    // console.log(`Editing Question ${questionNumber}`)
 
 
     return(

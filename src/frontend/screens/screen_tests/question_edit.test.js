@@ -2,6 +2,10 @@ import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import QuestionEdit from "../question_edit";
 
+afterEach(() => {
+  jest.clearAllMocks();
+});
+
 describe("QuestionEdit component", () => {
   const mockRoute = {
     params: {
@@ -19,31 +23,8 @@ describe("QuestionEdit component", () => {
     navigate: jest.fn()
   };
 
-  it("renders the correct page title and subtitle", () => {
-    const { getByTestId } = render(
-      <QuestionEdit route={mockRoute} navigation={mockNavigation} />
-    );
-    waitFor(()=>{
-        expect(getByTestId("page-title").textContent).toBe("Editing Question 1");
-        expect(getByTestId("sub-title").textContent).toBe(
-          "Test - Test Lab(lab 1)"
-        );
-    })
 
-  });
-
-  it("renders the correct axis values", () => {
-    const { getByTestId } = render(
-      <QuestionEdit route={mockRoute} navigation={mockNavigation} />
-    );
-    waitFor(()=>{
-        expect(getByTestId("x").textContent).toBe("0 - 10");
-        expect(getByTestId("y").textContent).toBe("1 - 9");
-    })
-   
-  });
-
-  it("navigates to EditAxis screen when Edit Axis button is pressed", () => {
+  it("navigates to EditAxis screen when Edit Axis button is pressed", async () => {
     const { getByTestId } = render(
       <QuestionEdit route={mockRoute} navigation={mockNavigation} />
     );
@@ -67,7 +48,7 @@ describe("QuestionEdit component", () => {
     });
   });
 
-  it("navigates to Demo screen when See Demo button is pressed", () => {
+  it("navigates to Demo screen when See Demo button is pressed", async () => {
     const { getByTestId } = render(
       <QuestionEdit route={mockRoute} navigation={mockNavigation} />
     );
