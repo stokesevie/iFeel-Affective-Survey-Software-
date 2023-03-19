@@ -9,8 +9,6 @@
 </p>
 </div>
 
-## :page_facing_up: Documentation
-
 ## Requirements
 <table>
 <tbody>
