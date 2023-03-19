@@ -5,7 +5,7 @@ run-name: ${{ github.actor }} publishing the app 🚀
 on:
   push:
     branches:
-      - main
+      - main,testing
 jobs:
   publish:
     runs-on: ubuntu-latest
