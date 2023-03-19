@@ -22,7 +22,7 @@ jobs:
         uses: expo/expo-github-action@v7
         with:
           expo-version: latest
-          token: ${{ secrets.EXPO_SECRET }}
+          token: ${{ secrets.EXPO_TOKEN }}
 
       - name: 📦 Install dependencies
         working-directory: ./src/frontend
