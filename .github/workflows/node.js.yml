@@ -25,10 +25,12 @@ jobs:
       with:
         node-version: 16.x
         cache: npm
-        cache-dependency-path: "./src/frontend/package-lock.json"
+        cache-dependency-path: "src/frontend/package-lock.json"
     - name: Install with npm
-      working-directory: ./src/frontend
-      run: npm install
+      run: |
+        cd src/frontend/
+        npm install
     - name: run tests
-      working-directory: ./src/frontend
-      run: npm test
+      run: |
+        cd src/frontend
+        npm test
