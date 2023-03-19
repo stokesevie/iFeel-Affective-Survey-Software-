@@ -52,7 +52,7 @@ The project is developed using a django backend and react native js frontend. Fo
 - Once the app is running with the default data, you can log in with the following credentials 
     - Student: `1234567s` password: `testpassword`
     - Tutor: `1234567t` password: `testpassword`
-- See `docs/UserGuide.pdf` for a comprehensive user guide. 
+- See `requirements/UserGuide.pdf` for a comprehensive user guide. 
 
 ## Code
 
@@ -69,3 +69,13 @@ The project is developed using a django backend and react native js frontend. Fo
     - [`src/backend/components`](/src/backend/backend/) Contains the url API endpoints for requests
 - [`.gitignore`](/.gitignore) The git ignore file used
 - [`timelog.md`](/timelog.md) Timelog detailing the work done on certain days
+
+## Testing
+GitHub actions ensures that tests are run following each push to the repository. There are actions that ensure the app can be published successfully,  that the code works as expected for frontend and that the code works as expected for the backend.
+- To run tests for backend after project set up
+    - 'cd backend'
+    - 'python manage.py test'
+- To run tests for frontend after project set up
+    - 'cd frontend'
+    - 'npm test'
+These tests ensure that screens and components are working as expected
