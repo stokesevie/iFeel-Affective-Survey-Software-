@@ -23,8 +23,9 @@
         <a href="https://expo.dev/"><img alt="Expo" src="https://img.shields.io/badge/-Expo-000000?&logo=expo&style=for-the-badge"></a>
         <a href="https://www.javascript.com/"><img alt="JavaScript" src="https://img.shields.io/badge/-JavaScript-yellow?&logo=javascript&style=for-the-badge"></a>
         <a href="https://www.npmjs.com/"><img alt="npm" src="https://img.shields.io/badge/-npm-red?&logo=npm&style=for-the-badge"></a>
-        <a href="https://www.django-rest-framework.org/"><img alt="rest" src="https://img.shields.io/badge/-django-red?&logo=django&style=for-the-badge"></a>
-        <a href="https://www.djangoproject.com/"><img alt="django" src="https://img.shields.io/badge/-django_rest-black?&logo=django&style=for-the-badge"></a>
+        <a href="https://www.django-rest-framework.org/"><img alt="rest" src="https://img.shields.io/badge/-django_rest-red?&logo=django&style=for-the-badge"></a>
+        <a href="https://www.djangoproject.com/"><img alt="django" src="https://img.shields.io/badge/-django-black?&logo=django&style=for-the-badge"></a>
+         <a href="https://jestjs.io/"><img alt="jest" src="https://img.shields.io/badge/-jest-green?&logo=jest&style=for-the-badge"></a>
         
         
 
