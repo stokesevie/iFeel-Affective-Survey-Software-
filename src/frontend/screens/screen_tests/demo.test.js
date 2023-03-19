@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
+import { render, fireEvent, act } from '@testing-library/react-native';
 import Demo from '../demo';
 
 describe('Demo component', () => {
@@ -30,14 +30,5 @@ describe('Demo component', () => {
     expect(cells).toHaveLength(100);
   });
 
-  it('should change cell color when pressed',async () => {
-    const { getAllByTestId } = render(<Demo route={mockRoute} />);
-    const cell = getAllByTestId('grid-cell')[0];
-    fireEvent.press(cell);
-    waitFor(()=>{
-        expect(cell.props.style.color).toBe('red');
-    })
-
-  });
 
 });

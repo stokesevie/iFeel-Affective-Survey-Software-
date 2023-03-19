@@ -11,7 +11,6 @@ This screen allows the tutor to see which courses they teach
 */
 const TutorCourses = ({navigation}) => { 
     const { user,url,courses } = useContext(AuthContext);
-    const access = JSON.parse(localStorage.getItem("authTokens"))['access']
     const [labs,setLabs] = useState()
 
     
@@ -40,7 +39,7 @@ const TutorCourses = ({navigation}) => {
                 data={unique}
                 renderItem ={({item})=>{
                     return (<>
-                    <StyledListButton onPress = {()=>{navigation.navigate("TutorCourse", {labs: item[1],course: item[0]})}}><CenterText><CourseDetail>{item[1][0].course_id}{`\n`}</CourseDetail><CourseTitle>{item[0]}</CourseTitle></CenterText></StyledListButton>
+                    <StyledListButton onPress = {()=>{navigation.navigate("TutorCourse", {labs: item[1],course: item[0]})}}><CenterText><CourseDetail>{item[1][0].course_id}{`\n`}</CourseDetail><CourseTitle testID="course-title" >{item[0]}</CourseTitle></CenterText></StyledListButton>
                     </>)
                 
                 }}

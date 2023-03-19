@@ -21,8 +21,7 @@ const {url} = useContext(AuthContext)
                 'Content-Type' : 'application/json',
                 'Accept':'application/json',
               },
-        }).catch(console.error)
-
+        })
         let api_r = await response.json().catch(error=>{})
         if (api_r!=[]){
             setRisks(api_r)

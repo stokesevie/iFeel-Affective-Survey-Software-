@@ -85,7 +85,7 @@ const SurveyLab = ({route, navigation}) => {
             c = 'transparent'
         }
         return (
-        <Cell onPress={(c)=>{
+        <Cell testID="cell" onPress={(c)=>{
             setColour([i.index])
             if (pressed){
                 response.pop()
@@ -101,7 +101,6 @@ const SurveyLab = ({route, navigation}) => {
 
 
     if (!loading){
-
     let grid = []
 
     for (let y = 0; y<=9;y++){
@@ -136,8 +135,8 @@ const SurveyLab = ({route, navigation}) => {
                             <XYGridText>{q.x.neg}</XYGridText>
                         </Grid>
 
-                    <StyledButton title = "next" onPress={onPressForward}><StyledButtonText> Next </StyledButtonText></StyledButton>
-                    <StyledButton title = "back" onPress={onPressBack}><StyledButtonText> Back </StyledButtonText></StyledButton>
+                    <StyledButton testID="next-button" title = "next" onPress={onPressForward}><StyledButtonText> Next </StyledButtonText></StyledButton>
+                    <StyledButton testID="back-button" title = "back" onPress={onPressBack}><StyledButtonText> Back </StyledButtonText></StyledButton>
               
                 </ContentJustified>
             </View>

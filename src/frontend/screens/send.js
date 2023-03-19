@@ -56,11 +56,7 @@ const Send = ({route, navigation}) => {
                     'Content-Type' : 'application/json',
                 },
                 body: JSON.stringify(data),
-            }).catch(console.error)
-
-            let r = response.statusText
-            await r
-            setLoading(false)
+            }).then(setLoading(false)).catch(error=>{})
             
         
     };
@@ -94,8 +90,10 @@ const Send = ({route, navigation}) => {
                 <StyledTextInputParagraph
                     editable
                     multiline
-                    value={message}
-                    onChangeText={(val) => setMessage(val)}>
+                    value={message.toString()}
+                    onChangeText={(val) => setMessage(val)}
+                    placeholder="Type your message here...">
+                    
                         
                 </StyledTextInputParagraph>
                 <StyledButton onPress = {handleSend}><StyledButtonText>Send</StyledButtonText></StyledButton>

@@ -46,6 +46,8 @@ describe('NewAxis', () => {
       },
     };
 
+    alertSpy = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
+
     const { getByText, getByPlaceholderText } = render(
       <AuthContext.Provider value={authContext}>
         <NewAxis route={route} />
@@ -68,7 +70,7 @@ describe('NewAxis', () => {
 
     fireEvent.press(doneButton);
 
-    alertSpy = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
+
     expect(alertSpy).toHaveBeenCalledWith(
       "Zones must be a number from 1-10, with warning zone being less than risk zone."
     );

@@ -88,6 +88,7 @@ const User = ({route, navigation}) => {
             <View>
                 <ContentJustified>
                     <PageTitle>Tutor Profile</PageTitle> 
+                    <CenterText> <BubbleTextBold>{user.first_name} {user.last_name} {`\n`}</BubbleTextBold></CenterText>
                     <SubTitle>Log out?</SubTitle>
                     
                     <StyledButton testID="logout-button" onPress={()=>{

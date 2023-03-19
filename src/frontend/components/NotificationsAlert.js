@@ -129,7 +129,7 @@ export function NotificationsAlert(props) {
     }else{
       return(
         <StyledBubbleLarge>
-        <ActivityIndicator visible={loading} color='black' style={{flex: 1,
+        <ActivityIndicator testID="loading-indicator" visible={loading} color='black' style={{flex: 1,
             justifyContent: 'center',
             textAlign: 'center',
             paddingTop: 30,
