@@ -119,7 +119,7 @@ const SendNew = ({route, navigation}) => {
         let lab = route.params.lab
         return (
             <ContentJustified>
-            <SubTitle><Text style={{fontWeight:'bold'}}> Message to {lab.student_name} regarding </Text>{lab.course_name}: {lab.lab_title} (lab {lab.lab_number})<Text style={{fontWeight:'1'}}> on {lab.axis_neg} axis</Text></SubTitle>
+            <SubTitle><Text style={{fontWeight:'bold'}}> Message to {lab.student_name} regarding </Text>{lab.course_name}: {lab.lab_title} (lab {lab.lab_number})<Text style={{fontWeight:'bold'}}> on {lab.axis_neg} axis</Text></SubTitle>
             <StyledTextInputParagraph
                 editable
                 multiline

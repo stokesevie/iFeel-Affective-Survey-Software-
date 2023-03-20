@@ -152,8 +152,8 @@ def populate():
     students = student.objects.all()
 
     # create axis average objects
-    for l in labs:
-        for s in students:
+    for l in random.sample(list(labs),20):
+        for s in random.sample(list(students),20):
             # create a random date within the lab's date range
             d = l.date + timezone.timedelta(days=random.randint(0, (l.date-l.date).days))
             
@@ -177,16 +177,15 @@ def populate():
     delta = timezone.timedelta(days=1)
     axis_labels_all = axis_labels.objects.all()
 
-    for l in labs:
+    for l in random.sample(list(labs),10):
         lab_start_date = l.date
-        lab_end_date = l.date + timezone.timedelta(days=5) #assuming lab is for 5 days
-        for s in students:
-            for axis in axis_labels_all:
+        lab_end_date = l.date + timezone.timedelta(days=1) 
+        for s in random.sample(list(students),10):
+            for axis in random.sample(list(axis_labels_all),5):
                 lab_date = lab_start_date
-                while lab_date <= lab_end_date:
-                    risk = random.choice([True, False])
-                    warning = random.choice([True, False])
-                    student_lab_risk_obj = student_lab_risk(
+                risk = random.choice([True, False])
+                warning = random.choice([True, False])
+                student_lab_risk_obj = student_lab_risk(
                         student_id=s,
                         lab_id=l,
                         axis_id=axis,
@@ -194,8 +193,8 @@ def populate():
                         risk=risk,
                         warning=warning
                     )
-                    student_lab_risk_list.append(student_lab_risk_obj)
-                    lab_date += delta
+                student_lab_risk_list.append(student_lab_risk_obj)
+                lab_date += delta
 
     student_lab_risk.objects.bulk_create(student_lab_risk_list)
     possible_content = ["Hi there, just wanted to ask if you understood the lab assignment.",    "Can you help me with question #5 on the lab?",    "Hey, are you going to the lab session tomorrow?",    "I'm really struggling with the lab, can we work on it together?",    "Did you see the announcement about the lab extension?",    "Can you remind me what's due for the lab next week?",    "I think I found a mistake in the lab instructions, did you notice it too?",    "Hey, do you want to form a study group for the lab?",    "How did you do on the lab quiz?",    "I won't be able to make it to the lab session today, can you fill me in later?",]
