@@ -18,7 +18,9 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = False
+SECURE_SSL_REDIRECT = False
 # token information https://sushil-kamble.medium.com/django-rest-framework-react-authentication-workflow-2022-part-1-a21f22b3f358
 
 # Quick-start development settings - unsuitable for production
@@ -32,6 +34,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Application definition
 

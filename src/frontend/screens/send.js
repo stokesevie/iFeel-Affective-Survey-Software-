@@ -35,7 +35,7 @@ const Send = ({route, navigation}) => {
         .format('YYYY-MM-DD HH:mm:ss');
         date += '+00:00'
         let data;
-        if (pastMessage.related_lab){
+        if (pastMessage.related_lab!=""){
             data = {
             "sender_id": user.user_id, 
             "receiver_id": pastMessage.s_id,

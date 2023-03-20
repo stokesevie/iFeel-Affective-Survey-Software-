@@ -57,6 +57,7 @@ The project is developed using a django backend and react native js frontend. Fo
 
 - [`.`](#) Root of the repository
 - [`.github/workflows`](/.github/workflows/) GitHub actions
+- [`/dissertation`](/dissertation/) contains dissertation files
 - [`src`](/src/) Contains source code, config files and package files for the app
 - [`src/frontend`](/src/frontend/) Contains the front end code for the app
     - [`src/frontend/assets`](/src/frontend/assets/) Contains the assets used in the app
@@ -78,6 +79,7 @@ GitHub actions ensures that tests are run following each push to the repository.
     - 'npm test'
 These tests ensure that screens and components are working as expected, that screens are working as expected and that requests made with REST API work as expected.
 
-## Copyright
-Copyright 2023, Evie Stokes, All rights reserved.
+## Contact
+
+If you have any questions about the product please contact me at 2444030s@student.gla.ac.uk
 

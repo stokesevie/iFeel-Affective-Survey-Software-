@@ -81,6 +81,7 @@ class MessageDetail(APIView):
    
     def post(self,request):
         date = datetime.now()
+        request.data['sent_at']= date
         serializer = MessageSerializer(data = request.data)
         serializer.sent_at = date
         if serializer.is_valid():

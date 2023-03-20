@@ -6,6 +6,7 @@ import { BubbleText, DoneTextBold, ContentJustified, PageTitle, StyledBubbleLarg
 import AuthContext from '../utils/auth_context';
 import moment from '../node_modules/moment'
 import { ActivityIndicator } from 'react-native';
+import { Linking } from 'react-native';
 
 
 /*
@@ -16,6 +17,7 @@ const User = ({route, navigation}) => {
     const {user,setAuthTokens,setUser,url} = useContext(AuthContext)
     const [student, setStudent] = useState()
     const [loading,setloading] = useState(true)
+    const helpUrl = 'https://jacquistokes.wixsite.com/ifeel'
 
     var date = moment()
     .format('YYYY-MM-DD HH:mm:ss');
@@ -56,8 +58,12 @@ const User = ({route, navigation}) => {
                 <CenterText>
                 <BubbleTextBold>{user.first_name} {user.last_name} {`\n`}Level: {student.level}{`\n`}</BubbleTextBold>
                 </CenterText>
-                <SubTitle>Log out?</SubTitle>
-                
+
+                <StyledButton title = "Help" onPress={()=>{
+                Linking.openURL(helpUrl)           
+            }}><StyledButtonText> About iFeel </StyledButtonText></StyledButton>
+
+                            <SubTitle>Log out?</SubTitle>
                 <StyledButton testID="logout-button" onPress={()=>{
                     setAuthTokens(null)
                     setUser(null)
@@ -72,8 +78,11 @@ const User = ({route, navigation}) => {
                 <CenterText>
                 <BubbleTextBold>Issue finding details of student status, contact system administrator</BubbleTextBold>
                 </CenterText>
-                <SubTitle>Log out?</SubTitle>
-                
+
+                <StyledButton title = "Help" onPress={()=>{
+                Linking.openURL(helpUrl)
+            }}><StyledButtonText> About iFeel </StyledButtonText></StyledButton>
+                            <SubTitle>Log out?</SubTitle>
                 <StyledButton testID="logout-button" onPress={()=>{
                     setAuthTokens(null)
                     setUser(null)
@@ -89,6 +98,9 @@ const User = ({route, navigation}) => {
                 <ContentJustified>
                     <PageTitle>Tutor Profile</PageTitle> 
                     <CenterText> <BubbleTextBold>{user.first_name} {user.last_name} {`\n`}</BubbleTextBold></CenterText>
+                    <StyledButton title = "Help" onPress={()=>{
+                Linking.openURL(helpUrl)
+            }}><StyledButtonText> About iFeel </StyledButtonText></StyledButton>
                     <SubTitle>Log out?</SubTitle>
                     
                     <StyledButton testID="logout-button" onPress={()=>{
