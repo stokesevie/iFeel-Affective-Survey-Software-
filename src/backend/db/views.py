@@ -516,8 +516,11 @@ class LabRisksByLab(APIView):
             'warning': r.warning,
             }
             if tutor_teaching_id!=0:
-                e = student_enroll.objects.get(student_id=r.student_id.username.id,tutor_teaching_id=tutor_teaching_id).flag
-                json['flag'] = e
+                try:
+                    e = student_enroll.objects.get(student_id=r.student_id.username.id,tutor_teaching_id=tutor_teaching_id).flag
+                    json['flag'] = e
+                except:
+                    pass
             risk_list.append(json)
         return risk_list
 
