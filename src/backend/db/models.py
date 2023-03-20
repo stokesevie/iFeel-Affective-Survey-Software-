@@ -26,8 +26,10 @@ class student(models.Model):
     username = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,primary_key=True)
     level = IntegerRangeField(min_value=1,max_value=5)
 
+
 class tutor(models.Model):
     username = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,primary_key=True)
+
 
 class course(models.Model):
     id = models.CharField(max_length=15, primary_key=True)
@@ -35,6 +37,7 @@ class course(models.Model):
     level = IntegerRangeField(min_value=1,max_value=5)
     start_date = models.DateField()
     end_date = models.DateField()
+
 
 class tutor_teaching(models.Model):
     tutor_id = models.ForeignKey(tutor,on_delete=models.CASCADE)
@@ -47,6 +50,7 @@ class student_enroll(models.Model):
     tutor_teaching_id = models.ForeignKey(tutor_teaching, on_delete=models.CASCADE)
     flag = models.BooleanField(default=False)
 
+
 # can define website to link to if help needed with lab
 
 class lab(models.Model):
@@ -57,11 +61,20 @@ class lab(models.Model):
     date = models.DateField()
     help = models.URLField(blank=True)
 
+    def __str__(self):
+        return self.title
+    
+
 class axis_labels(models.Model):
     pos_title = models.CharField(max_length=25)
     neg_title = models.CharField(max_length=25)
     risk = IntegerRangeField(min_value=1,max_value=10,default=9)
     warn = IntegerRangeField(min_value=1,max_value=10,default=8)
+    def __str__(self):
+        return self.pos_title
+
+    class Meta:
+        verbose_name_plural = "axis_labels"
 
 class axis_average(models.Model):
     axis_id = models.ForeignKey(axis_labels, on_delete=models.CASCADE)

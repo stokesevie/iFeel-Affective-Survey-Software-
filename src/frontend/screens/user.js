@@ -61,7 +61,7 @@ const User = ({route, navigation}) => {
 
                 <StyledButton title = "Help" onPress={()=>{
                 Linking.openURL(helpUrl)           
-            }}><StyledButtonText> About iFeel </StyledButtonText></StyledButton>
+            }}><StyledButtonText> iFeel Help </StyledButtonText></StyledButton>
 
                             <SubTitle>Log out?</SubTitle>
                 <StyledButton testID="logout-button" onPress={()=>{
@@ -81,7 +81,7 @@ const User = ({route, navigation}) => {
 
                 <StyledButton title = "Help" onPress={()=>{
                 Linking.openURL(helpUrl)
-            }}><StyledButtonText> About iFeel </StyledButtonText></StyledButton>
+            }}><StyledButtonText>iFeel Help</StyledButtonText></StyledButton>
                             <SubTitle>Log out?</SubTitle>
                 <StyledButton testID="logout-button" onPress={()=>{
                     setAuthTokens(null)
@@ -100,7 +100,7 @@ const User = ({route, navigation}) => {
                     <CenterText> <BubbleTextBold>{user.first_name} {user.last_name} {`\n`}</BubbleTextBold></CenterText>
                     <StyledButton title = "Help" onPress={()=>{
                 Linking.openURL(helpUrl)
-            }}><StyledButtonText> About iFeel </StyledButtonText></StyledButton>
+            }}><StyledButtonText> iFeel Help </StyledButtonText></StyledButton>
                     <SubTitle>Log out?</SubTitle>
                     
                     <StyledButton testID="logout-button" onPress={()=>{

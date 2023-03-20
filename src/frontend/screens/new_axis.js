@@ -87,6 +87,8 @@ const NewAxis = ({route,navigation})=>{
         setNegAxis('')
         setRiskZone('')
         setWarningZone('')
+        navigation.navigate("QuestionsEdit",{course:course,lab:lab,refresh:true,questionSet:true,questionNumber:questionNumber,questionID:axis_id})
+
 
 
     }
