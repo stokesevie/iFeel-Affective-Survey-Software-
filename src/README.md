@@ -33,9 +33,15 @@ The app can be run from the expo development prompt by typing
 i      #begins the application in development
 ```
 into the terminal which will open an ios device simulator and the app can be used as expected from there.
+Log in using 
+Tutor:
+username : 1234567t and password : testpassword
+Student:
+username : 1234567s and password : testpassword
 
 ## Backend database
-The backend database is hosted with railway (https://docs.railway.app/ ) online to allow users to use the application on their mobiles. 
+The backend database is hosted with railway (https://docs.railway.app/) online to allow users to use the application on their mobiles. The admin site here can be accessed with https://app-production-1e3f.up.railway.app/admin/ and the tutor credentials :
+username : 1234567t and password : testpassword
 
 The backend can also be accessed by navigating to the [`src/backend`](/src/backend/) directory in the repository. From here the following commands can be run in a terminal:
 - To set up the backend development run 
