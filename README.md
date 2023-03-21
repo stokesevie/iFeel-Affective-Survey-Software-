@@ -31,7 +31,7 @@
 
 The project is developed using a django backend and react native js frontend. For steps detailing installation see below.
 
-## Installation
+## <a name="install"></a>Installation
 First, the repository must be cloned. This can be done by navigating to the terminal and running 
 ```sh
 git clone https://github.com/stokesevie/app.git 
@@ -62,11 +62,11 @@ cd src
         ```
     - To set up frontend development server, run
         ```sh
-        npm i
+        npm i       #installs frontend requirements
         ```
     - To run the frontend application locally, run
         ```sh
-        npm start
+        npm start       #opens development so ios app can be simulated
         ```
 
 ## Usage
@@ -93,13 +93,20 @@ cd src
 - [`timelog.md`](/timelog.md) Timelog detailing the work done on certain days
 
 ## Testing
-GitHub actions ensures that tests are run following each push to the repository. There are actions that ensure the app can be published successfully,  that the code works as expected for frontend and that the code works as expected for the backend.
-- To run tests for backend after project set up
-    - 'cd backend'
-    - 'python manage.py test'
-- To run tests for frontend after project set up
-    - 'cd frontend'
-    - 'npm test'
+GitHub actions ensures that tests are run following each push to the repository. There are actions that ensure the app can be published successfully,  that the code works as expected for frontend and that the code works as expected for the backend. To run the tests locally, the associated code must be successfully set up as seen in [Installation](#installation). The user can navigate to the source folder by navigating with 
+```sh
+cd src
+```
+- To run tests for backend
+```sh
+cd backend
+python manage.py test       # tests models and API requests
+```
+- To run tests for frontend 
+```sh
+cd frontend
+npm test            # tests components and screens
+```
 These tests ensure that screens and components are working as expected, that screens are working as expected and that requests made with REST API work as expected.
 
 ## Contact
