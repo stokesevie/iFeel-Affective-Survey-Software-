@@ -32,6 +32,14 @@
 The project is developed using a django backend and react native js frontend. For steps detailing installation see below.
 
 ## Installation
+First, the repository must be cloned. This can be done by navigating to the terminal and running 
+```sh
+git clone https://github.com/stokesevie/app.git 
+```
+To run the application, navigate to the source code folder from within the repository folder by calling 
+```sh
+cd src
+```
 - Backend
     - Navigate to backend directory with 
         ```sh
