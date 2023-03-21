@@ -22,7 +22,7 @@ npm start      #begins the application in development
 
 ## Running on IOS device
 
-The app can be accessed by scanning the QR code shown with an ios device camera after running the npm start. 
+The app can be accessed by scanning the QR code shown with an ios device camera after running the npm start.   
 ![Expo Run](../docs/ios.jpg)
 This is the expo development prompt that will be displayed.
 
@@ -34,10 +34,10 @@ i      #begins the application in development
 ```
 into the terminal which will open an ios device simulator and the app can be used as expected from there.
 Log in using 
-Tutor:
-username : 1234567t and password : testpassword
-Student:
-username : 1234567s and password : testpassword
+Tutor:  
+username : 1234567t and password : testpassword  
+Student:  
+username : 1234567s and password : testpassword  
 
 ## Backend database
 The backend database is hosted with railway (https://docs.railway.app/) online to allow users to use the application on their mobiles. The admin site here can be accessed with https://app-production-1e3f.up.railway.app/admin/ and the tutor credentials :
@@ -55,13 +55,13 @@ The backend can also be accessed by navigating to the [`src/backend`](/src/backe
     python manage.py runserver #runs database over localhost
     ```
 
-The terminal will then show a message like the following
+The terminal will then show a message like the following  
 ![Django Run](../docs/backend.jpg)
 
 Navigate to the url with 'Starting development server at http://127.0.01:8000/ ' with admin appended to the end (Note the url may be different). This would be:
 http://127.0.01:8000/admin 
 
-It is possible to log in to the admin site from the user’s local host hosted here with same tutor credentials:
+It is possible to log in to the admin site from the user’s local host hosted here with same tutor credentials:  
 username : 1234567t and password : testpassword
 
 This is can be used in the case the user wishes to make fundamental model changes to the database.
@@ -87,12 +87,12 @@ To access all the users and the data populated, run
  ```sh
     python manage.py runserver #runs database over localhost
 ```
-The terminal will then show a message like the following
+The terminal will then show a message like the following  
 ![Django Run](../docs/backend.jpg)
 
 Navigate to the url with 'Starting development server at http://127.0.01:8000/ ' with admin appended to the end (Note the url may be different). This would be:
 http://127.0.01:8000/admin 
 
-It is possible to log in to the admin site from the user’s local host hosted here with same tutor credentials:
+It is possible to log in to the admin site from the user’s local host hosted here with same tutor credentials:  
 username : 1234567t and password : testpassword
 
