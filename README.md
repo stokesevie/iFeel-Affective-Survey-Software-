@@ -65,7 +65,7 @@ The project is developed using a django backend and react native js frontend. Fo
 - Once the app is running with the default data, you can log in with the following credentials 
     - Student: `1234567s` password: `testpassword`
     - Tutor: `1234567t` password: `testpassword`
-- See `requirements/UserGuide.pdf` for a comprehensive user guide. 
+- See `docs/UserGuide.pdf` for a comprehensive user guide. 
 
 ## Code
 
