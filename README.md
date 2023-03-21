@@ -32,19 +32,35 @@
 The project is developed using a django backend and react native js frontend. For steps detailing installation see below.
 
 ## Installation
-- Navigate to source folder with 'cd src'
 - Backend
-    - Navigate to backend directory with 'cd backend '
+    - Navigate to backend directory with 
+        ```sh
+    cd backend
+    ```
     - To set up the backend development run 
-        - 'python -m pip install --upgrade pip'
-        - 'pip install -r requirements.txt'
+        ```sh
+        python -m pip install --upgrade pip 
+        pip install -r requirements.txt     #installs backend requirements
+        ```
     - To work on the development database locally, run 
-        - 'python manage.py runserver'
+       ```sh
+        pipenv shell    #opens virtual environment
+        python manage.py runserver #runs database over localhost
+        ```
 - Frontend
-    - Navigate to frontend directory with 'cd frontend '
+    - Navigate to frontend directory with 
+        ```sh
+    cd frontend
+    ```
     - To set up frontend development server, run
-        - 'npm i '
-        - 'npm start'
+    ```sh
+    npm i
+    ```
+    - To run the frontend application locally, run
+    ```sh
+    npm start
+    npm i
+    ```
 
 ## Usage
 - Once the app is running with the default data, you can log in with the following credentials 
