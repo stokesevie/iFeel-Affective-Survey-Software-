@@ -33,7 +33,8 @@ export function NotificationsSurvey(props){
             survey.push(l)
           }
         }
-        surveys[0] = survey
+
+        setSurveys(survey)
         setLoading(false)
         
   }
@@ -53,7 +54,7 @@ export function NotificationsSurvey(props){
         })
         let todo = await todo_response.json().catch((error)=>{
             invalid = true
-            pending.push(invalid)
+            pending.push(true)
         })
         if (!invalid){
           pending.push(invalid)
@@ -63,7 +64,6 @@ export function NotificationsSurvey(props){
         return pending
 
       
-        
 
   }
 
@@ -80,14 +80,14 @@ export function NotificationsSurvey(props){
 
 
 
-  if (!loading){
+  if (!loading&& !noSurveys){
     return(
-    <StyledBubble>
+    <StyledBubble testID="bubble-text">
           <Center><Ionicons name="alert-circle-outline" size={35} color={Theme.secondary}></Ionicons></Center>
          <BubbleText>Reminder for
-          <BubbleTextBold> {surveys[0][0].course_id}</BubbleTextBold>
+          <BubbleTextBold> {surveys[0].course_id}</BubbleTextBold>
           . You must complete 
-          <BubbleTextBold> {surveys[0][0].title}</BubbleTextBold> survey.
+          <BubbleTextBold> {surveys[0].title}</BubbleTextBold> survey.
           </BubbleText>
 
 
@@ -95,15 +95,11 @@ export function NotificationsSurvey(props){
    
   </StyledBubble>
     )
-    }else if (noSurveys){
+    }else if (!loading && noSurveys){
       return(
         <StyledBubble>
               <Center><Ionicons name="alert-circle-outline" size={35} color={Theme.secondary}></Ionicons></Center>
               <BubbleTextBold> No surveys to complete</BubbleTextBold>
-
-    
-    
-    
        
       </StyledBubble>
         )
@@ -111,7 +107,7 @@ export function NotificationsSurvey(props){
   }else{
     return(
       <StyledBubble>
-        <ActivityIndicator visible={loading} color='black' style={{flex: 1,
+        <ActivityIndicator testID="loading-indicator" visible={loading} color='black' style={{flex: 1,
             justifyContent: 'center',
             textAlign: 'center',
             paddingTop: 30,

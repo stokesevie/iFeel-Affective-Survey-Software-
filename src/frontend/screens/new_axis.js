@@ -41,7 +41,6 @@ const NewAxis = ({route,navigation})=>{
     const postAxis = async ()=>{
         try{
             if (parseInt(riskZone)>parseInt(warningZone)){
-            
             }else{
                 throw(error)
             }
@@ -50,7 +49,7 @@ const NewAxis = ({route,navigation})=>{
             return
         }
         try{
-            if (posAxis.length<25 && negAxis.length<25){
+            if (posAxis.length>0 && posAxis.length<25 && negAxis.length>0 && negAxis.length<25){
 
             }else{
                 throw error
@@ -88,6 +87,8 @@ const NewAxis = ({route,navigation})=>{
         setNegAxis('')
         setRiskZone('')
         setWarningZone('')
+        navigation.navigate("QuestionsEdit",{course:course,lab:lab,refresh:true,questionSet:true,questionNumber:questionNumber,questionID:axis_id})
+
 
 
     }

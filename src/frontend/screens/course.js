@@ -35,7 +35,7 @@ const Course = ({route, navigation}) => {
         .then(res => res.json())
         .then(data => {
             labs[0]=(data)})
-        .catch(console.error)
+        .catch(error=>{})
          
         let p =[]
         for (let i in labs[0]){

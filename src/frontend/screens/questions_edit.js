@@ -26,13 +26,15 @@ const QuestionsEdit = ({route,navigation}) => {
     useEffect(()=>{
         try{
             if(route.params.refresh && !loading){
-                setLoading(true)
                 setQuestions([])
+                setQuestionsSet([])
+                setLoading(true)
+
             }
         }catch{
     
         }
-    },[noLab])
+    },[route.params.refresh])
 
     useEffect(()=>{
         if (route.params.refresh){
@@ -82,7 +84,7 @@ const QuestionsEdit = ({route,navigation}) => {
                 'Accept':'application/json',
               },
         })
-        let s = await response.json().catch(error=>{})
+        let s = await response.json().catch(error=>{SetNoLab(true)})
         try{
             for (let q=1;q<4;q++){
                 let question = await getQuestion(s['question_'+q])
@@ -100,7 +102,6 @@ const QuestionsEdit = ({route,navigation}) => {
     useEffect(()=>{
         if (loading){
             getSurvey()
-
 
         }
     },[loading])
@@ -150,7 +151,7 @@ const QuestionsEdit = ({route,navigation}) => {
                 'Accept':'application/json',
               },
         })
-        let q = await response.json().catch(error=>{})
+        let q = await response.json().catch(error=>{SetNoLab(true)})
         return q
     }
 
@@ -227,13 +228,12 @@ const QuestionsEdit = ({route,navigation}) => {
         </ContentJustifiedBack>)
     }
     }else{
-        return(<ContentJustifiedBack>
-            <ActivityIndicator visible={loading} color='black' style={{flex: 1,
+        return(
+            <ActivityIndicator testID='loading-indicator' visible={loading} color='black' style={{flex: 1,
                 justifyContent: 'center',
                 textAlign: 'center',
                 paddingTop: 30,
-                padding: 8,}}/>
-        </ContentJustifiedBack>)
+                padding: 8,}}/>)
     }
    
 };

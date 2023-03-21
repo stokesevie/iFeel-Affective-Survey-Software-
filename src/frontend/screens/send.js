@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { StyleSheet, Text, View} from 'react-native'
-import { TextInput,Alert } from 'react-native';
+import { Text} from 'react-native'
+import { Alert } from 'react-native';
 import moment from 'moment/moment';
 
 import { ContentJustified, PageTitle, StyledButton,StyledButtonText, StyledTextInputParagraph, MessageObject,MessageContent,MessageSender,MessageTime,Theme, RelatedLab, BubbleText, SubTitle } from '../components/styles';
@@ -35,7 +35,7 @@ const Send = ({route, navigation}) => {
         .format('YYYY-MM-DD HH:mm:ss');
         date += '+00:00'
         let data;
-        if (pastMessage.related_lab){
+        if (pastMessage.related_lab!=""){
             data = {
             "sender_id": user.user_id, 
             "receiver_id": pastMessage.s_id,
@@ -56,11 +56,7 @@ const Send = ({route, navigation}) => {
                     'Content-Type' : 'application/json',
                 },
                 body: JSON.stringify(data),
-            }).catch(console.error)
-
-            let r = response.statusText
-            await r
-            setLoading(false)
+            }).then(setLoading(false)).catch(error=>{})
             
         
     };
@@ -94,8 +90,10 @@ const Send = ({route, navigation}) => {
                 <StyledTextInputParagraph
                     editable
                     multiline
-                    value={message}
-                    onChangeText={(val) => setMessage(val)}>
+                    value={message.toString()}
+                    onChangeText={(val) => setMessage(val)}
+                    placeholder="Type your message here...">
+                    
                         
                 </StyledTextInputParagraph>
                 <StyledButton onPress = {handleSend}><StyledButtonText>Send</StyledButtonText></StyledButton>

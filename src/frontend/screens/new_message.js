@@ -3,7 +3,7 @@ import { StyleSheet, Text, View} from 'react-native'
 import { TextInput,Alert } from 'react-native';
 import moment from 'moment/moment';
 
-import { ContentJustified, PageTitle, StyledButton,StyledButtonText, StyledTextInputParagraph, MessageObject,MessageContent,MessageSender,MessageTime,Theme, SubTitle } from '../components/styles';
+import { ContentJustified, StyledButton,StyledButtonText, StyledTextInputParagraph,Theme, SubTitle } from '../components/styles';
 import AuthContext from '../utils/auth_context';
 
 
@@ -53,7 +53,7 @@ const SendNew = ({route, navigation}) => {
                     'Content-Type' : 'application/json',
                 },
                 body: JSON.stringify(data),
-            }).catch(console.error)
+            }).catch(error=>{})
 
           
             if (await response.ok==true){
@@ -104,8 +104,7 @@ const SendNew = ({route, navigation}) => {
                 Alert.alert("Couldn't send message")
             }
             setLoading(false)
-            
-        
+              
     };
 
     useEffect(()=>{
@@ -120,12 +119,13 @@ const SendNew = ({route, navigation}) => {
         let lab = route.params.lab
         return (
             <ContentJustified>
-            <SubTitle><Text style={{fontWeight:'1'}}> Message to {lab.student_name} regarding </Text>{lab.course_name}: {lab.lab_title} (lab {lab.lab_number})<Text style={{fontWeight:'1'}}> on {lab.axis_neg} axis</Text></SubTitle>
+            <SubTitle><Text style={{fontWeight:'bold'}}> Message to {lab.student_name} regarding </Text>{lab.course_name}: {lab.lab_title} (lab {lab.lab_number})<Text style={{fontWeight:'bold'}}> on {lab.axis_neg} axis</Text></SubTitle>
             <StyledTextInputParagraph
                 editable
                 multiline
-                value={message}
-                onChangeText={(val) => setMessage(val)}>
+                value={message.toString()}
+                onChangeText={(val) => setMessage(val)}
+                placeholder="Type your message here">
                     
             </StyledTextInputParagraph>
             <StyledButton onPress = {handleSend}><StyledButtonText>Send</StyledButtonText></StyledButton>
@@ -144,8 +144,10 @@ const SendNew = ({route, navigation}) => {
                 <StyledTextInputParagraph
                     editable
                     multiline
-                    value={message}
-                    onChangeText={(val) => setMessage(val)}>
+                    value={message.toString()}
+                    onChangeText={(val) => setMessage(val)}
+                    placeholder="Type your message here"
+                    >
                         
                 </StyledTextInputParagraph>
                 <StyledButton onPress = {handleFlagSend}><StyledButtonText>Send</StyledButtonText></StyledButton>
@@ -164,8 +166,9 @@ const SendNew = ({route, navigation}) => {
                 <StyledTextInputParagraph
                     editable
                     multiline
-                    value={message}
-                    onChangeText={(val) => setMessage(val)}>
+                    value={message.toString()}
+                    onChangeText={(val) => setMessage(val)}
+                    placeholder="Type your message here">
                         
                 </StyledTextInputParagraph>
                 <StyledButton onPress = {handleSend}><StyledButtonText>Send</StyledButtonText></StyledButton>

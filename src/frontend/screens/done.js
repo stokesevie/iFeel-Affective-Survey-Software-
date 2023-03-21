@@ -281,10 +281,12 @@ const Done = ({route, navigation}) => {
                     'Accept':'application/json',
                   },
                 body: JSON.stringify(p),
-            }).catch(error=>{console.log(error)})
+            }).catch(error=>{})
 
             let api_r = response.status
-            await api_r
+            if (api_r!=201){
+                //error if didnt post
+            }
 
     }
 }
@@ -293,7 +295,7 @@ const Done = ({route, navigation}) => {
     //this shows help if the student found the lab difficult
 
     const ShowHelp = () =>{
-        if (JSON.stringify(stats[0][1][0])!="[]"){
+        if (JSON.stringify(stats[0][1][0])!="[]"&& lab.lab.help){
             return <>
             <DoneTextBold>Want help with this lab?</DoneTextBold>
             <StyledButton title = "Help" onPress={()=>{
@@ -303,8 +305,13 @@ const Done = ({route, navigation}) => {
                 return navigation.navigate("SendNew", {'receiver_id':tutorDetail.tutor_id,'lab':lab.lab.lab_id,'tutor_name':tutorDetail.tutor_name, 'course':lab.lab.course_id})
             }}><StyledButtonText> Message Tutor </StyledButtonText></StyledButton>
             </>                 
-        }else{
-            return
+        }else if (JSON.stringify(stats[0][1][0])!="[]"){
+            return <>
+            <DoneTextBold>Want help with this lab?</DoneTextBold>
+            <StyledButton title = "Message" onPress={()=>{
+                return navigation.navigate("SendNew", {'receiver_id':tutorDetail.tutor_id,'lab':lab.lab.lab_id,'tutor_name':tutorDetail.tutor_name, 'course':lab.lab.course_id})
+            }}><StyledButtonText> Message Tutor </StyledButtonText></StyledButton>
+            </>      
         }
     }
 

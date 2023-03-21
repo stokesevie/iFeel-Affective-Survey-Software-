@@ -77,12 +77,14 @@ export function NotificationsAlert(props) {
 
   const ShowEmotional = ()=>{
     let r = emotional
+    try{
     if (r.above){
       return(<BubbleText>You recorded a <BubbleTextBold>Below Average </BubbleTextBold>emotional response to this lab. You found it more <BubbleTextBold>{r.axis_neg}</BubbleTextBold> than other students.</BubbleText>)
 
     }else{
       return(<BubbleText>You recorded a <BubbleTextBold>Above Average </BubbleTextBold>emotional response to this lab. You found it more <BubbleTextBold>{r.axis_pos}</BubbleTextBold> than other students.</BubbleText>)
        }
+    }catch{}
   }
 
   if (!loading && emotionalFetched && risksFetched){
@@ -129,7 +131,7 @@ export function NotificationsAlert(props) {
     }else{
       return(
         <StyledBubbleLarge>
-        <ActivityIndicator visible={loading} color='black' style={{flex: 1,
+        <ActivityIndicator testID="loading-indicator" visible={loading} color='black' style={{flex: 1,
             justifyContent: 'center',
             textAlign: 'center',
             paddingTop: 30,

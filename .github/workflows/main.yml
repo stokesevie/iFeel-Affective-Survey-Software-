@@ -1,0 +1,33 @@
+name: Publish on push to main
+run-name: ${{ github.actor }} publishing the app 🚀
+#https://github.com/expo/expo-github-action
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v2
+
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+
+      - name: 🏗 Setup Expo
+        uses: expo/expo-github-action@v7
+        with:
+          expo-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 📦 Install dependencies
+        working-directory: ./src/frontend
+        run: npm install
+
+      - name: 🚀 Publish app
+        working-directory: ./src/frontend
+        run: expo publish --non-interactive

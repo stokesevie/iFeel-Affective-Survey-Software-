@@ -8,53 +8,6 @@ from rest_framework import status
 
 User = get_user_model()
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['username', 'email', 'first_name', 'last_name','is_staff','last_login']
-
-
-class UserNameSerializer(serializers.ModelSerializer):
-     class Meta:
-        model = User
-        fields = ['username', 'first_name', 'last_name']
-
-
-class MessageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = message
-        fields = ['id','sender_id', 'receiver_id', 'sent_at','message_content','related_lab']
-
-
-
-class CourseSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = course
-        fields = ['id','title', 'level', 'start_date','end_date']
-
-class StudentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = student
-        fields = ['username', 'level']
-    
-
-class TutorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = tutor
-        fields = ['username']
-
-class student_enrollSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = student_enroll
-        fields = ['student_id', 'tutor_teaching_id','flag'] 
-
-class questionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model= question
-        fields = ['x','y','id']
-
-
-
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
@@ -72,12 +25,31 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         except:
             return Response(status= status.HTTP_422_UNPROCESSABLE_ENTITY)
 
-
-
-class labSerializer(serializers.ModelSerializer):
+class MessageSerializer(serializers.ModelSerializer):
     class Meta:
-        model = lab
-        fields =['course_id','lab_id','lab_number','title','date','help']
+        model = message
+        fields = ['id','sender_id', 'receiver_id', 'sent_at','message_content','related_lab']
+
+class CourseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = course
+        fields = ['id','title', 'level', 'start_date','end_date']
+
+class StudentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = student
+        fields = ['username', 'level']
+
+class student_enrollSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = student_enroll
+        fields = ['student_id', 'tutor_teaching_id','flag'] 
+
+class questionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= question
+        fields = ['x','y','id']
+
 class surveySerializer(serializers.ModelSerializer):
     class Meta:
         model = survey

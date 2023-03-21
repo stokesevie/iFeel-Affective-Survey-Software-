@@ -201,8 +201,17 @@ useEffect(()=>{
             return (<><DoneTextBold>Affective Student Average Comparison</DoneTextBold><FlatList data = {studentStats[0]} renderItem={item=><ResponseText>{'\n'}{item.item}</ResponseText>}/></>)
         }
        } 
-    
+
+    const ShowOnline = ()=>{
+        if (lab.help){
+            return (<StyledButton title = "Help" onPress={()=>{
+                Linking.openURL(lab.help)
+            }}><StyledButtonText> Online resources </StyledButtonText></StyledButton>)
+        }
+    }    
     if (completed && !loading){
+
+
         return (
             <ContentJustifiedBack>
                     <PageTitle>Affective Survey for lab {lab.lab_number}</PageTitle>  
@@ -224,9 +233,7 @@ useEffect(()=>{
                         navigation.navigate("StudentDashboard")
                     )}><StyledButtonText>Go Home</StyledButtonText></StyledButton>
             <DoneTextBold>Want help with this lab?</DoneTextBold>
-            <StyledButton title = "Help" onPress={()=>{
-                Linking.openURL(lab.help)
-            }}><StyledButtonText> Online resources </StyledButtonText></StyledButton>
+            <ShowOnline/>
             <StyledButton title = "Message" onPress={()=>{
                 return navigation.navigate("SendNew", {'receiver_id':tutorDetail.tutor_id,'lab':lab.lab_id, 'tutor_name':tutorDetail.tutor_name, 'course':lab.course_id})
             }}><StyledButtonText> Message Tutor </StyledButtonText></StyledButton>
@@ -260,7 +267,7 @@ useEffect(()=>{
         )
 
     }else{
-        return (<ContentJustifiedBack><ActivityIndicator visible={loading} color='black' style={{flex: 1,
+        return (<ContentJustifiedBack><ActivityIndicator testID='loading-indicator' visible={loading} color='black' style={{flex: 1,
             justifyContent: 'center',
             textAlign: 'center',
             paddingTop: 30,
