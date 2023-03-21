@@ -35,8 +35,8 @@ The project is developed using a django backend and react native js frontend. Fo
 - Backend
     - Navigate to backend directory with 
         ```sh
-    cd backend
-    ```
+        cd backend
+        ```
     - To set up the backend development run 
         ```sh
         python -m pip install --upgrade pip 
@@ -50,17 +50,16 @@ The project is developed using a django backend and react native js frontend. Fo
 - Frontend
     - Navigate to frontend directory with 
         ```sh
-    cd frontend
-    ```
+        cd frontend
+        ```
     - To set up frontend development server, run
-    ```sh
-    npm i
-    ```
+        ```sh
+        npm i
+        ```
     - To run the frontend application locally, run
-    ```sh
-    npm start
-    npm i
-    ```
+        ```sh
+        npm start
+        ```
 
 ## Usage
 - Once the app is running with the default data, you can log in with the following credentials 
