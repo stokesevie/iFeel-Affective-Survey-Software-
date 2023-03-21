@@ -23,7 +23,7 @@ npm start      #begins the application in development
 ## Running on IOS device
 
 The app can be accessed by scanning the QR code shown with an ios device camera after running the npm start.   
-![Expo Run](../docs/ios.jpg)
+![Expo Run](../docs/ios.jpg)</br>
 This is the expo development prompt that will be displayed.
 
 ## Running simulated app from personal computer
@@ -32,15 +32,15 @@ The app can be run from the expo development prompt by typing
 ```sh
 i      #begins the application in development
 ```
-into the terminal which will open an ios device simulator and the app can be used as expected from there.
-Log in using 
+into the terminal which will open an ios device simulator and the app can be used as expected from there.  
+Log in using   
 Tutor:  
 username : 1234567t and password : testpassword  
 Student:  
 username : 1234567s and password : testpassword  
 
 ## Backend database
-The backend database is hosted with railway (https://docs.railway.app/) online to allow users to use the application on their mobiles. The admin site here can be accessed with https://app-production-1e3f.up.railway.app/admin/ and the tutor credentials :
+The backend database is hosted with railway (https://docs.railway.app/) online to allow users to use the application on their mobiles. The admin site here can be accessed with https://app-production-1e3f.up.railway.app/admin/ and the tutor credentials : </br>
 username : 1234567t and password : testpassword
 
 The backend can also be accessed by navigating to the [`src/backend`](/src/backend/) directory in the repository. From here the following commands can be run in a terminal:
