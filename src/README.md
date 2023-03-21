@@ -1,6 +1,6 @@
 <div align="center">
 <p align="center">
-    <img alt="Icon" src="src/frontend/assets/icon.png" height="200px">
+    <img alt="Icon" src="./frontend/assets/icon.png" height="200px">
     <h2>iFeel</h2>
 </p>
 <p align="center">
