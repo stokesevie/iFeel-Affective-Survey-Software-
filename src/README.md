@@ -11,7 +11,6 @@
 ## Set up
 To start up iFeel, the user must navigate to folder [`src/frontend`](/src/frontend/) and run the following commands in terminal
 
-‘npm i’
 ```sh
 npm i       #installs frontend requirements
 ```
@@ -29,7 +28,7 @@ This is the expo development prompt that will be displayed.
 
 ## Running simulated app from personal computer
 
-The app can be run by typing
+The app can be run from the expo development prompt by typing
 ```sh
 i      #begins the application in development
 ```
