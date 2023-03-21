@@ -31,12 +31,12 @@
 
 The project is developed using a django backend and react native js frontend. For steps detailing installation see below.
 
-## <a name="install"></a>Installation
+## <a name="install"></a>Installation and Running
 First, the repository must be cloned. This can be done by navigating to the terminal and running 
 ```sh
 git clone https://github.com/stokesevie/app.git 
 ```
-To run the application, navigate to the source code folder from within the repository folder by calling 
+To run the application, navigate to the source code folder from within the repository folder (app) by calling 
 ```sh
 cd src
 ```
@@ -67,28 +67,33 @@ cd src
     - To run the frontend application locally, run
         ```sh
         npm start       #opens development so ios app can be simulated
+        i       # to open ios simulation
         ```
+For a more detailed explanation of installation, navigate to [`src/README.md`](/src/README.md).
 
 ## Usage
 - Once the app is running with the default data, you can log in with the following credentials 
     - Student: `1234567s` password: `testpassword`
     - Tutor: `1234567t` password: `testpassword`
-- See `docs/UserGuide.pdf` for a comprehensive user guide. 
+- The admin side for inputting data can be accessed using https://app-production-1e3f.up.railway.app/admin/ with the tutor credentials
+- See [`docs/UserGuide.pdf`](/docs/User_guide.pdf) for a comprehensive user guide. 
 
 ## Code
 
 
 - [`.`](#) Root of the repository
-- [`.github/workflows`](/.github/workflows/) GitHub actions
+- [`.github/workflows`](/.github/workflows/) GitHub actions. These include publishing the app to expo on pushes to main and automated testing
 - [`/dissertation`](/dissertation/) contains dissertation files
 - [`src`](/src/) Contains source code, config files and package files for the app
 - [`src/frontend`](/src/frontend/) Contains the front end code for the app
     - [`src/frontend/assets`](/src/frontend/assets/) Contains the assets used in the app
     - [`src/frontend/components`](/src/frontend/components/) Contains the code for components used in the app
     - [`src/frontend/screens`](/src/frontend/screens/) Contains the code for the screens of the app
+    - [`src/frontend/utils`](/src/frontend/utils/) Contains the authorisation context for the log in
 - [`src/backend`](/src/backend/) Contains the back end code for the app
-    - [`src/backend/assets`](/src/backend/db/) Contains the models for the data and tests
-    - [`src/backend/components`](/src/backend/backend/) Contains the url API endpoints for requests
+    - [`src/backend/db`](/src/backend/db/) Contains the models for the data and tests
+    - [`src/backend/backend`](/src/backend/backend/) Contains the url API endpoints for requests
+    - [`src/backend/db.sqlite3`](/src/backend/db.sqlite3) The local database for the application
 - [`.gitignore`](/.gitignore) The git ignore file used
 - [`timelog.md`](/timelog.md) Timelog detailing the work done on certain days
 
