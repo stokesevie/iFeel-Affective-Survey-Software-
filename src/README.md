@@ -23,8 +23,9 @@ npm start      #begins the application in development
 
 ## Running on IOS device
 
-The app can be accessed by scanning the QR code shown with an ios device camera after running the npm start. This is the expo development prompt that will be displayed.
+The app can be accessed by scanning the QR code shown with an ios device camera after running the npm start. 
 ![Expo Run](../docs/ios.jpg)
+This is the expo development prompt that will be displayed.
 
 ## Running simulated app from personal computer
 
@@ -50,7 +51,7 @@ The backend can also be accessed by navigating to the [`src/backend`](/src/backe
     ```
 
 The terminal will then show a message like the following
-![Expo Run](../docs/ios.jpg)
+![Django Run](../docs/backend.jpg)
 
 Navigate to the url with 'Starting development server at http://127.0.01:8000/ ' with admin appended to the end (Note the url may be different). This would be:
 http://127.0.01:8000/admin 
@@ -82,7 +83,7 @@ To access all the users and the data populated, run
     python manage.py runserver #runs database over localhost
 ```
 The terminal will then show a message like the following
-![Expo Run](../docs/ios.jpg)
+![Django Run](../docs/backend.jpg)
 
 Navigate to the url with 'Starting development server at http://127.0.01:8000/ ' with admin appended to the end (Note the url may be different). This would be:
 http://127.0.01:8000/admin 
