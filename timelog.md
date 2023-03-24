@@ -86,7 +86,80 @@
 * *1 hour* sent requirements to people
 * *1 hour* started to build sign in for app
 
+## Weekly
 
-## 8 March 2023
-* *5 hours* finished flagging functionality
-* *1 hour* fixed the project file structure
+## 1 Nov 2022
+* MOSCOW requirements ordered
+
+## 5 Nov 2022
+* Design write up draft
+
+## 14 Nov 2022
+* Coding frontend log in
+* frontend log in with firebase 
+
+## 21 Nov 2022
+* designed frontend with placeholders for data
+
+## 28 Nov 2022
+* began trying to populate firebase with data
+
+## 5 Dec 2022
+* firebase not relational structure friendly, researching others
+
+## 12 Dec
+* set up new git repo to create new dependencies with back end front end
+* back end set up again with django
+
+## 19 Dec 2022
+* django initial models set
+* log in working on local host
+
+## 26 Dec 2022
+* JWT tokens working
+
+## 2 Jan 2023
+* turned JWT tokens off while learning to code with REST
+* wrote code to fetch courses, messages and risks
+* dashboard set up
+
+## 9 Jan 2023
+* working on features of the app, Messages and survey
+
+## 16 Jan 2023
+* Push notifications
+
+## 23 Jan 2023
+*Survey finished
+
+## 30 Jan 2023
+*Messages finished
+
+## 6 Feb 2023
+* User profile added
+*  Implementation write up
+
+## 13 Feb 2023
+* working on tutor app
+* added flagging
+
+## 20 Feb 2023
+*  Implementation write up
+
+## 27 Feb 2023
+* CI working
+* Tutor app finished
+
+## 6 March 2023
+* finished flagging functionality
+* fixed the project file structure
+* Tests written
+## 13 March 2023
+* evaluation plan
+* writing up
+* evaluation carried out
+
+## 20 March 2023
+* project motivations written
+* Dissertation finished
+* presentation recorded

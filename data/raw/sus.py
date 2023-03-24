@@ -9,9 +9,9 @@ demo = sys.argv[3]
 
 
 # Load data from csv file
-data_combined = pd.read_csv(combined)
-data_scenario = pd.read_csv(scenario)
-data_demo = pd.read_csv(demo)
+data_combined = pd.read_csv(combined, header=None)
+data_scenario = pd.read_csv(scenario, header=None)
+data_demo = pd.read_csv(demo, header=None)
 
 data_collected =[data_combined,data_scenario]
 
@@ -23,7 +23,7 @@ for data in data_collected:
     for index, row in data.iterrows():
         odd = (row[0] + row[2] + row[4] + row[6] + row[8]) - 5
         even = 25 - (row[1] + row[3] + row[5] + row[7] + row[9])
-        total = (odd + even) * 2.5
+        total = round((odd + even) * 2.5,2)
         sus.append(total)
     compared.append(sus)
 
@@ -31,24 +31,22 @@ sus = []
 for index, row in data_demo.iterrows():
         odd = (row[0] + row[2] + row[4] + row[6]) - 5
         even = 25 - (row[1] + row[3] + row[5] + row[7])
-        total = (odd + even) * 2.5
+        total = round((odd + even) * 2.5,2)
         sus.append(total)
 compared.append(sus)
 
 # Create a figure and axis instance
 fig, ax = plt.subplots(figsize=(9, 6))
-
 # Create the boxplot
 bp = ax.boxplot(compared, notch=0, patch_artist=1, sym='+', vert=1, whis=1.5)
 
 # Set axis labels and title
 ax.set_title('Comparison of SUS Scores')
 ax.set_xlabel('Evaluation technique')
-ax.set_ylabel('Percentage %')
+ax.set_ylabel('SUS score')
 
 # Customize x-axis labels
-ax.set_xticklabels(['Combined Testing','Scenario testing', 'Demo Testing'])
-
+ax.set_xticklabels(['Combined methods','Scenario survey', 'Demo survey'])
 # Set y-axis limit
 ax.set_ylim(0, 100)
 
@@ -68,4 +66,12 @@ fig.savefig('multiple-boxplot.png', bbox_inches='tight')
 
 # Show the plot
 fig.savefig('multiple-boxplot.png', bbox_inches='tight')
+
+data_combined['SUS score'] = compared[0]
+data_scenario['SUS score'] = compared[1]
+data_demo['SUS score'] = compared[2]
+
+data_combined.to_csv('combined_csv_OUTPUT')
+data_scenario.to_csv('scenario_csv_OUTPUT')
+data_demo.to_csv('demo_csv_OUTPUT')
 plt.show()
